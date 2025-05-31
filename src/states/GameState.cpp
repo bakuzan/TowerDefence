@@ -8,7 +8,8 @@
 GameState::GameState(GameData &data, StateManager &manager, sf::RenderWindow &window)
     : gameData(data),
       stateManager(manager),
-      window(window)
+      window(window),
+      uiManager(&window)
 {
     // Load background TODO restore when have background
     // const sf::Texture &backgroundTexture = gameData.textureManager.getTexture(TextureId::BACKGROUND);
@@ -45,10 +46,16 @@ void GameState::handleEvent(const sf::Event &event)
     {
         stateManager.pushState(std::make_unique<PauseState>(gameData, stateManager, window));
     }
+
+    uiManager.handleInput(event);
 }
 
 void GameState::update(sf::Time deltaTime, sf::RenderWindow &window)
 {
+    float dt = deltaTime.asSeconds();
+
+    uiManager.update();
+
     // Update background texture rect for tiling by matching the view
     sf::Vector2f viewPos = view.getCenter() - view.getSize() / 2.0f;
     ensureBackgroundSizeIsLinkedToViewSize(
@@ -62,11 +69,7 @@ void GameState::render(sf::RenderWindow &window)
     window.setView(view);
 
     // UI elements rendering
-    sf::View uiView = window.getDefaultView();
-    window.setView(uiView); // Set "UI" view
-
-    // Restore game view
-    window.setView(view);
+    uiManager.render();
 }
 
 // Private

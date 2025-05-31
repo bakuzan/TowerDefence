@@ -7,6 +7,9 @@
 #include "core/State.h"
 #include "core/StateManager.h"
 
+#include "components/PhaseManager.h"
+#include "components/UIManager.h"
+
 class GameState : public State
 {
 private:
@@ -14,6 +17,9 @@ private:
     StateManager &stateManager;
     sf::RenderWindow &window;
     sf::View view;
+
+    PhaseManager phaseManager;
+    UIManager uiManager;
 
     sf::RectangleShape background;
 
