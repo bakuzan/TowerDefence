@@ -4,7 +4,6 @@
 #include <memory>
 
 #include "constants/Phase.h"
-#include "components/PhaseController.h"
 
 class PhaseManager
 {
@@ -21,7 +20,6 @@ public:
     bool isResultsPhase();
 
     void advanceToNextPhase();
-    std::unique_ptr<PhaseController> createController();
 };
 
 #endif // PHASEMANAGER_H

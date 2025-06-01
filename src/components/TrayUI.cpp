@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include "TrayUI.h"
 
 TrayUI::TrayUI(sf::RenderWindow *windowRef, sf::Vector2f pos, sf::Vector2f size)
