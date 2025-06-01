@@ -1,0 +1,37 @@
+#ifndef TILEMAP_H
+#define TILEMAP_H
+
+#include <SFML/Graphics.hpp>
+
+#include <string>
+#include <unordered_map>
+#include <vector>
+
+#include "constants/TileId.h"
+#include "constants/PathType.h"
+
+class TileMap
+{
+private:
+    std::vector<std::vector<TileId>> mapData;
+    const sf::Texture &textureAtlas;
+
+    int mapWidth, mapHeight;
+    int tileWidth, tileHeight;
+
+private:
+    sf::IntRect getTileRect(TileId tileId, int x, int y);
+    sf::Vector2f gridToIso(int x, int y, int tileWidth, int tileHeight);
+    PathType resolvePathType(int x, int y);
+
+public:
+    TileMap(const sf::Texture &atlas,
+            int mWidth, int mHeight,
+            int tWidth, int tHeight);
+    ~TileMap();
+
+    void loadMapFromFile(const std::string &filename);
+    void render(sf::RenderWindow &window);
+};
+
+#endif // TILEMAP_H

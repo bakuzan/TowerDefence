@@ -2,5 +2,5 @@
 
 enum class TextureId
 {
-    BACKGROUND,
+    ATLAS = 0,
 };

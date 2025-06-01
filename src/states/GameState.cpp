@@ -9,11 +9,13 @@ GameState::GameState(GameData &data, StateManager &manager, sf::RenderWindow &wi
     : gameData(data),
       stateManager(manager),
       window(window),
-      uiManager(&window)
+      uiManager(&window),
+      tileMap(gameData.textureManager.getTexture(TextureId::ATLAS),
+              250 * 15, 235 * 15,
+              250, 235)
 {
-    // Load background TODO restore when have background
-    // const sf::Texture &backgroundTexture = gameData.textureManager.getTexture(TextureId::BACKGROUND);
-    // background.setTexture(&backgroundTexture);
+    // Load Map
+    tileMap.loadMapFromFile("resources/maps/level_01.txt");
 
     // Set up the view
     view.setSize(Constants::VIEW_WIDTH, Constants::VIEW_HEIGHT);
@@ -67,6 +69,8 @@ void GameState::render(sf::RenderWindow &window)
 {
     // Core gameplay rendering
     window.setView(view);
+
+    tileMap.render(window);
 
     // UI elements rendering
     uiManager.render();

@@ -8,6 +8,7 @@
 #include "core/StateManager.h"
 
 #include "components/PhaseManager.h"
+#include "components/TileMap.h"
 #include "components/UIManager.h"
 
 class GameState : public State
@@ -20,6 +21,7 @@ private:
 
     PhaseManager phaseManager;
     UIManager uiManager;
+    TileMap tileMap;
 
     sf::RectangleShape background;
 
