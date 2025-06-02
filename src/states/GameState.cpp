@@ -11,17 +11,18 @@ GameState::GameState(GameData &data, StateManager &manager, sf::RenderWindow &wi
       window(window),
       uiManager(&window),
       tileMap(gameData.textureManager.getTexture(TextureId::ATLAS),
-              250 * 15, 235 * 15,
-              250, 235)
+              15, 15,
+              250, 235),
+      zoomFactor(1.0f),
+      moveSpeed(15.0f)
 {
     // Load Map
     tileMap.loadMapFromFile("resources/maps/level_01.txt");
 
     // Set up the view
     view.setSize(Constants::VIEW_WIDTH, Constants::VIEW_HEIGHT);
-    ensureBackgroundSizeIsLinkedToViewSize(
-        view.getCenter() - view.getSize() / 2.0f,
-        view.getSize());
+    view.setCenter(tileMap.getCentre());
+    adjustZoom(0.05);
 }
 
 GameState::~GameState()
@@ -37,16 +38,56 @@ void GameState::handleEvent(const sf::Event &event)
     {
         // Maintain the height of the view to match the window height
         float aspectRatio = float(window.getSize().x) / float(window.getSize().y);
-        view.setSize(Constants::VIEW_HEIGHT * aspectRatio, Constants::VIEW_HEIGHT);
-        ensureBackgroundSizeIsLinkedToViewSize(
-            view.getCenter() - view.getSize() / 2.0f,
-            view.getSize());
+        sf::Vector2f previousSize = view.getSize();
+
+        view.setSize((Constants::VIEW_HEIGHT * aspectRatio),
+                     Constants::VIEW_HEIGHT);
+
+        float scaleFactor = previousSize.x / view.getSize().x;
+        view.zoom(scaleFactor);
     }
 
     if (event.type == sf::Event::KeyPressed &&
         InputUtils::isAnyKeyPressed(event.key.code, {sf::Keyboard::Escape, sf::Keyboard::P}))
     {
         stateManager.pushState(std::make_unique<PauseState>(gameData, stateManager, window));
+    }
+
+    // Camera zoom
+    if (event.type == sf::Event::MouseWheelScrolled)
+    {
+        float scrollDelta = event.mouseWheelScroll.delta;
+        float factor = (scrollDelta > 0) ? 0.9f : 1.1f;
+        adjustZoom(factor * zoomFactor);
+    }
+
+    // Camera panning
+    if (event.type == sf::Event::KeyPressed)
+    {
+        float scaledMoveSpeed = moveSpeed / zoomFactor;
+
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wswitch-enum"
+
+        switch (event.key.code)
+        {
+        case sf::Keyboard::W:
+            view.move(0, -scaledMoveSpeed);
+            break;
+        case sf::Keyboard::S:
+            view.move(0, scaledMoveSpeed);
+            break;
+        case sf::Keyboard::A:
+            view.move(-scaledMoveSpeed, 0);
+            break;
+        case sf::Keyboard::D:
+            view.move(scaledMoveSpeed, 0);
+            break;
+        default:
+            break;
+        }
+
+#pragma GCC diagnostic pop
     }
 
     uiManager.handleInput(event);
@@ -57,12 +98,6 @@ void GameState::update(sf::Time deltaTime, sf::RenderWindow &window)
     float dt = deltaTime.asSeconds();
 
     uiManager.update();
-
-    // Update background texture rect for tiling by matching the view
-    sf::Vector2f viewPos = view.getCenter() - view.getSize() / 2.0f;
-    ensureBackgroundSizeIsLinkedToViewSize(
-        viewPos,
-        view.getSize());
 }
 
 void GameState::render(sf::RenderWindow &window)
@@ -78,15 +113,10 @@ void GameState::render(sf::RenderWindow &window)
 
 // Private
 
-void GameState::ensureBackgroundSizeIsLinkedToViewSize(
-    const sf::Vector2f &viewPos,
-    const sf::Vector2f &viewSize)
+void GameState::adjustZoom(float newZoomFactor)
 {
-    background.setSize(viewSize);
-    background.setPosition(viewPos);
-    background.setTextureRect(sf::IntRect(
-        static_cast<int>(viewPos.x),
-        static_cast<int>(viewPos.y),
-        static_cast<int>(viewSize.x),
-        static_cast<int>(viewSize.y)));
+    float factor = newZoomFactor / zoomFactor;
+    zoomFactor = newZoomFactor;
+    view.zoom(factor);
+    window.setView(view);
 }

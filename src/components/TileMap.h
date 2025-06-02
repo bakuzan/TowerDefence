@@ -32,6 +32,8 @@ public:
 
     void loadMapFromFile(const std::string &filename);
     void render(sf::RenderWindow &window);
+
+    sf::Vector2f getCentre();
 };
 
 #endif // TILEMAP_H

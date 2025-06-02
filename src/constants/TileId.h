@@ -2,7 +2,7 @@
 
 enum class TileId
 {
-    Grass = 0,
-    TowerSpot,
-    Path,
+    TERRAIN = 0,
+    TOWER_SPOT,
+    PATH,
 };

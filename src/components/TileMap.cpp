@@ -1,4 +1,5 @@
 #include <fstream>
+#include <sstream>
 
 #include "TileMap.h"
 
@@ -9,7 +10,7 @@ TileMap::TileMap(const sf::Texture &atlas,
       mapWidth(mWidth), mapHeight(mHeight),
       tileWidth(tWidth), tileHeight(tHeight)
 {
-    mapData.resize(mHeight, std::vector<int>(mWidth, TileId::Grass)); // Initialize empty map
+    mapData.resize(mHeight, std::vector<TileId>(mWidth, TileId::TERRAIN)); // Initialize empty map
 }
 
 TileMap::~TileMap()
@@ -23,16 +24,17 @@ void TileMap::loadMapFromFile(const std::string &filename)
 {
     std::ifstream file(filename);
     std::string line;
+    int rowIndex = 0;
 
-    while (std::getline(file, line))
+    while (std::getline(file, line) &&
+           rowIndex < mapHeight)
     {
         std::stringstream ss(line);
-        std::vector<TileId> tileRow;
         int tileValue;
 
-        while (ss >> tileValue)
+        for (int colIndex = 0; colIndex < mapWidth && ss >> tileValue; ++colIndex)
         {
-            tileRow.push_back(static_cast<TileId>(tileValue));
+            mapData[rowIndex][colIndex] = static_cast<TileId>(tileValue);
 
             if (ss.peek() == ',')
             {
@@ -40,15 +42,15 @@ void TileMap::loadMapFromFile(const std::string &filename)
             }
         }
 
-        mapData.push_back(tileRow);
+        ++rowIndex;
     }
 }
 
 void TileMap::render(sf::RenderWindow &window)
 {
-    for (size_t y = 0; y < mapData.size(); ++y)
+    for (int y = 0; y < mapHeight; ++y)
     {
-        for (size_t x = 0; x < mapData[y].size(); ++x)
+        for (int x = 0; x < mapWidth; ++x)
         {
             TileId tileId = mapData[y][x];
 
@@ -61,13 +63,18 @@ void TileMap::render(sf::RenderWindow &window)
     }
 }
 
+sf::Vector2f TileMap::getCentre()
+{
+    return gridToIso(mapWidth / 2, mapHeight / 2, tileWidth, tileHeight);
+}
+
 // Privates
 
 sf::IntRect TileMap::getTileRect(TileId tileId, int x, int y)
 {
     int id = static_cast<int>(tileId);
 
-    if (tileId == TileId::Path)
+    if (tileId == TileId::PATH)
     {
         id = 2 + static_cast<int>(resolvePathType(x, y));
     }
@@ -78,16 +85,16 @@ sf::IntRect TileMap::getTileRect(TileId tileId, int x, int y)
 sf::Vector2f TileMap::gridToIso(int x, int y, int tileWidth, int tileHeight)
 {
     float screenX = (x - y) * (tileWidth / 2);
-    float screenY = (x + y) * (tileHeight / 2);
+    float screenY = (x + y) * (tileHeight * 0.3f);
     return {screenX, screenY};
 }
 
 PathType TileMap::resolvePathType(int x, int y)
 {
-    bool left = (x > 0) && (mapData[y][x - 1] == TileId::Path);
-    bool right = (x < mapData[y].size() - 1) && (mapData[y][x + 1] == TileId::Path);
-    bool up = (y > 0) && (mapData[y - 1][x] == TileId::Path);
-    bool down = (y < mapData.size() - 1) && (mapData[y + 1][x] == TileId::Path);
+    bool left = (x > 0) && (mapData[y][x - 1] == TileId::PATH);
+    bool right = (x < mapData[y].size() - 1) && (mapData[y][x + 1] == TileId::PATH);
+    bool up = (y > 0) && (mapData[y - 1][x] == TileId::PATH);
+    bool down = (y < mapData.size() - 1) && (mapData[y + 1][x] == TileId::PATH);
 
     // Cross
     if (left && right && up && down)

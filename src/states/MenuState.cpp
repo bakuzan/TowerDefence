@@ -7,8 +7,8 @@ MenuState::MenuState(GameData &data, StateManager &manager, sf::RenderWindow &wi
     : gameData(data), stateManager(manager), window(win)
 {
     buttonSpacing = Constants::BUTTON_HEIGHT + 10.f;
-    sf::View view = window.getView();
-    sf::Vector2f center(view.getCenter());
+    sf::Vector2f center(menuView.getCenter());
+    window.setView(menuView);
 
     // Setup title
     gameTitle.setFont(gameData.gameFont);
@@ -56,6 +56,7 @@ void MenuState::update(sf::Time deltaTime, sf::RenderWindow &window)
 
 void MenuState::render(sf::RenderWindow &window)
 {
+    window.setView(menuView);
     window.draw(background);
     window.draw(gameTitle);
 
@@ -68,9 +69,8 @@ void MenuState::render(sf::RenderWindow &window)
 // Privates
 void MenuState::updateMenuItemPositions()
 {
-    sf::View view = window.getView();
-    sf::Vector2f viewCenter = view.getCenter();
-    sf::Vector2f viewSize = view.getSize();
+    sf::Vector2f viewCenter = menuView.getCenter();
+    sf::Vector2f viewSize = menuView.getSize();
 
     background.setSize(viewSize);
     background.setPosition(viewCenter - viewSize / 2.0f);

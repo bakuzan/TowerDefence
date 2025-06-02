@@ -12,6 +12,7 @@ private:
     GameData &gameData;
     StateManager &stateManager;
     sf::RenderWindow &window;
+    sf::View menuView;
 
     sf::RectangleShape background;
     sf::Text gameTitle;

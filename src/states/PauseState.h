@@ -14,6 +14,7 @@ private:
     GameData &gameData;
     StateManager &stateManager;
     sf::RenderWindow &window;
+    sf::View pauseView;
 
     sf::RectangleShape background;
     sf::Text pauseText;

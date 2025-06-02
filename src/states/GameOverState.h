@@ -16,6 +16,7 @@ private:
     GameData &gameData;
     StateManager &stateManager;
     sf::RenderWindow &window;
+    sf::View gameOverView;
 
     HighScoreManager highScoreManager;
 

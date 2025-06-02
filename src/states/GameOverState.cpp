@@ -18,9 +18,9 @@ GameOverState::GameOverState(GameData &data, StateManager &manager, sf::RenderWi
       playerScore(0)
 {
     buttonSpacing = 20.f;
-    sf::View view = window.getView();
-    sf::Vector2f viewSize = view.getSize();
-    sf::Vector2f center(view.getCenter());
+    sf::Vector2f viewSize = gameOverView.getSize();
+    sf::Vector2f center(gameOverView.getCenter());
+    window.setView(gameOverView);
 
     // Configure background
     background.setSize(sf::Vector2f(viewSize.x - 20.0f, viewSize.y - 20.0f));
@@ -132,14 +132,14 @@ void GameOverState::update(sf::Time deltaTime, sf::RenderWindow &window)
 
 void GameOverState::render(sf::RenderWindow &window)
 {
+    window.setView(gameOverView);
     window.draw(background);
     window.draw(gameOverText);
     window.draw(finalScoreText);
 
     if (isAskingForPlayerName)
     {
-        sf::View view = window.getView();
-        sf::Vector2f viewCenter = view.getCenter();
+        sf::Vector2f viewCenter = gameOverView.getCenter();
 
         sf::Text prompt("Enter your name: ", gameData.gameFont, 48);
         prompt.setPosition(viewCenter.x - (prompt.getGlobalBounds().width / 2.0f),
@@ -168,9 +168,8 @@ void GameOverState::render(sf::RenderWindow &window)
 // Privates
 void GameOverState::updateMenuItemPositions()
 {
-    sf::View view = window.getView();
-    sf::Vector2f viewCenter = view.getCenter();
-    sf::Vector2f viewSize = view.getSize();
+    sf::Vector2f viewCenter = gameOverView.getCenter();
+    sf::Vector2f viewSize = gameOverView.getSize();
     sf::Vector2f backgroundSize = background.getSize();
 
     background.setPosition(
@@ -195,9 +194,8 @@ void GameOverState::updateMenuItemPositions()
 
 void GameOverState::displayHighScores(const std::vector<HighScore> &scores, sf::RenderWindow &window)
 {
-    sf::View view = window.getView();
-    sf::Vector2f viewCenter = view.getCenter();
-    sf::Vector2f viewSize = view.getSize();
+    sf::Vector2f viewCenter = gameOverView.getCenter();
+    sf::Vector2f viewSize = gameOverView.getSize();
 
     for (size_t i = 0; i < scores.size(); ++i)
     {

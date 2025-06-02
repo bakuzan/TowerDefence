@@ -10,14 +10,13 @@
 
 void LoadWindowIcon(sf::Window &window)
 {
-    // Load the icon TODO Reinstate when you have an Icon!
-    // sf::Image icon;
-    // if (!icon.loadFromFile("resources/icon.png"))
-    // {
-    //     exit(1);
-    // }
+    sf::Image icon;
+    if (!icon.loadFromFile("resources/images/icon.png"))
+    {
+        exit(1);
+    }
 
-    // window.setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
+    window.setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
 }
 
 int main()

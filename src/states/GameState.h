@@ -23,12 +23,11 @@ private:
     UIManager uiManager;
     TileMap tileMap;
 
-    sf::RectangleShape background;
+    float zoomFactor;
+    float moveSpeed;
 
 private:
-    void ensureBackgroundSizeIsLinkedToViewSize(
-        const sf::Vector2f &viewPos,
-        const sf::Vector2f &viewSize);
+    void adjustZoom(float factor);
 
 public:
     GameState(GameData &data, StateManager &manager, sf::RenderWindow &window);

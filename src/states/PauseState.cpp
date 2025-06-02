@@ -10,8 +10,8 @@ PauseState::PauseState(GameData &data, StateManager &manager, sf::RenderWindow &
     : gameData(data), stateManager(manager), window(win)
 {
     buttonSpacing = Constants::BUTTON_HEIGHT + 10.f;
-    sf::View view = window.getView();
-    sf::Vector2f center(view.getCenter());
+    sf::Vector2f center(pauseView.getCenter());
+    window.setView(pauseView);
 
     // Configure background
     background.setSize(sf::Vector2f(300.f, 300.f));
@@ -71,6 +71,7 @@ void PauseState::update(sf::Time deltaTime, sf::RenderWindow &window)
 
 void PauseState::render(sf::RenderWindow &window)
 {
+    window.setView(pauseView);
     window.draw(background);
     window.draw(pauseText);
 
@@ -83,9 +84,8 @@ void PauseState::render(sf::RenderWindow &window)
 // Privates
 void PauseState::updateMenuItemPositions()
 {
-    sf::View view = window.getView();
-    sf::Vector2f viewCenter = view.getCenter();
-    sf::Vector2f viewSize = view.getSize();
+    sf::Vector2f viewCenter = pauseView.getCenter();
+    sf::Vector2f viewSize = pauseView.getSize();
     sf::Vector2f backgroundSize = background.getSize();
 
     background.setPosition(
