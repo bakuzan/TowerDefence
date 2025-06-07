@@ -27,6 +27,7 @@ private:
     float moveSpeed;
 
 private:
+    void loadMap(const std::string filename);
     void adjustZoom(float factor);
 
 public:

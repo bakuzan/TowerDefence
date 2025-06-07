@@ -14,10 +14,9 @@ GameState::GameState(GameData &data, StateManager &manager, sf::RenderWindow &wi
               15, 15,
               250, 235),
       zoomFactor(1.0f),
-      moveSpeed(15.0f)
+      moveSpeed(60.0f)
 {
-    // Load Map
-    tileMap.loadMapFromFile("resources/maps/level_01.txt");
+    loadMap("resources/maps/level_01.txt");
 
     // Set up the view
     view.setSize(Constants::VIEW_WIDTH, Constants::VIEW_HEIGHT);
@@ -112,6 +111,11 @@ void GameState::render(sf::RenderWindow &window)
 }
 
 // Private
+
+void GameState::loadMap(const std::string filename)
+{
+    tileMap.loadMapFromFile(filename);
+}
 
 void GameState::adjustZoom(float newZoomFactor)
 {

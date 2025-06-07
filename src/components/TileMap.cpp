@@ -91,10 +91,13 @@ sf::Vector2f TileMap::gridToIso(int x, int y, int tileWidth, int tileHeight)
 
 PathType TileMap::resolvePathType(int x, int y)
 {
-    bool left = (x > 0) && (mapData[y][x - 1] == TileId::PATH);
-    bool right = (x < mapData[y].size() - 1) && (mapData[y][x + 1] == TileId::PATH);
-    bool up = (y > 0) && (mapData[y - 1][x] == TileId::PATH);
-    bool down = (y < mapData.size() - 1) && (mapData[y + 1][x] == TileId::PATH);
+    int maxY = mapData.size() - 1;
+    int maxX = mapData[y].size() - 1;
+
+    bool left = (y < maxY) && (mapData[y + 1][x] == TileId::PATH);
+    bool right = (y > 0) && (mapData[y - 1][x] == TileId::PATH);
+    bool down = (x < maxX) && (mapData[y][x + 1] == TileId::PATH);
+    bool up = (x > 0) && (mapData[y][x - 1] == TileId::PATH);
 
     // Cross
     if (left && right && up && down)
@@ -105,19 +108,19 @@ PathType TileMap::resolvePathType(int x, int y)
     // T's
     if (left && right && up)
     {
-        return PathType::T_DOWNWARDS;
+        return PathType::T_UPWARDS;
     }
     if (left && right && down)
     {
-        return PathType::T_UPWARDS;
+        return PathType::T_DOWNWARDS;
     }
     if (up && down && left)
     {
-        return PathType::T_RIGHT;
+        return PathType::T_LEFT;
     }
     if (up && down && right)
     {
-        return PathType::T_LEFT;
+        return PathType::T_RIGHT;
     }
 
     // Corners
@@ -139,11 +142,11 @@ PathType TileMap::resolvePathType(int x, int y)
     }
 
     // Straights
-    if (left && right)
+    if ((left || right) && !up && !down)
     {
         return PathType::STRAIGHT_HORIZONTAL;
     }
-    if (up && down)
+    if ((up || down) && !left && !right)
     {
         return PathType::STRAIGHT_VERTICAL;
     }
