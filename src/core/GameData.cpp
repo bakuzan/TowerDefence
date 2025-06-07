@@ -25,6 +25,12 @@ GameData::~GameData()
 
 // Publics
 
+std::unordered_map<sf::Vector2i, TowerSpot> &GameData::getTowerSpots()
+{
+    return towerSpots;
+}
+
 void GameData::reset()
 {
+    towerSpots.clear();
 }

@@ -19,9 +19,10 @@ TrayUI::~TrayUI()
 
 void TrayUI::handleInput(sf::Event event)
 {
-    if (event.type == sf::Event::MouseButtonPressed)
+    if (event.type == sf::Event::MouseButtonPressed &&
+        event.mouseButton.button == sf::Mouse::Left)
     {
-        sf::Vector2i mousePixelPos = sf::Mouse::getPosition(*window);
+        sf::Vector2i mousePixelPos(event.mouseButton.x, event.mouseButton.y);
         sf::Vector2f mouseWorldPos = window->mapPixelToCoords(mousePixelPos, window->getDefaultView());
 
         for (size_t i = 0; i < optionIcons.size(); ++i)

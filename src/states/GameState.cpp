@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include "utils/GameUtils.h"
 #include "utils/InputUtils.h"
 #include "constants/Constants.h"
@@ -89,6 +91,36 @@ void GameState::handleEvent(const sf::Event &event)
 #pragma GCC diagnostic pop
     }
 
+    if (event.type == sf::Event::MouseButtonPressed &&
+        event.mouseButton.button == sf::Mouse::Left)
+    {
+        sf::Vector2i mousePixelPos(event.mouseButton.x, event.mouseButton.y);
+        sf::Vector2f worldPos = window.mapPixelToCoords(mousePixelPos, view);
+        sf::Vector2i tileIndex = tileMap.getIsometricTileIndex(worldPos);
+
+        auto &towerSpots = gameData.getTowerSpots();
+        if (towerSpots.find(tileIndex) != towerSpots.end())
+        {
+            TowerSpot &spot = towerSpots.at(tileIndex);
+            std::cout << "You clicked a tower spot at ("
+                      << tileIndex.x
+                      << ", "
+                      << tileIndex.y
+                      << ") :: hasTower="
+                      << spot.hasTower()
+                      << std::endl;
+        }
+        else
+        {
+            std::cout << "You clicked a tile at ("
+                      << tileIndex.x
+                      << ", "
+                      << tileIndex.y
+                      << ")"
+                      << std::endl;
+        }
+    }
+
     uiManager.handleInput(event);
 }
 
@@ -115,6 +147,12 @@ void GameState::render(sf::RenderWindow &window)
 void GameState::loadMap(const std::string filename)
 {
     tileMap.loadMapFromFile(filename);
+
+    auto &towerSpots = gameData.getTowerSpots();
+    for (const auto &spot : tileMap.getTowerSpots())
+    {
+        towerSpots.emplace(spot, TowerSpot{});
+    }
 }
 
 void GameState::adjustZoom(float newZoomFactor)

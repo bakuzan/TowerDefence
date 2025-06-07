@@ -13,8 +13,9 @@
 class TileMap
 {
 private:
-    std::vector<std::vector<TileId>> mapData;
     const sf::Texture &textureAtlas;
+    std::vector<std::vector<TileId>> mapData;
+    std::vector<sf::Vector2i> towerSpots;
 
     int mapWidth, mapHeight;
     int tileWidth, tileHeight;
@@ -34,6 +35,9 @@ public:
     void render(sf::RenderWindow &window);
 
     sf::Vector2f getCentre();
+    const std::vector<sf::Vector2i> &getTowerSpots() const;
+
+    sf::Vector2i getIsometricTileIndex(const sf::Vector2f &mousePos);
 };
 
 #endif // TILEMAP_H

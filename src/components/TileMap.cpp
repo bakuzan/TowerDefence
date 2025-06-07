@@ -25,6 +25,7 @@ void TileMap::loadMapFromFile(const std::string &filename)
     std::ifstream file(filename);
     std::string line;
     int rowIndex = 0;
+    towerSpots.clear();
 
     while (std::getline(file, line) &&
            rowIndex < mapHeight)
@@ -34,7 +35,13 @@ void TileMap::loadMapFromFile(const std::string &filename)
 
         for (int colIndex = 0; colIndex < mapWidth && ss >> tileValue; ++colIndex)
         {
-            mapData[rowIndex][colIndex] = static_cast<TileId>(tileValue);
+            TileId tileId = static_cast<TileId>(tileValue);
+            mapData[rowIndex][colIndex] = tileId;
+
+            if (tileId == TileId::TOWER_SPOT)
+            {
+                towerSpots.push_back({colIndex, rowIndex});
+            }
 
             if (ss.peek() == ',')
             {
@@ -66,6 +73,19 @@ void TileMap::render(sf::RenderWindow &window)
 sf::Vector2f TileMap::getCentre()
 {
     return gridToIso(mapWidth / 2, mapHeight / 2, tileWidth, tileHeight);
+}
+
+const std::vector<sf::Vector2i> &TileMap::getTowerSpots() const
+{
+    return towerSpots;
+}
+
+sf::Vector2i TileMap::getIsometricTileIndex(const sf::Vector2f &mousePos)
+{
+    float worldX = (mousePos.x / tileWidth) + (mousePos.y / tileHeight) - 1;
+    float worldY = (mousePos.y / tileHeight) - (mousePos.x / tileWidth);
+
+    return {static_cast<int>(worldX), static_cast<int>(worldY)};
 }
 
 // Privates
