@@ -64,7 +64,7 @@ void TileMap::render(sf::RenderWindow &window)
             sf::Sprite sprite;
             sprite.setTexture(textureAtlas);
             sprite.setTextureRect(getTileRect(tileId, x, y));
-            sprite.setPosition(gridToIso(x, y, tileWidth, tileHeight));
+            sprite.setPosition(gridToIso(x, y));
             window.draw(sprite);
         }
     }
@@ -72,7 +72,7 @@ void TileMap::render(sf::RenderWindow &window)
 
 sf::Vector2f TileMap::getCentre()
 {
-    return gridToIso(mapWidth / 2, mapHeight / 2, tileWidth, tileHeight);
+    return gridToIso(mapWidth / 2, mapHeight / 2);
 }
 
 const std::vector<sf::Vector2i> &TileMap::getTowerSpots() const
@@ -80,10 +80,20 @@ const std::vector<sf::Vector2i> &TileMap::getTowerSpots() const
     return towerSpots;
 }
 
+sf::Vector2f TileMap::gridToIso(int x, int y)
+{
+    float screenX = (x - y) * (tileWidth / 2);
+    float screenY = (x + y) * (tileHeight * 0.3f);
+    return {screenX, screenY};
+}
+
 sf::Vector2i TileMap::getIsometricTileIndex(const sf::Vector2f &mousePos)
 {
-    float worldX = (mousePos.x / tileWidth) + (mousePos.y / tileHeight) - 1;
-    float worldY = (mousePos.y / tileHeight) - (mousePos.x / tileWidth);
+    float tileWidthAdjusted = tileWidth / 2;
+    float tileHeightAdjusted = tileHeight * 0.3f;
+
+    float worldX = ((mousePos.x / tileWidthAdjusted) + (mousePos.y / tileHeightAdjusted)) / 2;
+    float worldY = ((mousePos.y / tileHeightAdjusted) - (mousePos.x / tileWidthAdjusted)) / 2;
 
     return {static_cast<int>(worldX), static_cast<int>(worldY)};
 }
@@ -100,13 +110,6 @@ sf::IntRect TileMap::getTileRect(TileId tileId, int x, int y)
     }
 
     return sf::IntRect(id * tileWidth, 0, tileWidth, tileHeight);
-}
-
-sf::Vector2f TileMap::gridToIso(int x, int y, int tileWidth, int tileHeight)
-{
-    float screenX = (x - y) * (tileWidth / 2);
-    float screenY = (x + y) * (tileHeight * 0.3f);
-    return {screenX, screenY};
 }
 
 PathType TileMap::resolvePathType(int x, int y)

@@ -15,7 +15,7 @@ GameState::GameState(GameData &data, StateManager &manager, sf::RenderWindow &wi
       tileMap(gameData.textureManager.getTexture(TextureId::ATLAS),
               15, 15,
               250, 235),
-      zoomFactor(1.0f),
+      zoomFactor(2.5f),
       moveSpeed(60.0f)
 {
     loadMap("resources/maps/level_01.txt");
@@ -23,7 +23,7 @@ GameState::GameState(GameData &data, StateManager &manager, sf::RenderWindow &wi
     // Set up the view
     view.setSize(Constants::VIEW_WIDTH, Constants::VIEW_HEIGHT);
     view.setCenter(tileMap.getCentre());
-    adjustZoom(0.05);
+    view.zoom(zoomFactor);
 }
 
 GameState::~GameState()
@@ -94,6 +94,9 @@ void GameState::handleEvent(const sf::Event &event)
     if (event.type == sf::Event::MouseButtonPressed &&
         event.mouseButton.button == sf::Mouse::Left)
     {
+        sf::Vector2f testSquare = tileMap.gridToIso(4, 4);
+        sf::Vector2i testIndex = tileMap.getIsometricTileIndex(testSquare);
+
         sf::Vector2i mousePixelPos(event.mouseButton.x, event.mouseButton.y);
         sf::Vector2f worldPos = window.mapPixelToCoords(mousePixelPos, view);
         sf::Vector2i tileIndex = tileMap.getIsometricTileIndex(worldPos);
@@ -112,6 +115,18 @@ void GameState::handleEvent(const sf::Event &event)
         }
         else
         {
+            std::cout << "You clicked at ("
+                      << mousePixelPos.x
+                      << ", "
+                      << mousePixelPos.y
+                      << ")"
+                      << std::endl;
+            std::cout << "which is world pos ("
+                      << worldPos.x
+                      << ", "
+                      << worldPos.y
+                      << ")"
+                      << std::endl;
             std::cout << "You clicked a tile at ("
                       << tileIndex.x
                       << ", "

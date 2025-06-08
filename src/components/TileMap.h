@@ -22,7 +22,6 @@ private:
 
 private:
     sf::IntRect getTileRect(TileId tileId, int x, int y);
-    sf::Vector2f gridToIso(int x, int y, int tileWidth, int tileHeight);
     PathType resolvePathType(int x, int y);
 
 public:
@@ -37,6 +36,7 @@ public:
     sf::Vector2f getCentre();
     const std::vector<sf::Vector2i> &getTowerSpots() const;
 
+    sf::Vector2f gridToIso(int x, int y);
     sf::Vector2i getIsometricTileIndex(const sf::Vector2f &mousePos);
 };
 
