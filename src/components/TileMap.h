@@ -19,6 +19,7 @@ private:
 
     int mapWidth, mapHeight;
     int tileWidth, tileHeight;
+    int surfaceHeight;
 
 private:
     sf::IntRect getTileRect(TileId tileId, int x, int y);
@@ -27,7 +28,7 @@ private:
 public:
     TileMap(const sf::Texture &atlas,
             int mWidth, int mHeight,
-            int tWidth, int tHeight);
+            int tWidth, int tHeight, int sHeight);
     ~TileMap();
 
     void loadMapFromFile(const std::string &filename);
@@ -36,8 +37,8 @@ public:
     sf::Vector2f getCentre();
     const std::vector<sf::Vector2i> &getTowerSpots() const;
 
-    sf::Vector2f gridToIso(int x, int y);
-    sf::Vector2i getIsometricTileIndex(const sf::Vector2f &mousePos);
+    sf::Vector2f tileIndexToIsoPoint(int x, int y);
+    sf::Vector2i isoPointToTileIndex(const sf::Vector2f &mousePos);
 };
 
 #endif // TILEMAP_H

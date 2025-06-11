@@ -5,10 +5,11 @@
 
 TileMap::TileMap(const sf::Texture &atlas,
                  int mWidth, int mHeight,
-                 int tWidth, int tHeight)
+                 int tWidth, int tHeight, int sHeight)
     : textureAtlas(atlas),
       mapWidth(mWidth), mapHeight(mHeight),
-      tileWidth(tWidth), tileHeight(tHeight)
+      tileWidth(tWidth), tileHeight(tHeight),
+      surfaceHeight(sHeight)
 {
     mapData.resize(mHeight, std::vector<TileId>(mWidth, TileId::TERRAIN)); // Initialize empty map
 }
@@ -64,7 +65,8 @@ void TileMap::render(sf::RenderWindow &window)
             sf::Sprite sprite;
             sprite.setTexture(textureAtlas);
             sprite.setTextureRect(getTileRect(tileId, x, y));
-            sprite.setPosition(gridToIso(x, y));
+            sprite.setOrigin(tileWidth / 2, 0);
+            sprite.setPosition(tileIndexToIsoPoint(x, y));
             window.draw(sprite);
         }
     }
@@ -72,7 +74,7 @@ void TileMap::render(sf::RenderWindow &window)
 
 sf::Vector2f TileMap::getCentre()
 {
-    return gridToIso(mapWidth / 2, mapHeight / 2);
+    return tileIndexToIsoPoint(mapWidth / 2, mapHeight / 2);
 }
 
 const std::vector<sf::Vector2i> &TileMap::getTowerSpots() const
@@ -80,17 +82,17 @@ const std::vector<sf::Vector2i> &TileMap::getTowerSpots() const
     return towerSpots;
 }
 
-sf::Vector2f TileMap::gridToIso(int x, int y)
+sf::Vector2f TileMap::tileIndexToIsoPoint(int x, int y)
 {
     float screenX = (x - y) * (tileWidth / 2);
-    float screenY = (x + y) * (tileHeight * 0.3f);
+    float screenY = (x + y) * (surfaceHeight / 2);
     return {screenX, screenY};
 }
 
-sf::Vector2i TileMap::getIsometricTileIndex(const sf::Vector2f &mousePos)
+sf::Vector2i TileMap::isoPointToTileIndex(const sf::Vector2f &mousePos)
 {
     float tileWidthAdjusted = tileWidth / 2;
-    float tileHeightAdjusted = tileHeight * 0.3f;
+    float tileHeightAdjusted = surfaceHeight / 2;
 
     float worldX = ((mousePos.x / tileWidthAdjusted) + (mousePos.y / tileHeightAdjusted)) / 2;
     float worldY = ((mousePos.y / tileHeightAdjusted) - (mousePos.x / tileWidthAdjusted)) / 2;

@@ -14,7 +14,8 @@ GameState::GameState(GameData &data, StateManager &manager, sf::RenderWindow &wi
       uiManager(&window),
       tileMap(gameData.textureManager.getTexture(TextureId::ATLAS),
               15, 15,
-              250, 235),
+              250, 235,
+              140),
       zoomFactor(2.5f),
       moveSpeed(60.0f)
 {
@@ -94,12 +95,9 @@ void GameState::handleEvent(const sf::Event &event)
     if (event.type == sf::Event::MouseButtonPressed &&
         event.mouseButton.button == sf::Mouse::Left)
     {
-        sf::Vector2f testSquare = tileMap.gridToIso(4, 4);
-        sf::Vector2i testIndex = tileMap.getIsometricTileIndex(testSquare);
-
         sf::Vector2i mousePixelPos(event.mouseButton.x, event.mouseButton.y);
         sf::Vector2f worldPos = window.mapPixelToCoords(mousePixelPos, view);
-        sf::Vector2i tileIndex = tileMap.getIsometricTileIndex(worldPos);
+        sf::Vector2i tileIndex = tileMap.isoPointToTileIndex(worldPos);
 
         auto &towerSpots = gameData.getTowerSpots();
         if (towerSpots.find(tileIndex) != towerSpots.end())
@@ -111,27 +109,6 @@ void GameState::handleEvent(const sf::Event &event)
                       << tileIndex.y
                       << ") :: hasTower="
                       << spot.hasTower()
-                      << std::endl;
-        }
-        else
-        {
-            std::cout << "You clicked at ("
-                      << mousePixelPos.x
-                      << ", "
-                      << mousePixelPos.y
-                      << ")"
-                      << std::endl;
-            std::cout << "which is world pos ("
-                      << worldPos.x
-                      << ", "
-                      << worldPos.y
-                      << ")"
-                      << std::endl;
-            std::cout << "You clicked a tile at ("
-                      << tileIndex.x
-                      << ", "
-                      << tileIndex.y
-                      << ")"
                       << std::endl;
         }
     }
