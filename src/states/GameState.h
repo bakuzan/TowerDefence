@@ -29,6 +29,7 @@ private:
 private:
     void loadMap(const std::string filename);
     void adjustZoom(float factor);
+    std::vector<TrayOption> getTrayOptions(const TowerSpot &spot);
 
 public:
     GameState(GameData &data, StateManager &manager, sf::RenderWindow &window);

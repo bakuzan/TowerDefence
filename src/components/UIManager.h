@@ -7,6 +7,7 @@
 #include <vector>
 
 #include "components/TrayUI.h"
+#include "data/TrayOption.h"
 
 class UIManager
 {
@@ -28,7 +29,7 @@ public:
     void render();
 
     void setOnOptionSelectedCallback(std::function<void(int)> callback);
-    void showTray(std::vector<int> options);
+    void showTray(std::vector<TrayOption> options);
     void handleOptionSelection(int optionId);
 };
 

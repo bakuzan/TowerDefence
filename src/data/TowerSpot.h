@@ -6,12 +6,12 @@ struct TowerSpot
 {
     Tower *tower = nullptr;
 
-    bool hasTower()
+    const bool hasTower() const
     {
         return tower != nullptr;
     }
 
-    bool isUpgradeable() const
+    const bool isUpgradeable() const
     {
         return tower && tower->getLevel() < 3;
     }

@@ -3,4 +3,5 @@
 enum class TextureId
 {
     ATLAS = 0,
+    TOWERS,
 };

@@ -2,7 +2,8 @@
 
 UIManager::UIManager(sf::RenderWindow *gameWindow)
     : window(gameWindow),
-      trayUI(gameWindow, sf::Vector2f(0.0f, 0.0f), sf::Vector2f(60.0f, 160.0f))
+      trayUI(gameWindow,
+             sf::Vector2f(0.0f, 0.0f), sf::Vector2f(60.0f, 160.0f))
 {
     // Constructor
 }
@@ -54,14 +55,13 @@ void UIManager::setOnOptionSelectedCallback(std::function<void(int)> callback)
     onOptionSelectedCallback = callback;
 }
 
-void UIManager::showTray(std::vector<int> options)
+void UIManager::showTray(std::vector<TrayOption> options)
 {
     trayUI.clearOptions();
-    sf::Texture texture;
 
-    for (int optionId : options)
+    for (const TrayOption option : options)
     {
-        trayUI.addOption(texture, optionId, sf::Vector2f());
+        trayUI.addOption(option);
     }
 
     trayUI.setVisible(true);

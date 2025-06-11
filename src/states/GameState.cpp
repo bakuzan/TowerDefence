@@ -3,6 +3,8 @@
 #include "utils/GameUtils.h"
 #include "utils/InputUtils.h"
 #include "constants/Constants.h"
+#include "constants/TowerType.h"
+#include "data/TrayOption.h"
 #include "GameState.h"
 #include "PauseState.h"
 #include "GameOverState.h"
@@ -103,13 +105,9 @@ void GameState::handleEvent(const sf::Event &event)
         if (towerSpots.find(tileIndex) != towerSpots.end())
         {
             TowerSpot &spot = towerSpots.at(tileIndex);
-            std::cout << "You clicked a tower spot at ("
-                      << tileIndex.x
-                      << ", "
-                      << tileIndex.y
-                      << ") :: hasTower="
-                      << spot.hasTower()
-                      << std::endl;
+            std::vector<TrayOption> trayOptions = getTrayOptions(spot);
+
+            uiManager.showTray(trayOptions);
         }
     }
 
@@ -153,4 +151,40 @@ void GameState::adjustZoom(float newZoomFactor)
     zoomFactor = newZoomFactor;
     view.zoom(factor);
     window.setView(view);
+}
+
+std::vector<TrayOption> GameState::getTrayOptions(const TowerSpot &spot)
+{
+    std::vector<TrayOption> trayOptions;
+
+    if (spot.hasTower())
+    {
+        // TODO Upgrades settings...
+        // trayOptions.push_back(TrayOption::Create(gameData.textureManager.getTexture("upgrade"),
+        //                                          {64, 0, 64, 64},
+        //                                          "Upgrade Tower", 2));
+        // trayOptions.push_back(TrayOption::Create(gameData.textureManager.getTexture("sell"),
+        //                                          {128, 0, 64, 64},
+        //                                          "Sell Tower", 3));
+    }
+    else
+    {
+        int towerWidth = 64;
+        int towerHeight = 64;
+
+        trayOptions.push_back(TrayOption::Create(gameData.textureManager.getTexture(TextureId::TOWERS),
+                                                 {0, 0, towerWidth, towerHeight},
+                                                 "Melee Tower",
+                                                 static_cast<int>(TowerType::MELEE)));
+        trayOptions.push_back(TrayOption::Create(gameData.textureManager.getTexture(TextureId::TOWERS),
+                                                 {0, 1 * towerHeight, towerWidth, towerHeight},
+                                                 "Archer Tower",
+                                                 static_cast<int>(TowerType::ARCHER)));
+        trayOptions.push_back(TrayOption::Create(gameData.textureManager.getTexture(TextureId::TOWERS),
+                                                 {0, 2 * towerHeight, towerWidth, towerHeight},
+                                                 "Mage Tower",
+                                                 static_cast<int>(TowerType::MAGE)));
+    }
+
+    return trayOptions;
 }

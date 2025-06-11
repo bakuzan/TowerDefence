@@ -3,18 +3,22 @@
 
 #include <SFML/Graphics.hpp>
 
+#include <functional>
 #include <vector>
+
+#include "data/TrayOption.h"
 
 class TrayUI
 {
 private:
     sf::RectangleShape background;
     std::vector<sf::Sprite> optionIcons;
-    std::vector<int> optionTypeIds;
+    std::vector<TrayOption> options;
     sf::Vector2f position;
     sf::RenderWindow *window;
 
     bool isVisible;
+    std::function<void(int)> onOptionSelectedCallback;
 
 public:
     TrayUI(sf::RenderWindow *windowRef, sf::Vector2f pos, sf::Vector2f size);
@@ -23,8 +27,8 @@ public:
     void handleInput(sf::Event event);
     void render(sf::RenderWindow &window);
 
-    void addOption(sf::Texture &texture, int optionId, sf::Vector2f iconOffset);
-    void onOptionSelected(int optionId);
+    void addOption(TrayOption option);
+    void setOnOptionSelectedCallback(std::function<void(int)> callback);
 
     void setVisible(bool visible);
     void clearOptions();

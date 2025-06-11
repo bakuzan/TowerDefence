@@ -27,9 +27,10 @@ void TrayUI::handleInput(sf::Event event)
 
         for (size_t i = 0; i < optionIcons.size(); ++i)
         {
-            if (optionIcons[i].getGlobalBounds().contains(mouseWorldPos))
+            if (optionIcons[i].getGlobalBounds().contains(mouseWorldPos) &&
+                onOptionSelectedCallback)
             {
-                onOptionSelected(optionTypeIds[i]);
+                onOptionSelectedCallback(options[i].optionId);
             }
         }
     }
@@ -50,19 +51,27 @@ void TrayUI::render(sf::RenderWindow &window)
     }
 }
 
-void TrayUI::addOption(sf::Texture &texture, int optionId, sf::Vector2f iconOffset)
+void TrayUI::addOption(TrayOption option)
 {
     sf::Sprite icon;
-    icon.setTexture(texture);
-    icon.setPosition(position + iconOffset);
+    icon.setTexture(option.texture);
+    icon.setTextureRect(option.textureRect);
+
+    float verticalOffset = 0.0f;
+    for (const auto &prevIcon : optionIcons)
+    {
+        verticalOffset += prevIcon.getTextureRect().height + 25.0f;
+    }
+
+    icon.setPosition(position + sf::Vector2f(0, verticalOffset));
+
+    options.push_back(option);
     optionIcons.push_back(icon);
-    optionTypeIds.push_back(optionId);
 }
 
-void TrayUI::onOptionSelected(int optionId)
+void TrayUI::setOnOptionSelectedCallback(std::function<void(int)> callback)
 {
-    // Placeholder function—pass option selection back to GameState
-    std::cout << "Selected option ID: " << optionId << std::endl;
+    onOptionSelectedCallback = callback;
 }
 
 void TrayUI::setVisible(bool visible)
@@ -73,5 +82,5 @@ void TrayUI::setVisible(bool visible)
 void TrayUI::clearOptions()
 {
     optionIcons.clear();
-    optionTypeIds.clear();
+    options.clear();
 }
