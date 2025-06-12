@@ -153,6 +153,10 @@ void GameState::adjustZoom(float newZoomFactor)
     window.setView(view);
 }
 
+void GameState::handleTowerPlacement(int optionId)
+{
+}
+
 std::vector<TrayOption> GameState::getTrayOptions(const TowerSpot &spot)
 {
     std::vector<TrayOption> trayOptions;
@@ -169,21 +173,26 @@ std::vector<TrayOption> GameState::getTrayOptions(const TowerSpot &spot)
     }
     else
     {
-        int towerWidth = 64;
-        int towerHeight = 64;
+        std::function<void(int)> buildSelectionCallback = [this](int optionId)
+        {
+            handleTowerPlacement(optionId);
+        };
 
         trayOptions.push_back(TrayOption::Create(gameData.textureManager.getTexture(TextureId::TOWERS),
-                                                 {0, 0, towerWidth, towerHeight},
+                                                 gameData.rectManager.getTextureRect(TowerType::MELEE),
                                                  "Melee Tower",
-                                                 static_cast<int>(TowerType::MELEE)));
+                                                 static_cast<int>(TowerType::MELEE),
+                                                 buildSelectionCallback));
         trayOptions.push_back(TrayOption::Create(gameData.textureManager.getTexture(TextureId::TOWERS),
-                                                 {0, 1 * towerHeight, towerWidth, towerHeight},
+                                                 gameData.rectManager.getTextureRect(TowerType::ARCHER),
                                                  "Archer Tower",
-                                                 static_cast<int>(TowerType::ARCHER)));
+                                                 static_cast<int>(TowerType::ARCHER),
+                                                 buildSelectionCallback));
         trayOptions.push_back(TrayOption::Create(gameData.textureManager.getTexture(TextureId::TOWERS),
-                                                 {0, 2 * towerHeight, towerWidth, towerHeight},
+                                                 gameData.rectManager.getTextureRect(TowerType::MAGE),
                                                  "Mage Tower",
-                                                 static_cast<int>(TowerType::MAGE)));
+                                                 static_cast<int>(TowerType::MAGE),
+                                                 buildSelectionCallback));
     }
 
     return trayOptions;

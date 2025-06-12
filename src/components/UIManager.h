@@ -16,8 +16,6 @@ private:
     std::vector<sf::Sprite> uiElements;
     TrayUI trayUI;
 
-    std::function<void(int)> onOptionSelectedCallback;
-
 public:
     UIManager(sf::RenderWindow *gameWindow);
     ~UIManager();
@@ -28,9 +26,8 @@ public:
     void update();
     void render();
 
-    void setOnOptionSelectedCallback(std::function<void(int)> callback);
     void showTray(std::vector<TrayOption> options);
-    void handleOptionSelection(int optionId);
+    void handleOptionSelection(const TrayOption &option);
 };
 
 #endif // UIMANAGER_H

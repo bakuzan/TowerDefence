@@ -7,6 +7,7 @@
 
 #include "TextureManager.h"
 #include "AudioManager.h"
+#include "components/TextureRectManager.h"
 #include "data/TowerSpot.h"
 #include "utils/HashUtilities.h"
 
@@ -20,6 +21,8 @@ public:
 
     TextureManager textureManager;
     AudioManager audioManager;
+
+    TextureRectManager rectManager;
 
 public:
     GameData();

@@ -50,11 +50,6 @@ void UIManager::render()
     window->setView(prevView); // Restore previous view
 }
 
-void UIManager::setOnOptionSelectedCallback(std::function<void(int)> callback)
-{
-    onOptionSelectedCallback = callback;
-}
-
 void UIManager::showTray(std::vector<TrayOption> options)
 {
     trayUI.clearOptions();
@@ -64,15 +59,16 @@ void UIManager::showTray(std::vector<TrayOption> options)
         trayUI.addOption(option);
     }
 
+    std::function<void(const TrayOption &)> selectionCallback =
+        [this](const TrayOption &option)
+    { handleOptionSelection(option); };
+
+    trayUI.setOnOptionSelectedCallback(selectionCallback);
     trayUI.setVisible(true);
 }
 
-void UIManager::handleOptionSelection(int optionId)
+void UIManager::handleOptionSelection(const TrayOption &option)
 {
     trayUI.setVisible(false);
-
-    if (onOptionSelectedCallback)
-    {
-        onOptionSelectedCallback(optionId);
-    }
+    option.onSelected(option.optionId);
 }

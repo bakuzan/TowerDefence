@@ -5,6 +5,7 @@ GameData::GameData()
 {
     // Load textures
     textureManager.loadTexture(TextureId::ATLAS, "resources/images/Atlas_Spring.png");
+    textureManager.loadTexture(TextureId::TOWERS, "resources/images/Towers.png");
 
     // Load audio
     // TODO

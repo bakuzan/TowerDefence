@@ -30,7 +30,7 @@ void TrayUI::handleInput(sf::Event event)
             if (optionIcons[i].getGlobalBounds().contains(mouseWorldPos) &&
                 onOptionSelectedCallback)
             {
-                onOptionSelectedCallback(options[i].optionId);
+                onOptionSelectedCallback(options[i]);
             }
         }
     }
@@ -64,12 +64,13 @@ void TrayUI::addOption(TrayOption option)
     }
 
     icon.setPosition(position + sf::Vector2f(0, verticalOffset));
-
+    // TODO
+    // Show cost of option
     options.push_back(option);
     optionIcons.push_back(icon);
 }
 
-void TrayUI::setOnOptionSelectedCallback(std::function<void(int)> callback)
+void TrayUI::setOnOptionSelectedCallback(std::function<void(const TrayOption &option)> callback)
 {
     onOptionSelectedCallback = callback;
 }

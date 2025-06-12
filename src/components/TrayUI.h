@@ -18,7 +18,7 @@ private:
     sf::RenderWindow *window;
 
     bool isVisible;
-    std::function<void(int)> onOptionSelectedCallback;
+    std::function<void(const TrayOption &option)> onOptionSelectedCallback;
 
 public:
     TrayUI(sf::RenderWindow *windowRef, sf::Vector2f pos, sf::Vector2f size);
@@ -28,7 +28,7 @@ public:
     void render(sf::RenderWindow &window);
 
     void addOption(TrayOption option);
-    void setOnOptionSelectedCallback(std::function<void(int)> callback);
+    void setOnOptionSelectedCallback(std::function<void(const TrayOption &option)> callback);
 
     void setVisible(bool visible);
     void clearOptions();

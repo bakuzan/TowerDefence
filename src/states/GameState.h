@@ -29,6 +29,9 @@ private:
 private:
     void loadMap(const std::string filename);
     void adjustZoom(float factor);
+
+    void handleTowerPlacement(int optionId);
+
     std::vector<TrayOption> getTrayOptions(const TowerSpot &spot);
 
 public:
