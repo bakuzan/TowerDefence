@@ -13,7 +13,7 @@ GameState::GameState(GameData &data, StateManager &manager, sf::RenderWindow &wi
     : gameData(data),
       stateManager(manager),
       window(window),
-      uiManager(&window),
+      uiManager(&window, data.gameFont),
       tileMap(gameData.textureManager.getTexture(TextureId::ATLAS),
               15, 15,
               250, 235,
@@ -155,8 +155,10 @@ void GameState::adjustZoom(float newZoomFactor)
 
 void GameState::handleTowerPlacement(int optionId)
 {
+    std::cout << "Tray Option Selected: " << std::to_string(optionId) << std::endl;
 }
 
+// TODO Extract to a TrayOptionsManager
 std::vector<TrayOption> GameState::getTrayOptions(const TowerSpot &spot)
 {
     std::vector<TrayOption> trayOptions;
@@ -181,16 +183,19 @@ std::vector<TrayOption> GameState::getTrayOptions(const TowerSpot &spot)
         trayOptions.push_back(TrayOption::Create(gameData.textureManager.getTexture(TextureId::TOWERS),
                                                  gameData.rectManager.getTextureRect(TowerType::MELEE),
                                                  "Melee Tower",
+                                                 100,
                                                  static_cast<int>(TowerType::MELEE),
                                                  buildSelectionCallback));
         trayOptions.push_back(TrayOption::Create(gameData.textureManager.getTexture(TextureId::TOWERS),
                                                  gameData.rectManager.getTextureRect(TowerType::ARCHER),
                                                  "Archer Tower",
+                                                 100,
                                                  static_cast<int>(TowerType::ARCHER),
                                                  buildSelectionCallback));
         trayOptions.push_back(TrayOption::Create(gameData.textureManager.getTexture(TextureId::TOWERS),
                                                  gameData.rectManager.getTextureRect(TowerType::MAGE),
                                                  "Mage Tower",
+                                                 100,
                                                  static_cast<int>(TowerType::MAGE),
                                                  buildSelectionCallback));
     }

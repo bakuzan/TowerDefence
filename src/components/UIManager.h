@@ -17,7 +17,7 @@ private:
     TrayUI trayUI;
 
 public:
-    UIManager(sf::RenderWindow *gameWindow);
+    UIManager(sf::RenderWindow *gameWindow, sf::Font &gameFont);
     ~UIManager();
 
     void addUIElement(sf::Sprite element);

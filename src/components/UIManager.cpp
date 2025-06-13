@@ -1,9 +1,11 @@
 #include "UIManager.h"
 
-UIManager::UIManager(sf::RenderWindow *gameWindow)
+UIManager::UIManager(sf::RenderWindow *gameWindow, sf::Font &gameFont)
     : window(gameWindow),
       trayUI(gameWindow,
-             sf::Vector2f(0.0f, 0.0f), sf::Vector2f(60.0f, 160.0f))
+             gameFont,
+             sf::Vector2f(0.0f, (gameWindow->getSize().y - 400.0f) / 2.0f),
+             sf::Vector2f(120.0f, 400.0f))
 {
     // Constructor
 }

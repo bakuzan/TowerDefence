@@ -11,17 +11,21 @@
 class TrayUI
 {
 private:
-    sf::RectangleShape background;
+    sf::RectangleShape background, shadow;
     std::vector<sf::Sprite> optionIcons;
+    std::vector<sf::Text> optionTexts;
     std::vector<TrayOption> options;
+
     sf::Vector2f position;
     sf::RenderWindow *window;
+    sf::Font &font;
 
     bool isVisible;
     std::function<void(const TrayOption &option)> onOptionSelectedCallback;
 
 public:
-    TrayUI(sf::RenderWindow *windowRef, sf::Vector2f pos, sf::Vector2f size);
+    TrayUI(sf::RenderWindow *windowRef, sf::Font &gameFont,
+           sf::Vector2f pos, sf::Vector2f size);
     ~TrayUI();
 
     void handleInput(sf::Event event);
