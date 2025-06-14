@@ -1,7 +1,7 @@
 #include "Tower.h"
 
-Tower::Tower()
-    : level(1)
+Tower::Tower(TowerType towerType)
+    : type(towerType), level(1)
 {
     // Constructor
 }
@@ -16,4 +16,14 @@ Tower::~Tower()
 const int Tower::getLevel() const
 {
     return level;
+}
+
+const TowerType Tower::getType() const
+{
+    return type;
+}
+
+void Tower::levelUp()
+{
+    ++level;
 }

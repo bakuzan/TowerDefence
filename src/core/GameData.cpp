@@ -31,7 +31,18 @@ std::unordered_map<sf::Vector2i, TowerSpot> &GameData::getTowerSpots()
     return towerSpots;
 }
 
+const int GameData::getPlayerGold() const
+{
+    return playerGold;
+}
+
+void GameData::updatePlayerGold(int adjustment)
+{
+    playerGold = std::max(0, playerGold + adjustment);
+}
+
 void GameData::reset()
 {
     towerSpots.clear();
+    playerGold = 0;
 }

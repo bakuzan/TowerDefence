@@ -15,6 +15,7 @@ class GameData
 {
 private:
     std::unordered_map<sf::Vector2i, TowerSpot> towerSpots;
+    int playerGold;
 
 public:
     sf::Font gameFont;
@@ -29,6 +30,9 @@ public:
     ~GameData();
 
     std::unordered_map<sf::Vector2i, TowerSpot> &getTowerSpots();
+
+    const int getPlayerGold() const;
+    void updatePlayerGold(int adjustment);
 
     void reset();
 };

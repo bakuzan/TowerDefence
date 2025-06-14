@@ -9,6 +9,7 @@
 
 #include "components/PhaseManager.h"
 #include "components/TileMap.h"
+#include "components/TrayOptionManager.h"
 #include "components/UIManager.h"
 
 class GameState : public State
@@ -22,6 +23,7 @@ private:
     PhaseManager phaseManager;
     UIManager uiManager;
     TileMap tileMap;
+    TrayOptionManager trayOptionManager;
 
     float zoomFactor;
     float moveSpeed;
@@ -30,9 +32,12 @@ private:
     void loadMap(const std::string filename);
     void adjustZoom(float factor);
 
-    void handleTowerPlacement(int optionId);
-
-    std::vector<TrayOption> getTrayOptions(const TowerSpot &spot);
+    void handlePlacementOption(sf::Vector2i tileIndex,
+                               TowerSpot &spot,
+                               int optionId);
+    void handleTowerOption(sf::Vector2i tileIndex,
+                           TowerSpot &spot,
+                           int optionId);
 
 public:
     GameState(GameData &data, StateManager &manager, sf::RenderWindow &window);

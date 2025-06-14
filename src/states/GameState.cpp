@@ -5,6 +5,7 @@
 #include "constants/Constants.h"
 #include "constants/TowerType.h"
 #include "data/TrayOption.h"
+
 #include "GameState.h"
 #include "PauseState.h"
 #include "GameOverState.h"
@@ -18,6 +19,7 @@ GameState::GameState(GameData &data, StateManager &manager, sf::RenderWindow &wi
               15, 15,
               250, 235,
               140),
+      trayOptionManager(data.textureManager, data.rectManager),
       zoomFactor(2.5f),
       moveSpeed(60.0f)
 {
@@ -102,12 +104,22 @@ void GameState::handleEvent(const sf::Event &event)
         sf::Vector2i tileIndex = tileMap.isoPointToTileIndex(worldPos);
 
         auto &towerSpots = gameData.getTowerSpots();
-        if (towerSpots.find(tileIndex) != towerSpots.end())
+        if (towerSpots.contains(tileIndex))
         {
             TowerSpot &spot = towerSpots.at(tileIndex);
-            std::vector<TrayOption> trayOptions = getTrayOptions(spot);
 
-            uiManager.showTray(trayOptions);
+            std::function<void(int)> selectionCallback = [this, tileIndex, &spot](int optionId)
+            {
+                (spot.hasTower() ? handleTowerOption(tileIndex, spot, optionId)
+                                 : handlePlacementOption(tileIndex, spot, optionId));
+            };
+
+            std::vector<TrayOption> options = trayOptionManager.getTrayOptions(
+                spot,
+                gameData.getPlayerGold(),
+                selectionCallback);
+
+            uiManager.showTray(options);
         }
     }
 
@@ -153,52 +165,32 @@ void GameState::adjustZoom(float newZoomFactor)
     window.setView(view);
 }
 
-void GameState::handleTowerPlacement(int optionId)
+void GameState::handlePlacementOption(sf::Vector2i tileIndex,
+                                      TowerSpot &spot,
+                                      int optionId)
 {
-    std::cout << "Tray Option Selected: " << std::to_string(optionId) << std::endl;
+    TowerType selectedTower = static_cast<TowerType>(optionId);
+    spot.placeTower(selectedTower);
+    gameData.updatePlayerGold(-trayOptionManager.getOptionCost(selectedTower));
+
+    std::cout << "Placement Option Selected: " << std::to_string(optionId)
+              << ", Spot("
+              << tileIndex.x
+              << ", "
+              << tileIndex.y
+              << ")"
+              << std::endl;
 }
 
-// TODO Extract to a TrayOptionsManager
-std::vector<TrayOption> GameState::getTrayOptions(const TowerSpot &spot)
+void GameState::handleTowerOption(sf::Vector2i tileIndex,
+                                  TowerSpot &spot,
+                                  int optionId)
 {
-    std::vector<TrayOption> trayOptions;
-
-    if (spot.hasTower())
-    {
-        // TODO Upgrades settings...
-        // trayOptions.push_back(TrayOption::Create(gameData.textureManager.getTexture("upgrade"),
-        //                                          {64, 0, 64, 64},
-        //                                          "Upgrade Tower", 2));
-        // trayOptions.push_back(TrayOption::Create(gameData.textureManager.getTexture("sell"),
-        //                                          {128, 0, 64, 64},
-        //                                          "Sell Tower", 3));
-    }
-    else
-    {
-        std::function<void(int)> buildSelectionCallback = [this](int optionId)
-        {
-            handleTowerPlacement(optionId);
-        };
-
-        trayOptions.push_back(TrayOption::Create(gameData.textureManager.getTexture(TextureId::TOWERS),
-                                                 gameData.rectManager.getTextureRect(TowerType::MELEE),
-                                                 "Melee Tower",
-                                                 100,
-                                                 static_cast<int>(TowerType::MELEE),
-                                                 buildSelectionCallback));
-        trayOptions.push_back(TrayOption::Create(gameData.textureManager.getTexture(TextureId::TOWERS),
-                                                 gameData.rectManager.getTextureRect(TowerType::ARCHER),
-                                                 "Archer Tower",
-                                                 100,
-                                                 static_cast<int>(TowerType::ARCHER),
-                                                 buildSelectionCallback));
-        trayOptions.push_back(TrayOption::Create(gameData.textureManager.getTexture(TextureId::TOWERS),
-                                                 gameData.rectManager.getTextureRect(TowerType::MAGE),
-                                                 "Mage Tower",
-                                                 100,
-                                                 static_cast<int>(TowerType::MAGE),
-                                                 buildSelectionCallback));
-    }
-
-    return trayOptions;
+    std::cout << "Tower Option Selected: " << std::to_string(optionId)
+              << ", Spot("
+              << tileIndex.x
+              << ", "
+              << tileIndex.y
+              << ")"
+              << std::endl;
 }
