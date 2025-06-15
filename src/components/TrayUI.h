@@ -16,6 +16,11 @@ private:
     std::vector<sf::Text> optionTexts;
     std::vector<TrayOption> options;
 
+    sf::RectangleShape tooltipBackground;
+    sf::Text tooltipText;
+    sf::Vector2f tooltipPosition;
+    bool isTooltipVisible = false;
+
     sf::Vector2f position;
     sf::RenderWindow *window;
     sf::Font &font;

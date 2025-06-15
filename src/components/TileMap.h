@@ -27,8 +27,7 @@ private:
 
 public:
     TileMap(const sf::Texture &atlas,
-            int mWidth, int mHeight,
-            int tWidth, int tHeight, int sHeight);
+            int mWidth, int mHeight);
     ~TileMap();
 
     void loadMapFromFile(const std::string &filename);

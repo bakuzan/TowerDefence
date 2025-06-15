@@ -20,6 +20,8 @@ private:
 
     std::unordered_map<TowerType, int, TowerTypeHash> towerCosts;
 
+    static constexpr float REMOVE_MULTIPLIER = 0.8f;
+
 private:
     std::vector<TrayOption> getPlacementOptions(int playerGold, std::function<void(int)> selectionCallback);
     std::vector<TrayOption> getTowerOptions(TowerSpot &spot,
@@ -39,6 +41,7 @@ public:
 
     const int getOptionCost(TowerType towerType) const;
     const int getOptionCost(TowerSpot &spot) const;
+    const int getRemoveValue(TowerSpot &spot) const;
 };
 
 #endif // TRAYOPTIONMANAGER_H

@@ -3,6 +3,7 @@
 #include "utils/GameUtils.h"
 #include "utils/InputUtils.h"
 #include "constants/Constants.h"
+#include "constants/TowerChange.h"
 #include "constants/TowerType.h"
 #include "data/TrayOption.h"
 
@@ -16,9 +17,7 @@ GameState::GameState(GameData &data, StateManager &manager, sf::RenderWindow &wi
       window(window),
       uiManager(&window, data.gameFont),
       tileMap(gameData.textureManager.getTexture(TextureId::ATLAS),
-              15, 15,
-              250, 235,
-              140),
+              15, 15),
       trayOptionManager(data.textureManager, data.rectManager),
       zoomFactor(2.5f),
       moveSpeed(60.0f)
@@ -170,27 +169,25 @@ void GameState::handlePlacementOption(sf::Vector2i tileIndex,
                                       int optionId)
 {
     TowerType selectedTower = static_cast<TowerType>(optionId);
-    spot.placeTower(selectedTower);
     gameData.updatePlayerGold(-trayOptionManager.getOptionCost(selectedTower));
-
-    std::cout << "Placement Option Selected: " << std::to_string(optionId)
-              << ", Spot("
-              << tileIndex.x
-              << ", "
-              << tileIndex.y
-              << ")"
-              << std::endl;
+    spot.placeTower(selectedTower);
 }
 
 void GameState::handleTowerOption(sf::Vector2i tileIndex,
                                   TowerSpot &spot,
                                   int optionId)
 {
-    std::cout << "Tower Option Selected: " << std::to_string(optionId)
-              << ", Spot("
-              << tileIndex.x
-              << ", "
-              << tileIndex.y
-              << ")"
-              << std::endl;
+    TowerChange change = static_cast<TowerChange>(optionId);
+
+    switch (change)
+    {
+    case TowerChange::UPGRADE:
+        gameData.updatePlayerGold(-trayOptionManager.getOptionCost(spot));
+        spot.tower->levelUp();
+        break;
+    case TowerChange::REMOVE:
+        gameData.updatePlayerGold(trayOptionManager.getRemoveValue(spot));
+        spot.removeTower();
+        break;
+    }
 }

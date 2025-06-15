@@ -1,15 +1,15 @@
 #include <fstream>
 #include <sstream>
 
+#include "constants/Constants.h"
 #include "TileMap.h"
 
 TileMap::TileMap(const sf::Texture &atlas,
-                 int mWidth, int mHeight,
-                 int tWidth, int tHeight, int sHeight)
+                 int mWidth, int mHeight)
     : textureAtlas(atlas),
       mapWidth(mWidth), mapHeight(mHeight),
-      tileWidth(tWidth), tileHeight(tHeight),
-      surfaceHeight(sHeight)
+      tileWidth(Constants::TILE_WIDTH), tileHeight(Constants::TILE_HEIGHT),
+      surfaceHeight(Constants::TILE_SURFACE_HEIGHT)
 {
     mapData.resize(mHeight, std::vector<TileId>(mWidth, TileId::TERRAIN)); // Initialize empty map
 }

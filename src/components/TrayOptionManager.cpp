@@ -1,5 +1,8 @@
 #include "TrayOptionManager.h"
 
+#include "constants/Constants.h"
+#include "constants/TileId.h"
+#include "constants/TowerChange.h"
 #include "constants/TowerType.h"
 #include "constants/TextureId.h"
 
@@ -37,8 +40,13 @@ const int TrayOptionManager::getOptionCost(TowerType towerType) const
 
 const int TrayOptionManager::getOptionCost(TowerSpot &spot) const
 {
-    // TODO Need to add remove handling
     return getUpgradeCost(*spot.tower);
+}
+
+const int TrayOptionManager::getRemoveValue(TowerSpot &spot) const
+{
+    int towerValue = towerCosts.at(spot.tower->getType()) * (spot.tower->getLevel());
+    return static_cast<int>(towerValue * REMOVE_MULTIPLIER);
 }
 
 // Privates
@@ -48,25 +56,34 @@ std::vector<TrayOption> TrayOptionManager::getPlacementOptions(
     std::function<void(int)> selectionCallback)
 {
     std::vector<TrayOption> trayOptions;
+    int meleeTowerCost = towerCosts.at(TowerType::MELEE);
+    int archerTowerCost = towerCosts.at(TowerType::ARCHER);
+    int mageTowerCost = towerCosts.at(TowerType::MAGE);
 
-    trayOptions.push_back(TrayOption::Create(textureManager.getTexture(TextureId::TOWERS),
-                                             rectManager.getTextureRect(TowerType::MELEE),
-                                             "Melee Tower",
-                                             towerCosts.at(TowerType::MELEE),
-                                             static_cast<int>(TowerType::MELEE),
-                                             selectionCallback));
-    trayOptions.push_back(TrayOption::Create(textureManager.getTexture(TextureId::TOWERS),
-                                             rectManager.getTextureRect(TowerType::ARCHER),
-                                             "Archer Tower",
-                                             towerCosts.at(TowerType::ARCHER),
-                                             static_cast<int>(TowerType::ARCHER),
-                                             selectionCallback));
-    trayOptions.push_back(TrayOption::Create(textureManager.getTexture(TextureId::TOWERS),
-                                             rectManager.getTextureRect(TowerType::MAGE),
-                                             "Mage Tower",
-                                             towerCosts.at(TowerType::MAGE),
-                                             static_cast<int>(TowerType::MAGE),
-                                             selectionCallback));
+    trayOptions.push_back(
+        TrayOption::Create(textureManager.getTexture(TextureId::TOWERS),
+                           rectManager.getTextureRect(TowerType::MELEE),
+                           "Melee Tower",
+                           meleeTowerCost,
+                           static_cast<int>(TowerType::MELEE),
+                           meleeTowerCost > playerGold,
+                           selectionCallback));
+    trayOptions.push_back(
+        TrayOption::Create(textureManager.getTexture(TextureId::TOWERS),
+                           rectManager.getTextureRect(TowerType::ARCHER),
+                           "Archer Tower",
+                           archerTowerCost,
+                           static_cast<int>(TowerType::ARCHER),
+                           archerTowerCost > playerGold,
+                           selectionCallback));
+    trayOptions.push_back(
+        TrayOption::Create(textureManager.getTexture(TextureId::TOWERS),
+                           rectManager.getTextureRect(TowerType::MAGE),
+                           "Mage Tower",
+                           mageTowerCost,
+                           static_cast<int>(TowerType::MAGE),
+                           mageTowerCost > playerGold,
+                           selectionCallback));
 
     return trayOptions;
 }
@@ -78,15 +95,27 @@ std::vector<TrayOption> TrayOptionManager::getTowerOptions(
 {
     std::vector<TrayOption> trayOptions;
 
-    trayOptions.push_back(TrayOption::Create(textureManager.getTexture(TextureId::TOWERS),
-                                             rectManager.getTextureRect(spot.tower->getType(), spot.tower->getLevel()),
-                                             "Upgrade Tower",
-                                             getUpgradeCost(*spot.tower),
-                                             0, selectionCallback));
-    // TODO Upgrades settings...
-    // trayOptions.push_back(TrayOption::Create(gameData.textureManager.getTexture("sell"),
-    //                                          {128, 0, 64, 64},
-    //                                          "Sell Tower", 3));
+    if (spot.isUpgradeable())
+    {
+        int upgradeCost = getUpgradeCost(*spot.tower);
+        trayOptions.push_back(
+            TrayOption::Create(textureManager.getTexture(TextureId::TOWERS),
+                               rectManager.getTextureRect(spot.tower->getType(), spot.tower->getLevel()),
+                               "Upgrade Tower",
+                               upgradeCost,
+                               static_cast<int>(TowerChange::UPGRADE),
+                               upgradeCost > playerGold,
+                               selectionCallback));
+    }
+
+    trayOptions.push_back(
+        TrayOption::Create(textureManager.getTexture(TextureId::ATLAS),
+                           sf::IntRect(static_cast<int>(TileId::TOWER_SPOT) * Constants::TILE_WIDTH, 0, Constants::TILE_WIDTH, Constants::TILE_HEIGHT),
+                           "Sell Tower",
+                           getRemoveValue(spot),
+                           static_cast<int>(TowerChange::REMOVE),
+                           false,
+                           selectionCallback));
 
     return trayOptions;
 }

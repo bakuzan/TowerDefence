@@ -6,6 +6,7 @@ TrayUI::TrayUI(sf::RenderWindow *windowRef, sf::Font &gameFont,
                sf::Vector2f pos, sf::Vector2f size)
     : window(windowRef), font(gameFont), position(pos), isVisible(false)
 {
+    // Tray init
     shadow.setSize(size);
     shadow.setFillColor(sf::Color(0, 0, 0, 100));
     shadow.setPosition(position + sf::Vector2f(2.5f, 2.5f));
@@ -13,6 +14,16 @@ TrayUI::TrayUI(sf::RenderWindow *windowRef, sf::Font &gameFont,
     background.setSize(size);
     background.setPosition(pos);
     background.setFillColor(sf::Color(84, 98, 111, 200));
+
+    // Tooltip init
+    tooltipBackground.setFillColor(sf::Color(0, 0, 0, 150));
+    tooltipBackground.setOutlineThickness(1);
+    tooltipBackground.setOutlineColor(sf::Color::White);
+
+    tooltipText.setFont(font);
+    tooltipText.setCharacterSize(16);
+    tooltipText.setFillColor(sf::Color::White);
+    tooltipText.setString("");
 }
 
 TrayUI::~TrayUI()
@@ -33,6 +44,7 @@ void TrayUI::handleInput(sf::Event event)
         for (size_t i = 0; i < optionIcons.size(); ++i)
         {
             if (optionIcons[i].getGlobalBounds().contains(mouseWorldPos) &&
+                !options[i].isDisabled &&
                 onOptionSelectedCallback)
             {
                 onOptionSelectedCallback(options[i]);
@@ -44,16 +56,31 @@ void TrayUI::handleInput(sf::Event event)
     {
         sf::Vector2i mousePixelPos(event.mouseMove.x, event.mouseMove.y);
         sf::Vector2f mouseWorldPos = window->mapPixelToCoords(mousePixelPos, window->getDefaultView());
+        isTooltipVisible = false;
 
-        for (auto &icon : optionIcons)
+        for (size_t i = 0; i < optionIcons.size(); ++i)
         {
-            if (icon.getGlobalBounds().contains(mouseWorldPos))
+            sf::Sprite icon = optionIcons[i];
+            TrayOption option = options[i];
+
+            if (icon.getGlobalBounds().contains(mouseWorldPos) &&
+                !option.isDisabled)
             {
-                icon.setColor(sf::Color(255, 255, 255, 180)); // Slight transparency on hover
+                icon.setColor(sf::Color(255, 255, 255, 180));
+
+                tooltipText.setString(option.name);
+                sf::FloatRect textBounds = tooltipText.getLocalBounds();
+                tooltipBackground.setSize(sf::Vector2f(textBounds.width + 10, textBounds.height + 10));
+
+                tooltipPosition = mouseWorldPos + sf::Vector2f(15.0f, 10.0f);
+                tooltipBackground.setPosition(tooltipPosition - sf::Vector2f(5.0f, 5.0f));
+                tooltipText.setPosition(tooltipPosition);
+
+                isTooltipVisible = true;
             }
             else
             {
-                icon.setColor(sf::Color::White); // Restore default
+                icon.setColor(option.isDisabled ? sf::Color::Red : sf::Color::White);
             }
         }
     }
@@ -77,6 +104,12 @@ void TrayUI::render(sf::RenderWindow &window)
     for (const auto &text : optionTexts)
     {
         window.draw(text);
+    }
+
+    if (isTooltipVisible)
+    {
+        window.draw(tooltipBackground);
+        window.draw(tooltipText);
     }
 }
 
@@ -104,7 +137,7 @@ void TrayUI::addOption(TrayOption option)
     costText.setFont(font);
     costText.setString(std::to_string(option.cost));
     costText.setCharacterSize(20);
-    costText.setFillColor(sf::Color::Yellow);
+    costText.setFillColor(option.isDisabled ? sf::Color::Red : sf::Color::Yellow);
     costText.setPosition(
         icon.getPosition().x + (icon.getGlobalBounds().width / 2) - (costText.getGlobalBounds().width / 2),
         icon.getPosition().y + icon.getGlobalBounds().height + (30.0f / 2) - (costText.getGlobalBounds().height / 2));
