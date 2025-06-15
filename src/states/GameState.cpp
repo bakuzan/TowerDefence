@@ -15,7 +15,7 @@ GameState::GameState(GameData &data, StateManager &manager, sf::RenderWindow &wi
     : gameData(data),
       stateManager(manager),
       window(window),
-      uiManager(&window, data.gameFont),
+      uiManager(&window, data),
       tileMap(gameData.textureManager.getTexture(TextureId::ATLAS),
               15, 15),
       trayOptionManager(data.textureManager, data.rectManager),

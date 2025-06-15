@@ -1,13 +1,34 @@
+#include "utils/GameUtils.h"
+
 #include "UIManager.h"
 
-UIManager::UIManager(sf::RenderWindow *gameWindow, sf::Font &gameFont)
+UIManager::UIManager(sf::RenderWindow *gameWindow, const GameData &data)
     : window(gameWindow),
+      gameData(data),
       trayUI(gameWindow,
-             gameFont,
+             data.gameFont,
              sf::Vector2f(0.0f, (gameWindow->getSize().y - 400.0f) / 2.0f),
              sf::Vector2f(120.0f, 400.0f))
 {
-    // Constructor
+    updateUITexts(); // Initial text so size checks work out correct below.
+
+    // Score UI setup
+    scoreText.setFont(gameData.gameFont);
+    scoreText.setCharacterSize(24);
+    scoreText.setFillColor(sf::Color::White);
+    scoreText.setPosition(
+        gameWindow->getSize().x - scoreText.getGlobalBounds().width - 10,
+        20);
+
+    // Gold UI setup
+    goldText.setFont(gameData.gameFont);
+    goldText.setCharacterSize(24);
+    goldText.setFillColor(sf::Color::Yellow);
+    goldText.setPosition(40, 20);
+
+    // TODO get a coin texture...
+    // goldIcon.setTexture(yourGoldTexture);
+    // goldIcon.setPosition(10, 20);
 }
 
 UIManager::~UIManager()
@@ -16,11 +37,6 @@ UIManager::~UIManager()
 }
 
 // Publics
-
-void UIManager::addUIElement(sf::Sprite element)
-{
-    uiElements.push_back(element);
-}
 
 void UIManager::handleInput(sf::Event event)
 {
@@ -34,7 +50,7 @@ void UIManager::handleInput(sf::Event event)
 
 void UIManager::update()
 {
-    // Handle UI interactions, animations, etc.
+    updateUITexts();
 }
 
 void UIManager::render()
@@ -42,10 +58,8 @@ void UIManager::render()
     sf::View prevView = window->getView();
     window->setView(window->getDefaultView()); // Switch to UI view
 
-    for (auto &element : uiElements)
-    {
-        window->draw(element);
-    }
+    window->draw(scoreText);
+    window->draw(goldText);
 
     trayUI.render(*window);
 
@@ -73,4 +87,12 @@ void UIManager::handleOptionSelection(const TrayOption &option)
 {
     trayUI.setVisible(false);
     option.onSelected(option.optionId);
+}
+
+// Privates
+
+void UIManager::updateUITexts()
+{
+    scoreText.setString(GameUtils::formatScoreText(gameData.getPlayerScore()));
+    goldText.setString(std::to_string(gameData.getPlayerGold()));
 }

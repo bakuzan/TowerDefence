@@ -2,7 +2,7 @@
 
 #include "TrayUI.h"
 
-TrayUI::TrayUI(sf::RenderWindow *windowRef, sf::Font &gameFont,
+TrayUI::TrayUI(sf::RenderWindow *windowRef, const sf::Font &gameFont,
                sf::Vector2f pos, sf::Vector2f size)
     : window(windowRef), font(gameFont), position(pos), isVisible(false)
 {

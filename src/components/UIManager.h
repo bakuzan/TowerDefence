@@ -6,21 +6,27 @@
 #include <functional>
 #include <vector>
 
+#include "core/GameData.h"
 #include "components/TrayUI.h"
 #include "data/TrayOption.h"
 
 class UIManager
 {
 private:
+    const GameData &gameData;
     sf::RenderWindow *window;
-    std::vector<sf::Sprite> uiElements;
     TrayUI trayUI;
 
-public:
-    UIManager(sf::RenderWindow *gameWindow, sf::Font &gameFont);
-    ~UIManager();
+    sf::Text scoreText;
+    sf::Text goldText;
+    sf::Sprite goldIcon;
 
-    void addUIElement(sf::Sprite element);
+private:
+    void updateUITexts();
+
+public:
+    UIManager(sf::RenderWindow *gameWindow, const GameData &data);
+    ~UIManager();
 
     void handleInput(sf::Event event);
     void update();

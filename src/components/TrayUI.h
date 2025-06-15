@@ -23,13 +23,13 @@ private:
 
     sf::Vector2f position;
     sf::RenderWindow *window;
-    sf::Font &font;
+    const sf::Font &font;
 
     bool isVisible;
     std::function<void(const TrayOption &option)> onOptionSelectedCallback;
 
 public:
-    TrayUI(sf::RenderWindow *windowRef, sf::Font &gameFont,
+    TrayUI(sf::RenderWindow *windowRef, const sf::Font &gameFont,
            sf::Vector2f pos, sf::Vector2f size);
     ~TrayUI();
 
