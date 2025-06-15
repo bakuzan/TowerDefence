@@ -10,3 +10,9 @@ ArcherTower::~ArcherTower()
 {
     // Destructor
 }
+
+// Publics
+
+void ArcherTower::update(float dt)
+{
+}

@@ -8,6 +8,8 @@ class ArcherTower : public Tower
 public:
     ArcherTower();
     ~ArcherTower();
+
+    void update(float dt) override;
 };
 
 #endif // ARCHERTOWER_H

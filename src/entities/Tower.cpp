@@ -13,6 +13,11 @@ Tower::~Tower()
 
 // Publics
 
+void Tower::render(sf::RenderWindow &window) const
+{
+    window.draw(sprite);
+}
+
 const int Tower::getLevel() const
 {
     return level;

@@ -10,3 +10,9 @@ MageTower::~MageTower()
 {
     // Destructor
 }
+
+// Publics
+
+void MageTower::update(float dt)
+{
+}

@@ -10,3 +10,9 @@ MeleeTower::~MeleeTower()
 {
     // Destructor
 }
+
+// Publics
+
+void MeleeTower::update(float dt)
+{
+}

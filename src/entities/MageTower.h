@@ -8,6 +8,8 @@ class MageTower : public Tower
 public:
     MageTower();
     ~MageTower();
+
+    void update(float dt) override;
 };
 
 #endif // MAGETOWER_H

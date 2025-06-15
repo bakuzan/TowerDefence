@@ -129,6 +129,15 @@ void GameState::update(sf::Time deltaTime, sf::RenderWindow &window)
 {
     float dt = deltaTime.asSeconds();
 
+    std::unordered_map<sf::Vector2i, TowerSpot> &towerSpots = gameData.getTowerSpots();
+    for (const auto &[position, spot] : towerSpots)
+    {
+        if (spot.hasTower())
+        {
+            spot.tower->update(dt);
+        }
+    }
+
     uiManager.update();
 }
 
@@ -138,6 +147,15 @@ void GameState::render(sf::RenderWindow &window)
     window.setView(view);
 
     tileMap.render(window);
+
+    std::unordered_map<sf::Vector2i, TowerSpot> &towerSpots = gameData.getTowerSpots();
+    for (const auto &[position, spot] : towerSpots)
+    {
+        if (spot.hasTower())
+        {
+            spot.tower->render(window);
+        }
+    }
 
     // UI elements rendering
     uiManager.render();

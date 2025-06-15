@@ -8,6 +8,8 @@ class MeleeTower : public Tower
 public:
     MeleeTower();
     ~MeleeTower();
+
+    void update(float dt) override;
 };
 
 #endif // MELEETOWER_H
