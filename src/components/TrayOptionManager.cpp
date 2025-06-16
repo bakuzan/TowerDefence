@@ -97,10 +97,15 @@ std::vector<TrayOption> TrayOptionManager::getTowerOptions(
 
     if (spot.isUpgradeable())
     {
+        TowerType towerType = spot.tower->getType();
         int upgradeCost = getUpgradeCost(*spot.tower);
+        int textureRectIndex = towerType == TowerType::MELEE
+                                   ? spot.tower->getLevel() * 2
+                                   : spot.tower->getLevel();
+
         trayOptions.push_back(
             TrayOption::Create(textureManager.getTexture(TextureId::TOWERS),
-                               rectManager.getTextureRect(spot.tower->getType(), spot.tower->getLevel()),
+                               rectManager.getTextureRect(towerType, textureRectIndex),
                                "Upgrade Tower",
                                upgradeCost,
                                static_cast<int>(TowerChange::UPGRADE),

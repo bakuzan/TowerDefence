@@ -14,7 +14,12 @@ TextureRectManager::~TextureRectManager()
 
 const sf::IntRect &TextureRectManager::getTextureRect(TowerType type, int position) const
 {
-    return towerTextureRects.at(type)[position];
+    return getTextureRects(type)[position];
+}
+
+const std::vector<sf::IntRect> &TextureRectManager::getTextureRects(TowerType type) const
+{
+    return towerTextureRects.at(type);
 }
 
 // Privates

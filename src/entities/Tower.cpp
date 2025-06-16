@@ -1,9 +1,13 @@
 #include "Tower.h"
 
-Tower::Tower(TowerType towerType)
-    : type(towerType), level(1)
+Tower::Tower(TowerType towerType,
+             const sf::Texture &texture, const std::vector<sf::IntRect> &rects,
+             sf::Vector2f position)
+    : textureRects(rects),
+      type(towerType), level(1),
+      tileOriginPosition(position)
 {
-    // Constructor
+    sprite.setTexture(texture);
 }
 
 Tower::~Tower()
@@ -31,4 +35,18 @@ const TowerType Tower::getType() const
 void Tower::levelUp()
 {
     ++level;
+}
+
+// Privates
+
+void Tower::updateTextureRect(int textureIndex, float verticalOffset)
+{
+    if (textureIndex < textureRects.size())
+    {
+        sf::IntRect rect = textureRects[textureIndex];
+        sprite.setTextureRect(rect);
+        sprite.setOrigin(rect.width / 2.0f, rect.height / 2.0f);
+        sprite.setPosition(tileOriginPosition.x,
+                           tileOriginPosition.y + verticalOffset);
+    }
 }

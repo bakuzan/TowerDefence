@@ -146,9 +146,9 @@ void GameState::render(sf::RenderWindow &window)
     // Core gameplay rendering
     window.setView(view);
 
-    tileMap.render(window);
-
     std::unordered_map<sf::Vector2i, TowerSpot> &towerSpots = gameData.getTowerSpots();
+    tileMap.render(window, towerSpots);
+
     for (const auto &[position, spot] : towerSpots)
     {
         if (spot.hasTower())
@@ -188,7 +188,11 @@ void GameState::handlePlacementOption(sf::Vector2i tileIndex,
 {
     TowerType selectedTower = static_cast<TowerType>(optionId);
     gameData.updatePlayerGold(-trayOptionManager.getOptionCost(selectedTower));
-    spot.placeTower(selectedTower);
+    spot.placeTower(
+        selectedTower,
+        gameData.textureManager.getTexture(TextureId::TOWERS),
+        gameData.rectManager.getTextureRects(selectedTower),
+        tileMap.tileIndexToIsoPoint(tileIndex.x, tileIndex.y));
 }
 
 void GameState::handleTowerOption(sf::Vector2i tileIndex,

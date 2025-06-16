@@ -54,16 +54,26 @@ void TileMap::loadMapFromFile(const std::string &filename)
     }
 }
 
-void TileMap::render(sf::RenderWindow &window)
+void TileMap::render(sf::RenderWindow &window,
+                     const std::unordered_map<sf::Vector2i, TowerSpot> &activetowerSpots)
 {
+    sf::Sprite sprite;
+    sprite.setTexture(textureAtlas);
+
     for (int y = 0; y < mapHeight; ++y)
     {
         for (int x = 0; x < mapWidth; ++x)
         {
             TileId tileId = mapData[y][x];
+            sf::Vector2i tileIndex(x, y);
 
-            sf::Sprite sprite;
-            sprite.setTexture(textureAtlas);
+            if (activetowerSpots.contains(tileIndex))
+            {
+                tileId = activetowerSpots.at(tileIndex).hasTower()
+                             ? TileId::TERRAIN
+                             : TileId::TOWER_SPOT;
+            }
+
             sprite.setTextureRect(getTileRect(tileId, x, y));
             sprite.setOrigin(tileWidth / 2, 0);
             sprite.setPosition(tileIndexToIsoPoint(x, y));

@@ -9,6 +9,8 @@
 
 #include "constants/TileId.h"
 #include "constants/PathType.h"
+#include "data/TowerSpot.h"
+#include "utils/HashUtilities.h"
 
 class TileMap
 {
@@ -31,7 +33,8 @@ public:
     ~TileMap();
 
     void loadMapFromFile(const std::string &filename);
-    void render(sf::RenderWindow &window);
+    void render(sf::RenderWindow &window,
+                const std::unordered_map<sf::Vector2i, TowerSpot> &activetowerSpots);
 
     sf::Vector2f getCentre();
     const std::vector<sf::Vector2i> &getTowerSpots() const;

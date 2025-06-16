@@ -1,7 +1,9 @@
+#include "constants/Constants.h"
 #include "MageTower.h"
 
-MageTower::MageTower()
-    : Tower(TowerType::MAGE)
+MageTower::MageTower(const sf::Texture &texture, const std::vector<sf::IntRect> &textureRects,
+                     sf::Vector2f position)
+    : Tower(TowerType::MAGE, texture, textureRects, position)
 {
     // Constructor
 }
@@ -15,4 +17,5 @@ MageTower::~MageTower()
 
 void MageTower::update(float dt)
 {
+    updateTextureRect(level - 1, (Constants::TILE_SURFACE_HEIGHT / 3.0f));
 }

@@ -20,6 +20,7 @@ public:
     ~TextureRectManager();
 
     const sf::IntRect &getTextureRect(TowerType type, int position = 0) const;
+    const std::vector<sf::IntRect> &getTextureRects(TowerType type) const;
 };
 
 #endif // TEXTURERECTMANAGER_H
