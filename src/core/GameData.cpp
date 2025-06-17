@@ -54,6 +54,6 @@ void GameData::updatePlayerScore(int adjustment)
 void GameData::reset()
 {
     towerSpots.clear();
-    playerGold = 250;
+    playerGold = 1000; // TODO 250
     playerScore = 0;
 }

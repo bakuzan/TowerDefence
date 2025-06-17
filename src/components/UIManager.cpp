@@ -7,7 +7,7 @@ UIManager::UIManager(sf::RenderWindow *gameWindow, const GameData &data)
       gameData(data),
       trayUI(gameWindow,
              data.gameFont,
-             sf::Vector2f(0.0f, (gameWindow->getSize().y - 400.0f) / 2.0f),
+             sf::Vector2f(0.0f, (gameWindow->getDefaultView().getSize().y - 400.0f) / 2.0f),
              sf::Vector2f(120.0f, 400.0f))
 {
     updateUITexts(); // Initial text so size checks work out correct below.
@@ -17,7 +17,7 @@ UIManager::UIManager(sf::RenderWindow *gameWindow, const GameData &data)
     scoreText.setCharacterSize(24);
     scoreText.setFillColor(sf::Color::White);
     scoreText.setPosition(
-        gameWindow->getSize().x - scoreText.getGlobalBounds().width - 10,
+        gameWindow->getDefaultView().getSize().x - scoreText.getGlobalBounds().width - 10,
         20);
 
     // Gold UI setup
