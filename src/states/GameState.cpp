@@ -24,6 +24,12 @@ GameState::GameState(GameData &data, StateManager &manager, sf::RenderWindow &wi
 {
     loadMap("resources/maps/level_01.txt");
 
+    // Set up ui elements...
+    sf::Vector2f btnPlacement = GameUtils::getBottomRightPosition(window);
+    uiManager.addButton("StartCombat", btnPlacement, "Start", [this]()
+                        { phaseManager.advanceToNextPhase(); 
+                            uiManager.setButtonVisible("StartCombat", false); });
+
     // Set up the view
     view.setSize(Constants::VIEW_WIDTH, Constants::VIEW_HEIGHT);
     view.setCenter(tileMap.getCentre());
@@ -122,7 +128,7 @@ void GameState::handleEvent(const sf::Event &event)
         }
     }
 
-    uiManager.handleInput(event);
+    uiManager.handleEvent(event);
 }
 
 void GameState::update(sf::Time deltaTime, sf::RenderWindow &window)

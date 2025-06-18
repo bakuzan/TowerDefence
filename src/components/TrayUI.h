@@ -33,7 +33,7 @@ public:
            sf::Vector2f pos, sf::Vector2f size);
     ~TrayUI();
 
-    void handleInput(sf::Event event);
+    void handleEvent(sf::Event event);
     void render(sf::RenderWindow &window);
 
     void addOption(TrayOption option);

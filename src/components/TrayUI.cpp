@@ -33,7 +33,7 @@ TrayUI::~TrayUI()
 
 // Publics
 
-void TrayUI::handleInput(sf::Event event)
+void TrayUI::handleEvent(sf::Event event)
 {
     if (event.type == sf::Event::MouseButtonPressed &&
         event.mouseButton.button == sf::Mouse::Left)

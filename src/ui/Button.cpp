@@ -1,11 +1,12 @@
 #include "Button.h"
 #include "constants/Constants.h"
 
-Button::Button(const sf::Font &font,
+Button::Button(const std::string &name,
+               const sf::Font &font,
                const std::string &label,
                sf::Vector2f position,
                std::function<void()> action)
-    : action(std::move(action))
+    : name(name), action(std::move(action))
 {
     // Config shape
     shape.setSize(sf::Vector2f(Constants::BUTTON_WIDTH, Constants::BUTTON_HEIGHT));
@@ -57,4 +58,9 @@ void Button::setPosition(sf::Vector2f position)
     text.setPosition(
         position.x + (shape.getSize().x - text.getGlobalBounds().width) / 2.f,
         position.y + (shape.getSize().y - text.getGlobalBounds().height) / 2.f);
+}
+
+const std::string Button::getName() const
+{
+    return name;
 }

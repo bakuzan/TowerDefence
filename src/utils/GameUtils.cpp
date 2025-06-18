@@ -14,4 +14,14 @@ namespace GameUtils
         return ss.str();
     }
 
+    sf::Vector2f getBottomRightPosition(sf::RenderWindow &window,
+                                        float margin)
+    {
+        sf::Vector2f viewSize = window.getDefaultView().getSize();
+        sf::Vector2f buttonSize(Constants::BUTTON_WIDTH, Constants::BUTTON_HEIGHT);
+
+        return {viewSize.x - buttonSize.x - margin,
+                viewSize.y - buttonSize.y - margin};
+    }
+
 }

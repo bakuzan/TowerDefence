@@ -1,3 +1,4 @@
+#include <iostream>
 #include "InputUtils.h"
 
 namespace InputUtils
@@ -75,6 +76,8 @@ namespace InputUtils
         // Update button hover states
         for (size_t i = 0; i < buttons.size(); ++i)
         {
+            std::cout << "Hovered Button Index: " << selectedButtonIndex << std::endl;
+
             buttons[i].onHover(i == selectedButtonIndex);
         }
     }
