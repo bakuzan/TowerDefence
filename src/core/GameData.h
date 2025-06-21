@@ -3,12 +3,15 @@
 
 #include <SFML/Graphics.hpp>
 
+#include <memory>
 #include <unordered_map>
+#include <vector>
 
 #include "TextureManager.h"
 #include "AudioManager.h"
 #include "components/TextureRectManager.h"
 #include "data/TowerSpot.h"
+#include "entities/Enemy.h"
 #include "utils/HashUtilities.h"
 
 class GameData
@@ -18,6 +21,8 @@ private:
     int playerGold;
     int playerLives;
     int playerScore;
+
+    std::vector<std::unique_ptr<Enemy>> enemies;
 
 public:
     sf::Font gameFont;
@@ -41,6 +46,8 @@ public:
 
     const int getPlayerScore() const;
     void updatePlayerScore(int adjustment);
+
+    std::vector<std::unique_ptr<Enemy>> &getEnemies();
 
     void reset();
 };

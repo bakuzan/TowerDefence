@@ -7,10 +7,12 @@
 #include "core/State.h"
 #include "core/StateManager.h"
 
+#include "components/EnemySpawnManager.h"
 #include "components/PhaseManager.h"
 #include "components/TileMap.h"
 #include "components/TrayOptionManager.h"
 #include "components/UIManager.h"
+#include "components/WaveManager.h"
 
 class GameState : public State
 {
@@ -24,6 +26,9 @@ private:
     UIManager uiManager;
     TileMap tileMap;
     TrayOptionManager trayOptionManager;
+
+    EnemySpawnManager enemySpawnManager;
+    WaveManager waveManager;
 
     float zoomFactor;
     float moveSpeed;

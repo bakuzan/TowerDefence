@@ -61,6 +61,11 @@ void GameData::updatePlayerScore(int adjustment)
     playerScore = std::max(0, playerScore + adjustment);
 }
 
+std::vector<std::unique_ptr<Enemy>> &GameData::getEnemies()
+{
+    return enemies;
+}
+
 void GameData::reset()
 {
     towerSpots.clear();

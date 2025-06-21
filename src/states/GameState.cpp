@@ -19,6 +19,8 @@ GameState::GameState(GameData &data, StateManager &manager, sf::RenderWindow &wi
       tileMap(gameData.textureManager.getTexture(TextureId::ATLAS),
               15, 15),
       trayOptionManager(data.textureManager, data.rectManager),
+      enemySpawnManager(gameData.textureManager.getTexture(TextureId::ENEMIES),
+                        data.rectManager),
       zoomFactor(2.5f),
       moveSpeed(60.0f)
 {
@@ -136,6 +138,25 @@ void GameState::update(sf::Time deltaTime, sf::RenderWindow &window)
 {
     float dt = deltaTime.asSeconds();
 
+    // Enemy handling
+    if (phaseManager.isAssaultPhase())
+    {
+        auto &enemies = gameData.getEnemies();
+
+        if (!enemySpawnManager.isWaveActive() &&
+            waveManager.hasNextWave())
+        {
+            const auto &next = waveManager.getCurrentWave();
+            enemySpawnManager.setWave(next.spawnGroups);
+            waveManager.advanceToNextWave(); // TODO fix this advancement mess
+        }
+
+        enemySpawnManager.spawnEnemies(dt, enemies);
+
+        // TODO Update all enemies (movement, state)
+    }
+
+    // Tower handling
     std::unordered_map<sf::Vector2i, TowerSpot> &towerSpots = gameData.getTowerSpots();
     for (const auto &[position, spot] : towerSpots)
     {
@@ -145,6 +166,13 @@ void GameState::update(sf::Time deltaTime, sf::RenderWindow &window)
         }
     }
 
+    // Projectile handling
+    if (phaseManager.isAssaultPhase())
+    {
+        // TODO Update projectiles, damage, effects
+    }
+
+    // UI handling
     uiManager.update();
 }
 
