@@ -25,7 +25,8 @@ GameState::GameState(GameData &data, StateManager &manager, sf::RenderWindow &wi
     loadMap("resources/maps/level_01.txt");
 
     // Set up ui elements...
-    sf::Vector2f btnPlacement = GameUtils::getBottomRightPosition(window);
+    sf::Vector2f buttonSize(Constants::BUTTON_WIDTH, Constants::BUTTON_HEIGHT);
+    sf::Vector2f btnPlacement = GameUtils::getBottomRightPosition(window, buttonSize);
     uiManager.addButton("StartCombat", btnPlacement, "Start", [this]()
                         { phaseManager.advanceToNextPhase(); 
                             uiManager.setButtonVisible("StartCombat", false); });

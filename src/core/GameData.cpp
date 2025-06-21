@@ -41,6 +41,16 @@ void GameData::updatePlayerGold(int adjustment)
     playerGold = std::max(0, playerGold + adjustment);
 }
 
+const int GameData::getPlayerLives() const
+{
+    return playerLives;
+}
+
+void GameData::updatePlayerLives(int adjustment)
+{
+    playerLives = std::max(0, playerLives + adjustment);
+}
+
 const int GameData::getPlayerScore() const
 {
     return playerScore;
@@ -55,5 +65,6 @@ void GameData::reset()
 {
     towerSpots.clear();
     playerGold = 1000; // TODO 250
+    playerLives = 10;
     playerScore = 0;
 }

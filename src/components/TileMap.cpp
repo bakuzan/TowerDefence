@@ -39,10 +39,7 @@ void TileMap::loadMapFromFile(const std::string &filename)
             TileId tileId = static_cast<TileId>(tileValue);
             mapData[rowIndex][colIndex] = tileId;
 
-            if (tileId == TileId::TOWER_SPOT)
-            {
-                towerSpots.push_back({colIndex, rowIndex});
-            }
+            extractImportantTileIndexes(tileId, colIndex, rowIndex);
 
             if (ss.peek() == ',')
             {
@@ -90,6 +87,16 @@ sf::Vector2f TileMap::getCentre()
 const std::vector<sf::Vector2i> &TileMap::getTowerSpots() const
 {
     return towerSpots;
+}
+
+const std::vector<sf::Vector2i> &TileMap::getEntranceSpots() const
+{
+    return entranceSpots;
+}
+
+const sf::Vector2i &TileMap::getExitSpot() const
+{
+    return exitSpot;
 }
 
 sf::Vector2f TileMap::tileIndexToIsoPoint(int x, int y)
@@ -187,4 +194,24 @@ PathType TileMap::resolvePathType(int x, int y)
     }
 
     return PathType::STRAIGHT_HORIZONTAL; // Random default...
+}
+
+void TileMap::extractImportantTileIndexes(TileId tileId,
+                                          int colIndex,
+                                          int rowIndex)
+{
+    if (tileId == TileId::TOWER_SPOT)
+    {
+        towerSpots.push_back({colIndex, rowIndex});
+    }
+    else if (tileId == TileId::PATH &&
+             colIndex == 0)
+    {
+        entranceSpots.push_back({colIndex, rowIndex});
+    }
+    else if (tileId == TileId::PATH &&
+             colIndex == mapWidth - 1)
+    {
+        exitSpot = sf::Vector2i(colIndex, rowIndex);
+    }
 }

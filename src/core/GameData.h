@@ -16,6 +16,7 @@ class GameData
 private:
     std::unordered_map<sf::Vector2i, TowerSpot> towerSpots;
     int playerGold;
+    int playerLives;
     int playerScore;
 
 public:
@@ -34,6 +35,9 @@ public:
 
     const int getPlayerGold() const;
     void updatePlayerGold(int adjustment);
+
+    const int getPlayerLives() const;
+    void updatePlayerLives(int adjustment);
 
     const int getPlayerScore() const;
     void updatePlayerScore(int adjustment);

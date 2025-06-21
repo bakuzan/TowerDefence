@@ -20,17 +20,29 @@ UIManager::UIManager(sf::RenderWindow *gameWindow, const GameData &data)
     scoreText.setFillColor(sf::Color::White);
     scoreText.setPosition(
         gameWindow->getDefaultView().getSize().x - scoreText.getGlobalBounds().width - 10,
-        20);
+        10);
 
     // Gold UI setup
     goldText.setFont(gameData.gameFont);
     goldText.setCharacterSize(24);
     goldText.setFillColor(sf::Color::Yellow);
-    goldText.setPosition(40, 20);
-
+    goldText.setPosition(40, 10);
     // TODO get a coin texture...
-    // goldIcon.setTexture(yourGoldTexture);
+    // goldIcon.setTexture(goldTexture);
     // goldIcon.setPosition(10, 20);
+
+    // Lives UI setup
+    livesText.setFont(gameData.gameFont);
+    livesText.setCharacterSize(24);
+    livesText.setFillColor(sf::Color::Red);
+
+    sf::FloatRect livesBounds = livesText.getLocalBounds();
+    sf::Vector2f livesTextSize(livesBounds.width, livesBounds.height);
+    livesText.setOrigin(livesBounds.left, livesBounds.top);
+    livesText.setPosition(GameUtils::getBottomRightPosition(*window, livesTextSize));
+    // TODO get a heart texture...
+    // livesIcon.setTexture(heartTexture);
+    // livesIcon.setPosition(10, 20);
 }
 
 UIManager::~UIManager()
@@ -46,18 +58,6 @@ void UIManager::handleEvent(sf::Event event)
     window->setView(window->getDefaultView()); // Switch to UI view
 
     InputUtils::handleButtonEvent(event, buttons, *window, selectedButtonIndex);
-
-    if (event.type == sf::Event::Resized)
-    {
-        for (Button &button : buttons)
-        {
-            if (button.getName() == "StartCombat" &&
-                buttonVisibility[button.getName()])
-            {
-                button.setPosition(GameUtils::getBottomRightPosition(*window));
-            }
-        }
-    }
 
     trayUI.handleEvent(event);
 
@@ -75,6 +75,7 @@ void UIManager::render()
     window->setView(window->getDefaultView()); // Switch to UI view
 
     window->draw(scoreText);
+    window->draw(livesText);
     window->draw(goldText);
 
     for (Button &button : buttons)
@@ -136,20 +137,5 @@ void UIManager::updateUITexts()
 {
     scoreText.setString(GameUtils::formatScoreText(gameData.getPlayerScore()));
     goldText.setString(std::to_string(gameData.getPlayerGold()));
-}
-
-std::vector<Button> UIManager::getButtonVector()
-{
-    std::vector<Button> buttonVector;
-    buttonVector.reserve(buttons.size());
-
-    for (const Button &button : buttons)
-    {
-        if (buttonVisibility[button.getName()])
-        {
-            buttonVector.push_back(button);
-        }
-    }
-
-    return buttonVector;
+    livesText.setString(GameUtils::padNumberAsText(gameData.getPlayerLives(), 2, '0'));
 }

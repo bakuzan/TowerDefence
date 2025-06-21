@@ -22,6 +22,8 @@ private:
     sf::Text scoreText;
     sf::Text goldText;
     sf::Sprite goldIcon;
+    sf::Text livesText;
+    sf::Sprite livesIcon;
 
     int selectedButtonIndex;
     std::vector<Button> buttons;
@@ -29,7 +31,6 @@ private:
 
 private:
     void updateUITexts();
-    std::vector<Button> getButtonVector();
 
 public:
     UIManager(sf::RenderWindow *gameWindow, const GameData &data);

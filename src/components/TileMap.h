@@ -18,6 +18,8 @@ private:
     const sf::Texture &textureAtlas;
     std::vector<std::vector<TileId>> mapData;
     std::vector<sf::Vector2i> towerSpots;
+    std::vector<sf::Vector2i> entranceSpots;
+    sf::Vector2i exitSpot;
 
     int mapWidth, mapHeight;
     int tileWidth, tileHeight;
@@ -26,6 +28,7 @@ private:
 private:
     sf::IntRect getTileRect(TileId tileId, int x, int y);
     PathType resolvePathType(int x, int y);
+    void extractImportantTileIndexes(TileId tileId, int colIndex, int rowIndex);
 
 public:
     TileMap(const sf::Texture &atlas,
@@ -38,6 +41,8 @@ public:
 
     sf::Vector2f getCentre();
     const std::vector<sf::Vector2i> &getTowerSpots() const;
+    const std::vector<sf::Vector2i> &getEntranceSpots() const;
+    const sf::Vector2i &getExitSpot() const;
 
     sf::Vector2f tileIndexToIsoPoint(int x, int y);
     sf::Vector2i isoPointToTileIndex(const sf::Vector2f &mousePos);

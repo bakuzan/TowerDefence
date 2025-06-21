@@ -2,26 +2,30 @@
 #include <iomanip>
 #include <sstream>
 
-#include "constants/Constants.h"
 #include "GameUtils.h"
 
 namespace GameUtils
 {
-    std::string formatScoreText(int score)
+    std::string padNumberAsText(int value, int width, char padChar)
     {
         std::stringstream ss;
-        ss << std::setw(8) << std::setfill('0') << score;
+        ss << std::setw(width) << std::setfill(padChar) << value;
         return ss.str();
     }
 
+    std::string formatScoreText(int score)
+    {
+        return padNumberAsText(score, 8, '0');
+    }
+
     sf::Vector2f getBottomRightPosition(sf::RenderWindow &window,
+                                        sf::Vector2f elementSize,
                                         float margin)
     {
         sf::Vector2f viewSize = window.getDefaultView().getSize();
-        sf::Vector2f buttonSize(Constants::BUTTON_WIDTH, Constants::BUTTON_HEIGHT);
 
-        return {viewSize.x - buttonSize.x - margin,
-                viewSize.y - buttonSize.y - margin};
+        return {viewSize.x - elementSize.x - margin,
+                viewSize.y - elementSize.y - margin};
     }
 
 }
