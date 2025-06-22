@@ -19,6 +19,7 @@ private:
     std::vector<std::vector<TileId>> mapData;
     std::vector<sf::Vector2i> towerSpots;
     std::vector<sf::Vector2i> entranceSpots;
+    std::vector<sf::Vector2f> spawnPoints;
     sf::Vector2i exitSpot;
 
     int mapWidth, mapHeight;
@@ -42,6 +43,7 @@ public:
     sf::Vector2f getCentre();
     const std::vector<sf::Vector2i> &getTowerSpots() const;
     const std::vector<sf::Vector2i> &getEntranceSpots() const;
+    const std::vector<sf::Vector2f> &getSpawnPoints() const;
     const sf::Vector2i &getExitSpot() const;
 
     sf::Vector2f tileIndexToIsoPoint(int x, int y);

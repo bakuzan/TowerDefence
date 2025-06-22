@@ -3,6 +3,7 @@
 TextureRectManager::TextureRectManager()
 {
     initTowerTextureRects();
+    initEnemyTextureRects();
 }
 
 TextureRectManager::~TextureRectManager()
@@ -22,6 +23,11 @@ const std::vector<sf::IntRect> &TextureRectManager::getTextureRects(TowerType ty
     return towerTextureRects.at(type);
 }
 
+const sf::IntRect &TextureRectManager::getTextureRect(EnemyType type) const
+{
+    return enemyTextureRects.at(type);
+}
+
 // Privates
 
 void TextureRectManager::initTowerTextureRects()
@@ -38,4 +44,9 @@ void TextureRectManager::initTowerTextureRects()
         {0, 333, 150, 120},
         {150, 333, 149, 120},
         {299, 333, 135, 120}};
+}
+
+void TextureRectManager::initEnemyTextureRects()
+{
+    enemyTextureRects[EnemyType::BASIC] = {0, 0, 64, 80};
 }

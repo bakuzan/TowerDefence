@@ -49,6 +49,16 @@ void TileMap::loadMapFromFile(const std::string &filename)
 
         ++rowIndex;
     }
+
+    // Setup spawnPoints from entrancePoints
+    spawnPoints.clear();
+    for (const auto &tile : entranceSpots)
+    {
+        sf::Vector2f spawnPoint = tileIndexToIsoPoint(tile.x, tile.y);
+        spawnPoint.x -= tileWidth / 4;
+        spawnPoint.y += surfaceHeight / 4;
+        spawnPoints.push_back(spawnPoint);
+    }
 }
 
 void TileMap::render(sf::RenderWindow &window,
@@ -92,6 +102,11 @@ const std::vector<sf::Vector2i> &TileMap::getTowerSpots() const
 const std::vector<sf::Vector2i> &TileMap::getEntranceSpots() const
 {
     return entranceSpots;
+}
+
+const std::vector<sf::Vector2f> &TileMap::getSpawnPoints() const
+{
+    return spawnPoints;
 }
 
 const sf::Vector2i &TileMap::getExitSpot() const

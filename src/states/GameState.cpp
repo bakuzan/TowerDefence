@@ -19,8 +19,8 @@ GameState::GameState(GameData &data, StateManager &manager, sf::RenderWindow &wi
       tileMap(gameData.textureManager.getTexture(TextureId::ATLAS),
               15, 15),
       trayOptionManager(data.textureManager, data.rectManager),
-      enemySpawnManager(gameData.textureManager.getTexture(TextureId::ENEMIES),
-                        data.rectManager),
+      enemySpawnManager(data.rectManager,
+                        gameData.textureManager.getTexture(TextureId::ENEMIES)),
       zoomFactor(2.5f),
       moveSpeed(60.0f)
 {
@@ -144,16 +144,28 @@ void GameState::update(sf::Time deltaTime, sf::RenderWindow &window)
         auto &enemies = gameData.getEnemies();
 
         if (!enemySpawnManager.isWaveActive() &&
-            waveManager.hasNextWave())
+            enemies.empty())
         {
-            const auto &next = waveManager.getCurrentWave();
-            enemySpawnManager.setWave(next.spawnGroups);
-            waveManager.advanceToNextWave(); // TODO fix this advancement mess
+            const Wave *wave = waveManager.getNextUnstartedWave();
+
+            if (wave)
+            {
+                enemySpawnManager.setWave(wave->spawnGroups);
+                waveManager.markWaveStarted(wave);
+            }
         }
 
-        enemySpawnManager.spawnEnemies(dt, enemies);
+        enemySpawnManager.spawnEnemies(dt,
+                                       tileMap.getSpawnPoints(),
+                                       enemies);
 
-        // TODO Update all enemies (movement, state)
+        // Update enemies after spawning...
+        for (const auto &enemy : enemies)
+        {
+            // TODO
+            // Get position > nextTileIndex > nextTargetPosition
+            enemy->update(dt);
+        }
     }
 
     // Tower handling
@@ -183,6 +195,12 @@ void GameState::render(sf::RenderWindow &window)
 
     std::unordered_map<sf::Vector2i, TowerSpot> &towerSpots = gameData.getTowerSpots();
     tileMap.render(window, towerSpots);
+
+    auto &enemies = gameData.getEnemies();
+    for (const auto &enemy : enemies)
+    {
+        enemy->render(window);
+    }
 
     for (const auto &[position, spot] : towerSpots)
     {

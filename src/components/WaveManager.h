@@ -9,15 +9,15 @@ class WaveManager
 {
 private:
     std::vector<Wave> allWaves;
-    std::size_t currentWaveIndex = 0;
 
 public:
     WaveManager();
     ~WaveManager();
 
-    bool hasNextWave() const;
-    const Wave &getCurrentWave() const;
-    void advanceToNextWave();
+    const Wave *getNextUnstartedWave();
+    void markWaveStarted(const Wave *wavePtr);
+    bool hasUnstartedWave() const;
+    void reset();
 };
 
 #endif // WAVEMANAGER_H

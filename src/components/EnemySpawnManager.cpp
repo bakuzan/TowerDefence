@@ -33,6 +33,7 @@ void EnemySpawnManager::setWave(const std::vector<SpawnGroup> &groups)
 }
 
 void EnemySpawnManager::spawnEnemies(float dt,
+                                     const std::vector<sf::Vector2f> spawnPoints,
                                      std::vector<std::unique_ptr<Enemy>> &enemies)
 {
     if (nextSpawnIndex >= schedule.size())
@@ -46,10 +47,11 @@ void EnemySpawnManager::spawnEnemies(float dt,
     if (timeSinceLastSpawn >= next.delayAfterPrevious)
     {
         auto enemy = std::make_unique<Enemy>(
-            texture,
-            rectManager.getTextureRect(next.type),
             next.type,
-            next.stats);
+            texture,
+            enemyRectManager.getTextureRect(next.type),
+            next.stats,
+            selectSpawnPoint(spawnPoints));
 
         enemies.push_back(std::move(enemy));
 
@@ -61,4 +63,12 @@ void EnemySpawnManager::spawnEnemies(float dt,
 bool EnemySpawnManager::isWaveActive() const
 {
     return nextSpawnIndex < schedule.size();
+}
+
+// Privates
+
+sf::Vector2f EnemySpawnManager::selectSpawnPoint(const std::vector<sf::Vector2f> &spawnPoints)
+{
+    std::size_t index = static_cast<std::size_t>(std::rand() % spawnPoints.size());
+    return spawnPoints[index];
 }

@@ -1,8 +1,16 @@
+#include <algorithm>
+
 #include "WaveManager.h"
 
 WaveManager::WaveManager()
 {
-    // Constructor
+    allWaves = {
+        Wave::create({
+            SpawnGroup::create(EnemyType::BASIC, 5, 1.0f, 0.0f, EnemyStats{}),
+            SpawnGroup::create(EnemyType::BASIC, 5, 0.5f, 0.0f, EnemyStats{}),
+            SpawnGroup::create(EnemyType::BASIC, 5, 0.25f, 0.0f, EnemyStats{}),
+        }),
+    };
 }
 
 WaveManager::~WaveManager()
@@ -12,17 +20,42 @@ WaveManager::~WaveManager()
 
 // Publics
 
-bool WaveManager::hasNextWave() const
+const Wave *WaveManager::getNextUnstartedWave()
 {
-    return currentWaveIndex < allWaves.size();
+    for (auto &wave : allWaves)
+    {
+        if (!wave.hasRun)
+        {
+            return &wave;
+        }
+    }
+
+    return nullptr;
 }
 
-const Wave &WaveManager::getCurrentWave() const
+void WaveManager::markWaveStarted(const Wave *wavePtr)
 {
-    return allWaves.at(currentWaveIndex);
+    for (auto &wave : allWaves)
+    {
+        if (&wave == wavePtr)
+        {
+            wave.hasRun = true;
+            break;
+        }
+    }
 }
 
-void WaveManager::advanceToNextWave()
+bool WaveManager::hasUnstartedWave() const
 {
-    ++currentWaveIndex;
+    return std::any_of(allWaves.begin(), allWaves.end(),
+                       [](const Wave &w)
+                       { return !w.hasRun; });
+}
+
+void WaveManager::reset()
+{
+    for (auto &wave : allWaves)
+    {
+        wave.hasRun = false;
+    }
 }
