@@ -1,5 +1,7 @@
 #include <fstream>
 #include <sstream>
+#include <queue>
+#include <cassert>
 
 #include "constants/Constants.h"
 #include "TileMap.h"
@@ -50,14 +52,32 @@ void TileMap::loadMapFromFile(const std::string &filename)
         ++rowIndex;
     }
 
-    // Setup spawnPoints from entrancePoints
-    spawnPoints.clear();
-    for (const auto &tile : entranceSpots)
+    // Setup paths from entrancePoints to exitPoint
+    buildFlowField();
+
+    for (const auto &entrance : entranceSpots)
     {
-        sf::Vector2f spawnPoint = tileIndexToIsoPoint(tile.x, tile.y);
-        spawnPoint.x -= tileWidth / 4;
-        spawnPoint.y += surfaceHeight / 4;
-        spawnPoints.push_back(spawnPoint);
+        std::vector<sf::Vector2i> tilePath = reconstructPathFromFlow(entrance, exitSpot);
+        std::vector<sf::Vector2f> isoPath;
+
+        for (const auto &tile : tilePath)
+        {
+            sf::Vector2f point = tileIndexToIsoPoint(tile.x, tile.y);
+            point.y += surfaceHeight / 2;
+            isoPath.push_back(point);
+        }
+
+        // Add spawn point
+        sf::Vector2f first = isoPath.front();
+        sf::Vector2f spawn = first + sf::Vector2f(-tileWidth / 4.f, -surfaceHeight / 4.f);
+        isoPath.insert(isoPath.begin(), spawn);
+
+        // Add exit drift point
+        sf::Vector2f last = isoPath.back();
+        sf::Vector2f drift = last + sf::Vector2f(tileWidth / 4.f, surfaceHeight / 4.f);
+        isoPath.push_back(drift);
+
+        mapPaths[entrance] = isoPath;
     }
 }
 
@@ -104,14 +124,14 @@ const std::vector<sf::Vector2i> &TileMap::getEntranceSpots() const
     return entranceSpots;
 }
 
-const std::vector<sf::Vector2f> &TileMap::getSpawnPoints() const
-{
-    return spawnPoints;
-}
-
 const sf::Vector2i &TileMap::getExitSpot() const
 {
     return exitSpot;
+}
+
+const PathMap &TileMap::getMapPaths() const
+{
+    return mapPaths;
 }
 
 sf::Vector2f TileMap::tileIndexToIsoPoint(int x, int y)
@@ -121,13 +141,13 @@ sf::Vector2f TileMap::tileIndexToIsoPoint(int x, int y)
     return {screenX, screenY};
 }
 
-sf::Vector2i TileMap::isoPointToTileIndex(const sf::Vector2f &mousePos)
+sf::Vector2i TileMap::isoPointToTileIndex(const sf::Vector2f &isoPoint)
 {
     float tileWidthAdjusted = tileWidth / 2;
     float tileHeightAdjusted = surfaceHeight / 2;
 
-    float worldX = ((mousePos.x / tileWidthAdjusted) + (mousePos.y / tileHeightAdjusted)) / 2;
-    float worldY = ((mousePos.y / tileHeightAdjusted) - (mousePos.x / tileWidthAdjusted)) / 2;
+    float worldX = ((isoPoint.x / tileWidthAdjusted) + (isoPoint.y / tileHeightAdjusted)) / 2;
+    float worldY = ((isoPoint.y / tileHeightAdjusted) - (isoPoint.x / tileWidthAdjusted)) / 2;
 
     return {static_cast<int>(worldX), static_cast<int>(worldY)};
 }
@@ -229,4 +249,72 @@ void TileMap::extractImportantTileIndexes(TileId tileId,
     {
         exitSpot = sf::Vector2i(colIndex, rowIndex);
     }
+}
+
+void TileMap::buildFlowField()
+{
+    std::vector<sf::Vector2i> cardinalDirections = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+    std::queue<sf::Vector2i> frontier;
+    frontier.push(exitSpot);
+
+    flowField.clear();
+    flowField[exitSpot] = exitSpot;
+
+    while (!frontier.empty())
+    {
+        sf::Vector2i current = frontier.front();
+        frontier.pop();
+
+        for (const auto &dir : cardinalDirections)
+        {
+            sf::Vector2i next = current + dir;
+            if (!isWalkable(next))
+            {
+                continue;
+            }
+
+            if (flowField.find(next) == flowField.end())
+            {
+                flowField[next] = current;
+                frontier.push(next);
+            }
+        }
+    }
+}
+
+std::vector<sf::Vector2i> TileMap::reconstructPathFromFlow(sf::Vector2i start,
+                                                           sf::Vector2i end)
+{
+    std::vector<sf::Vector2i> path;
+    sf::Vector2i current = start;
+
+    while (current != end)
+    {
+        path.push_back(current);
+
+        assert(flowField.find(current) != flowField.end() &&
+               "Flow field missing tile during path reconstruction");
+
+        current = flowField.at(current);
+    }
+
+    path.push_back(end);
+    return path;
+}
+
+bool TileMap::isInBounds(sf::Vector2i tile) const
+{
+    return tile.x >= 0 && tile.x < mapWidth &&
+           tile.y >= 0 && tile.y < mapHeight;
+}
+
+bool TileMap::isWalkable(sf::Vector2i tile) const
+{
+    if (!isInBounds(tile))
+    {
+        return false;
+    }
+
+    TileId tileId = mapData[tile.y][tile.x];
+    return tileId == TileId::PATH;
 }

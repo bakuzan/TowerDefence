@@ -156,15 +156,28 @@ void GameState::update(sf::Time deltaTime, sf::RenderWindow &window)
         }
 
         enemySpawnManager.spawnEnemies(dt,
-                                       tileMap.getSpawnPoints(),
+                                       tileMap.getMapPaths(),
                                        enemies);
 
         // Update enemies after spawning...
-        for (const auto &enemy : enemies)
+        for (auto it = enemies.begin(); it != enemies.end();)
         {
-            // TODO
-            // Get position > nextTileIndex > nextTargetPosition
-            enemy->update(dt);
+            (*it)->update(dt);
+
+            if ((*it)->hasReachedGoal())
+            {
+                it = enemies.erase(it);
+
+                gameData.updatePlayerLives(-1);
+                if (gameData.getPlayerLives() <= 0)
+                {
+                    onPlayerDeath();
+                }
+            }
+            else
+            {
+                ++it;
+            }
         }
     }
 
@@ -265,4 +278,9 @@ void GameState::handleTowerOption(sf::Vector2i tileIndex,
         spot.removeTower();
         break;
     }
+}
+
+void GameState::onPlayerDeath()
+{
+    stateManager.pushState(std::make_unique<GameOverState>(gameData, stateManager, window));
 }

@@ -15,11 +15,14 @@ protected:
     EnemyStats initialStats;
     EnemyStats stats;
 
+    const std::vector<sf::Vector2f> &path;
+    size_t currentPathIndex;
+
 public:
     Enemy(EnemyType enemyType,
           const sf::Texture &texture, const sf::IntRect &textureRect,
           EnemyStats enemyStats,
-          sf::Vector2f spawnPosition);
+          const std::vector<sf::Vector2f> &mapPath);
     ~Enemy();
 
     virtual void update(float dt);
@@ -27,6 +30,7 @@ public:
 
     const EnemyType getType() const;
     const sf::Sprite &getSprite() const;
+    bool hasReachedGoal() const;
 };
 
 #endif // ENEMY_H

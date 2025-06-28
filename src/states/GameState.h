@@ -43,6 +43,7 @@ private:
     void handleTowerOption(sf::Vector2i tileIndex,
                            TowerSpot &spot,
                            int optionId);
+    void onPlayerDeath();
 
 public:
     GameState(GameData &data, StateManager &manager, sf::RenderWindow &window);

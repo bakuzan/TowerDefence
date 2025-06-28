@@ -1,9 +1,12 @@
+#include <cassert>
+
 #include "EnemySpawnManager.h"
 
 EnemySpawnManager::EnemySpawnManager(const TextureRectManager &textureRectManager,
                                      const sf::Texture &enemyTexture)
     : enemyRectManager(textureRectManager),
-      texture(enemyTexture)
+      texture(enemyTexture),
+      rng(std::random_device{}())
 {
     // Constructor
 }
@@ -33,7 +36,7 @@ void EnemySpawnManager::setWave(const std::vector<SpawnGroup> &groups)
 }
 
 void EnemySpawnManager::spawnEnemies(float dt,
-                                     const std::vector<sf::Vector2f> spawnPoints,
+                                     const PathMap &pathOptions,
                                      std::vector<std::unique_ptr<Enemy>> &enemies)
 {
     if (nextSpawnIndex >= schedule.size())
@@ -51,7 +54,7 @@ void EnemySpawnManager::spawnEnemies(float dt,
             texture,
             enemyRectManager.getTextureRect(next.type),
             next.stats,
-            selectSpawnPoint(spawnPoints));
+            selectMapPath(pathOptions));
 
         enemies.push_back(std::move(enemy));
 
@@ -67,8 +70,14 @@ bool EnemySpawnManager::isWaveActive() const
 
 // Privates
 
-sf::Vector2f EnemySpawnManager::selectSpawnPoint(const std::vector<sf::Vector2f> &spawnPoints)
+const std::vector<sf::Vector2f> &EnemySpawnManager::selectMapPath(
+    const PathMap &pathOptions)
 {
-    std::size_t index = static_cast<std::size_t>(std::rand() % spawnPoints.size());
-    return spawnPoints[index];
+    assert(!pathOptions.empty() &&
+           "selectMapPath: pathOptions is empty — no paths to select from.");
+
+    std::uniform_int_distribution<size_t> dist(0, pathOptions.size() - 1);
+    auto it = pathOptions.begin();
+    std::advance(it, dist(rng));
+    return it->second;
 }

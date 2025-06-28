@@ -4,6 +4,7 @@
 #include <SFML/Graphics.hpp>
 
 #include <string>
+#include <map>
 #include <unordered_map>
 #include <vector>
 
@@ -11,6 +12,8 @@
 #include "constants/PathType.h"
 #include "data/TowerSpot.h"
 #include "utils/HashUtilities.h"
+#include "utils/OrderingUtilities.h"
+#include "utils/PathingTypes.h"
 
 class TileMap
 {
@@ -19,8 +22,10 @@ private:
     std::vector<std::vector<TileId>> mapData;
     std::vector<sf::Vector2i> towerSpots;
     std::vector<sf::Vector2i> entranceSpots;
-    std::vector<sf::Vector2f> spawnPoints;
     sf::Vector2i exitSpot;
+
+    std::map<sf::Vector2i, sf::Vector2i, Vector2Comparator<int>> flowField;
+    PathMap mapPaths;
 
     int mapWidth, mapHeight;
     int tileWidth, tileHeight;
@@ -30,6 +35,12 @@ private:
     sf::IntRect getTileRect(TileId tileId, int x, int y);
     PathType resolvePathType(int x, int y);
     void extractImportantTileIndexes(TileId tileId, int colIndex, int rowIndex);
+
+    void buildFlowField();
+    std::vector<sf::Vector2i> reconstructPathFromFlow(sf::Vector2i startTileIndex,
+                                                      sf::Vector2i endTileIndex);
+    bool isInBounds(sf::Vector2i tile) const;
+    bool isWalkable(sf::Vector2i tile) const;
 
 public:
     TileMap(const sf::Texture &atlas,
@@ -43,11 +54,11 @@ public:
     sf::Vector2f getCentre();
     const std::vector<sf::Vector2i> &getTowerSpots() const;
     const std::vector<sf::Vector2i> &getEntranceSpots() const;
-    const std::vector<sf::Vector2f> &getSpawnPoints() const;
     const sf::Vector2i &getExitSpot() const;
+    const PathMap &getMapPaths() const;
 
     sf::Vector2f tileIndexToIsoPoint(int x, int y);
-    sf::Vector2i isoPointToTileIndex(const sf::Vector2f &mousePos);
+    sf::Vector2i isoPointToTileIndex(const sf::Vector2f &isoPoint);
 };
 
 #endif // TILEMAP_H
