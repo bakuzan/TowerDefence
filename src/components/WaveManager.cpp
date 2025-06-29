@@ -9,9 +9,9 @@ WaveManager::WaveManager()
 
     allWaves = {
         Wave::create({
-            SpawnGroup::create(EnemyType::BASIC, 5, 1.0f, 0.0f, EnemyStats::Create(health, speed)),
-            SpawnGroup::create(EnemyType::BASIC, 5, 0.5f, 0.0f, EnemyStats::Create(health, speed)),
-            SpawnGroup::create(EnemyType::BASIC, 5, 0.25f, 0.0f, EnemyStats::Create(health, speed)),
+            SpawnGroup::create(EnemyType::BASIC, 8, 1.0f, 0.0f, EnemyStats::create(health, speed)),
+            SpawnGroup::create(EnemyType::BASIC, 6, 0.5f, 0.0f, EnemyStats::create(health, speed)),
+            SpawnGroup::create(EnemyType::BASIC, 4, 0.25f, 0.0f, EnemyStats::create(health, speed)),
         }),
     };
 }

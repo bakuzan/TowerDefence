@@ -15,7 +15,7 @@ struct TrayOption
 
     std::function<void(int optionId)> onSelected;
 
-    static TrayOption Create(const sf::Texture &texture, sf::IntRect textureRect,
+    static TrayOption create(const sf::Texture &texture, sf::IntRect textureRect,
                              std::string name, int cost, int optionId,
                              bool isDisabled,
                              std::function<void(int optionId)> selectionCallback)

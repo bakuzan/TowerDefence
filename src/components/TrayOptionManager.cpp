@@ -61,7 +61,7 @@ std::vector<TrayOption> TrayOptionManager::getPlacementOptions(
     int mageTowerCost = towerCosts.at(TowerType::MAGE);
 
     trayOptions.push_back(
-        TrayOption::Create(textureManager.getTexture(TextureId::TOWERS),
+        TrayOption::create(textureManager.getTexture(TextureId::TOWERS),
                            rectManager.getTextureRect(TowerType::MELEE),
                            "Melee Tower",
                            meleeTowerCost,
@@ -69,7 +69,7 @@ std::vector<TrayOption> TrayOptionManager::getPlacementOptions(
                            meleeTowerCost > playerGold,
                            selectionCallback));
     trayOptions.push_back(
-        TrayOption::Create(textureManager.getTexture(TextureId::TOWERS),
+        TrayOption::create(textureManager.getTexture(TextureId::TOWERS),
                            rectManager.getTextureRect(TowerType::ARCHER),
                            "Archer Tower",
                            archerTowerCost,
@@ -77,7 +77,7 @@ std::vector<TrayOption> TrayOptionManager::getPlacementOptions(
                            archerTowerCost > playerGold,
                            selectionCallback));
     trayOptions.push_back(
-        TrayOption::Create(textureManager.getTexture(TextureId::TOWERS),
+        TrayOption::create(textureManager.getTexture(TextureId::TOWERS),
                            rectManager.getTextureRect(TowerType::MAGE),
                            "Mage Tower",
                            mageTowerCost,
@@ -104,7 +104,7 @@ std::vector<TrayOption> TrayOptionManager::getTowerOptions(
                                    : spot.tower->getLevel();
 
         trayOptions.push_back(
-            TrayOption::Create(textureManager.getTexture(TextureId::TOWERS),
+            TrayOption::create(textureManager.getTexture(TextureId::TOWERS),
                                rectManager.getTextureRect(towerType, textureRectIndex),
                                "Upgrade Tower",
                                upgradeCost,
@@ -114,7 +114,7 @@ std::vector<TrayOption> TrayOptionManager::getTowerOptions(
     }
 
     trayOptions.push_back(
-        TrayOption::Create(textureManager.getTexture(TextureId::ATLAS),
+        TrayOption::create(textureManager.getTexture(TextureId::ATLAS),
                            sf::IntRect(static_cast<int>(TileId::TOWER_SPOT) * Constants::TILE_WIDTH, 0, Constants::TILE_WIDTH, Constants::TILE_HEIGHT),
                            "Sell Tower",
                            getRemoveValue(spot),
