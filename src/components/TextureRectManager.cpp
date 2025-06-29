@@ -4,6 +4,7 @@ TextureRectManager::TextureRectManager()
 {
     initTowerTextureRects();
     initEnemyTextureRects();
+    initProjectileTextureRects();
 }
 
 TextureRectManager::~TextureRectManager()
@@ -28,6 +29,11 @@ const sf::IntRect &TextureRectManager::getTextureRect(EnemyType type) const
     return enemyTextureRects.at(type);
 }
 
+const sf::IntRect &TextureRectManager::getTextureRect(ProjectileType type) const
+{
+    return projectileTextureRects.at(type);
+}
+
 // Privates
 
 void TextureRectManager::initTowerTextureRects()
@@ -49,4 +55,10 @@ void TextureRectManager::initTowerTextureRects()
 void TextureRectManager::initEnemyTextureRects()
 {
     enemyTextureRects[EnemyType::BASIC] = {0, 0, 64, 80};
+}
+
+void TextureRectManager::initProjectileTextureRects()
+{
+    projectileTextureRects[ProjectileType::ARROW] = {0, 0, 21, 35};
+    projectileTextureRects[ProjectileType::MAGIC] = {21, 11, 14, 15};
 }

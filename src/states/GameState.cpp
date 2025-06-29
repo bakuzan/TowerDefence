@@ -6,6 +6,7 @@
 #include "constants/TowerChange.h"
 #include "constants/TowerType.h"
 #include "data/TrayOption.h"
+#include "entities/RangedTower.h"
 
 #include "GameState.h"
 #include "PauseState.h"
@@ -188,6 +189,15 @@ void GameState::update(sf::Time deltaTime, sf::RenderWindow &window)
         if (spot.hasTower())
         {
             spot.tower->update(dt);
+
+            if (auto rangedTower = dynamic_cast<RangedTower *>(spot.tower.get()))
+            {
+                if (auto projectile = rangedTower->getShootData(dt))
+                {
+                    // TODO
+                    // Spawn the projectile based on shoot data!
+                }
+            }
         }
     }
 

@@ -24,10 +24,10 @@ public:
     Tower(TowerType towerType,
           const sf::Texture &texture, const std::vector<sf::IntRect> &textureRects,
           sf::Vector2f position);
-    ~Tower();
+    virtual ~Tower();
 
     virtual void update(float dt) = 0;
-    void render(sf::RenderWindow &window) const;
+    virtual void render(sf::RenderWindow &window) const;
 
     const int getLevel() const;
     const TowerType getType() const;

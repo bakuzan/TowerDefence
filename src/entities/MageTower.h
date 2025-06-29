@@ -3,11 +3,13 @@
 
 #include <SFML/Graphics.hpp>
 
+#include <optional>
 #include <vector>
 
-#include "Tower.h"
+#include "data/ProjectileData.h"
+#include "entities/RangedTower.h"
 
-class MageTower : public Tower
+class MageTower : public RangedTower
 {
 public:
     MageTower(const sf::Texture &texture, const std::vector<sf::IntRect> &textureRects,
@@ -15,6 +17,8 @@ public:
     ~MageTower();
 
     void update(float dt) override;
+
+    std::optional<ProjectileData> getShootData(float deltaTime) override;
 };
 
 #endif // MAGETOWER_H
