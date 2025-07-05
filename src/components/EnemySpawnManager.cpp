@@ -49,7 +49,9 @@ void EnemySpawnManager::spawnEnemies(float dt,
 
     if (timeSinceLastSpawn >= next.delayAfterPrevious)
     {
+        EnemyID id = nextEnemyID++;
         auto enemy = std::make_unique<Enemy>(
+            id,
             next.type,
             texture,
             enemyRectManager.getTextureRect(next.type),

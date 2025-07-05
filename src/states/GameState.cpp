@@ -138,12 +138,11 @@ void GameState::handleEvent(const sf::Event &event)
 void GameState::update(sf::Time deltaTime, sf::RenderWindow &window)
 {
     float dt = deltaTime.asSeconds();
+    auto &enemies = gameData.getEnemies();
 
     // Enemy handling
     if (phaseManager.isAssaultPhase())
     {
-        auto &enemies = gameData.getEnemies();
-
         if (!enemySpawnManager.isWaveActive() &&
             enemies.empty())
         {
@@ -192,7 +191,7 @@ void GameState::update(sf::Time deltaTime, sf::RenderWindow &window)
 
             if (auto rangedTower = dynamic_cast<RangedTower *>(spot.tower.get()))
             {
-                if (auto projectile = rangedTower->getShootData(dt))
+                if (auto projectile = rangedTower->getShootData(dt, enemies))
                 {
                     // TODO
                     // Spawn the projectile based on shoot data!

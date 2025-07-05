@@ -2,7 +2,7 @@
 
 #include "Enemy.h"
 
-Enemy::Enemy(EnemyType enemyType,
+Enemy::Enemy(EnemyID enemyId, EnemyType enemyType,
              const sf::Texture &texture, const sf::IntRect &textureRect,
              EnemyStats enemyStats,
              const std::vector<sf::Vector2f> &mapPath)
@@ -32,7 +32,7 @@ void Enemy::update(float dt)
 {
     if (currentPathIndex + 1 >= path.size())
     {
-        // TODO Flag this so enemy can be removed and damage the player
+        // Do need to do anything, the enemy has reached its goal.
         return;
     }
 
@@ -59,14 +59,19 @@ void Enemy::render(sf::RenderWindow &window) const
     window.draw(sprite);
 }
 
+const EnemyID Enemy::getID() const
+{
+    return id;
+}
+
 const EnemyType Enemy::getType() const
 {
     return type;
 }
 
-const sf::Sprite &Enemy::getSprite() const
+const sf::Vector2f Enemy::getPosition() const
 {
-    return sprite;
+    return sprite.getPosition();
 }
 
 bool Enemy::hasReachedGoal() const

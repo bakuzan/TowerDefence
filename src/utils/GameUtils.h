@@ -10,6 +10,8 @@ namespace GameUtils
     sf::Vector2f getBottomRightPosition(sf::RenderWindow &window,
                                         sf::Vector2f elementSize,
                                         float margin = 10.0f);
+
+    sf::Vector2f normaliseVector(const sf::Vector2f &vector);
 };
 
 #endif // GAMEUTILS_H

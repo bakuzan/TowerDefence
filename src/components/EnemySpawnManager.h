@@ -8,6 +8,7 @@
 #include <vector>
 #include <random>
 
+#include "constants/Identifiers.h"
 #include "components/TextureRectManager.h"
 #include "data/SpawnGroup.h"
 #include "data/SpawnInstruction.h"
@@ -25,6 +26,8 @@ private:
     std::vector<SpawnInstruction> schedule;
     std::size_t nextSpawnIndex = 0;
     float timeSinceLastSpawn = 0.f;
+
+    EnemyID nextEnemyID;
 
 private:
     const std::vector<sf::Vector2f> &selectMapPath(const PathMap &pathOptions);

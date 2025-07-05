@@ -1,4 +1,6 @@
 #include "constants/Constants.h"
+#include "components/TowerAttributesManager.h"
+
 #include "MageTower.h"
 
 MageTower::MageTower(const sf::Texture &texture, const std::vector<sf::IntRect> &textureRects,
@@ -20,7 +22,24 @@ void MageTower::update(float dt)
     updateTextureRect(level - 1, (Constants::TILE_SURFACE_HEIGHT / 3.0f));
 }
 
-std::optional<ProjectileData> MageTower::getShootData(float deltaTime)
+std::optional<ProjectileData> MageTower::getShootData(float deltaTime,
+                                                      const std::vector<std::unique_ptr<Enemy>> &enemies)
 {
-    return std::nullopt;
+    const auto &attrs = TowerAttributesManager::getInstance().getAttributes(type, level);
+
+    const Enemy *target = tryAcquireTargetAndCooldown(deltaTime,
+                                                      attrs.fireRateCooldown,
+                                                      attrs.fireRange,
+                                                      enemies);
+
+    if (!target)
+    {
+        return std::nullopt;
+    }
+
+    return ProjectileData::createMagic(
+        sprite.getPosition(),
+        target->getID(),
+        attrs.projectileSpeed,
+        attrs.projectileDamage);
 }

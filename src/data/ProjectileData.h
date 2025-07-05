@@ -29,14 +29,14 @@ struct ProjectileData
             InvalidEnemyID};
     }
 
-    static ProjectileData createMagic(sf::Vector2f pos, EnemyID target, int dmg)
+    static ProjectileData createMagic(sf::Vector2f pos, EnemyID target, float spd, int dmg)
     {
         return ProjectileData{
             ProjectileType::MAGIC,
             pos,
             dmg,
-            {},  // Omitted: direction
-            0.f, // Omitted: speed
+            {}, // Omitted: direction
+            spd,
             target};
     }
 };

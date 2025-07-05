@@ -28,4 +28,15 @@ namespace GameUtils
                 viewSize.y - elementSize.y - margin};
     }
 
+    sf::Vector2f normaliseVector(const sf::Vector2f &vector)
+    {
+        float magnitude = std::sqrt(vector.x * vector.x + vector.y * vector.y);
+        if (magnitude > 0)
+        {
+            return vector / magnitude;
+        }
+
+        return sf::Vector2f(0.0f, 0.0f);
+    }
+
 }
