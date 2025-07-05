@@ -15,6 +15,6 @@ struct TowerAttributes
 
     static TowerAttributes createAttributes()
     {
-        return {0.0f, 0.0f, 0.0f, 0.0f};
+        return {0.0f, 0.0f, 0.0f, 0};
     }
 };
