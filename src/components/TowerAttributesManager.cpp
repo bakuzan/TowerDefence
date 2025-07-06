@@ -3,14 +3,14 @@
 TowerAttributesManager::TowerAttributesManager()
 {
     towerStats[TowerType::ARCHER] = {
-        TowerAttributes::createRangedAttributes(0.33f, 575.0f, 120.0f, 20),
-        TowerAttributes::createRangedAttributes(0.30f, 575.0f, 150.0f, 27),
-        TowerAttributes::createRangedAttributes(0.27f, 575.0f, 180.0f, 34)};
+        TowerAttributes::createRangedAttributes(0.33f, 300.0f, 200.0f, 15),
+        TowerAttributes::createRangedAttributes(0.29f, 350.0f, 275.0f, 20),
+        TowerAttributes::createRangedAttributes(0.25f, 400.0f, 350.0f, 25)};
 
     towerStats[TowerType::MAGE] = {
-        TowerAttributes::createRangedAttributes(0.5f, 430.0f, 80.0f, 34),
-        TowerAttributes::createRangedAttributes(0.4f, 430.0f, 85.0f, 45),
-        TowerAttributes::createRangedAttributes(0.33f, 430.0f, 90.0f, 56)};
+        TowerAttributes::createRangedAttributes(0.8f, 200.0f, 125.0f, 30),
+        TowerAttributes::createRangedAttributes(0.6f, 200.0f, 175.0f, 40),
+        TowerAttributes::createRangedAttributes(0.4f, 200.0f, 225.0f, 50)};
 }
 
 TowerAttributesManager::~TowerAttributesManager()

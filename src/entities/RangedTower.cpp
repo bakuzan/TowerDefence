@@ -38,7 +38,7 @@ Enemy *RangedTower::acquireTarget(const std::vector<std::unique_ptr<Enemy>> &ene
 
     for (const auto &enemy : enemies)
     {
-        float distance = calculateDistanceToTargetMagnitude(enemy->getPosition());
+        float distance = calculateDistanceToTargetMagnitude(enemy->getSprite().getPosition());
         if (distance <= minDistance)
         {
             minDistance = distance;

@@ -8,6 +8,7 @@
 #include "core/StateManager.h"
 
 #include "components/EnemySpawnManager.h"
+#include "components/ProjectileSpawnManager.h"
 #include "components/PhaseManager.h"
 #include "components/TileMap.h"
 #include "components/TrayOptionManager.h"
@@ -28,6 +29,7 @@ private:
     TrayOptionManager trayOptionManager;
 
     EnemySpawnManager enemySpawnManager;
+    ProjectileSpawnManager projectileSpawnManager;
     WaveManager waveManager;
 
     float zoomFactor;

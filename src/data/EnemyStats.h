@@ -4,9 +4,10 @@ struct EnemyStats
 {
     int health;
     float speed;
+    int pointsValue;
 
-    static EnemyStats create(int health, float speed)
+    static EnemyStats create(int health, float speed, int points)
     {
-        return {health, speed};
+        return {health, speed, points};
     }
 };

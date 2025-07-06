@@ -2,6 +2,7 @@
 
 #include "utils/GameUtils.h"
 #include "utils/InputUtils.h"
+#include "utils/CollisionUtils.h"
 #include "constants/Constants.h"
 #include "constants/TowerChange.h"
 #include "constants/TowerType.h"
@@ -22,6 +23,7 @@ GameState::GameState(GameData &data, StateManager &manager, sf::RenderWindow &wi
       trayOptionManager(data.textureManager, data.rectManager),
       enemySpawnManager(data.rectManager,
                         gameData.textureManager.getTexture(TextureId::ENEMIES)),
+      projectileSpawnManager(data.rectManager),
       zoomFactor(2.5f),
       moveSpeed(60.0f)
 {
@@ -182,6 +184,7 @@ void GameState::update(sf::Time deltaTime, sf::RenderWindow &window)
     }
 
     // Tower handling
+    auto &projectiles = gameData.getProjectiles();
     std::unordered_map<sf::Vector2i, TowerSpot> &towerSpots = gameData.getTowerSpots();
     for (const auto &[position, spot] : towerSpots)
     {
@@ -193,8 +196,10 @@ void GameState::update(sf::Time deltaTime, sf::RenderWindow &window)
             {
                 if (auto projectile = rangedTower->getShootData(dt, enemies))
                 {
-                    // TODO
-                    // Spawn the projectile based on shoot data!
+                    projectileSpawnManager.spawnProjectile(
+                        gameData.textureManager.getTexture(TextureId::PROJECTILES),
+                        projectiles,
+                        *projectile);
                 }
             }
         }
@@ -203,7 +208,51 @@ void GameState::update(sf::Time deltaTime, sf::RenderWindow &window)
     // Projectile handling
     if (phaseManager.isAssaultPhase())
     {
-        // TODO Update projectiles, damage, effects
+        for (auto projIt = projectiles.begin(); projIt != projectiles.end();)
+        {
+            auto &projectile = **projIt;
+            projectile.update(dt, enemies);
+
+            bool isRemoved = false;
+
+            for (auto enemyIt = enemies.begin(); enemyIt != enemies.end();)
+            {
+                auto &enemy = **enemyIt;
+
+                if (projectile.getSprite().getGlobalBounds().intersects(enemy.getSprite().getGlobalBounds()) &&
+                    CollisionUtils::checkSpritesIntersect(projectile.getSprite(), enemy.getSprite()))
+                {
+                    enemy.updateHealth(-projectile.getDamageInflicts());
+
+                    if (enemy.getHealth() <= 0)
+                    {
+                        gameData.updatePlayerScore(enemy.getPointsValue());
+
+                        enemyIt = enemies.erase(enemyIt);
+                    }
+
+                    projIt = projectiles.erase(projIt);
+                    isRemoved = true;
+                    break;
+                }
+                else
+                {
+                    ++enemyIt;
+                }
+            }
+
+            if (!isRemoved)
+            {
+                if (projectile.canBeRemoved())
+                {
+                    projIt = projectiles.erase(projIt);
+                }
+                else
+                {
+                    ++projIt;
+                }
+            }
+        }
     }
 
     // UI handling
@@ -230,6 +279,12 @@ void GameState::render(sf::RenderWindow &window)
         {
             spot.tower->render(window);
         }
+    }
+
+    auto &projectiles = gameData.getProjectiles();
+    for (const auto &projectile : projectiles)
+    {
+        projectile->render(window);
     }
 
     // UI elements rendering

@@ -32,8 +32,13 @@ public:
 
     const EnemyID getID() const;
     const EnemyType getType() const;
-    const sf::Vector2f getPosition() const;
+    const sf::Sprite &getSprite() const;
     bool hasReachedGoal() const;
+
+    const int getHealth() const;
+    void updateHealth(int adjustment);
+
+    const int getPointsValue() const;
 };
 
 #endif // ENEMY_H

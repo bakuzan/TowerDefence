@@ -12,6 +12,7 @@
 #include "components/TextureRectManager.h"
 #include "data/TowerSpot.h"
 #include "entities/Enemy.h"
+#include "entities/Projectile.h"
 #include "utils/HashUtilities.h"
 
 class GameData
@@ -23,6 +24,7 @@ private:
     int playerScore;
 
     std::vector<std::unique_ptr<Enemy>> enemies;
+    std::vector<std::unique_ptr<Projectile>> projectiles;
 
 public:
     sf::Font gameFont;
@@ -48,6 +50,7 @@ public:
     void updatePlayerScore(int adjustment);
 
     std::vector<std::unique_ptr<Enemy>> &getEnemies();
+    std::vector<std::unique_ptr<Projectile>> &getProjectiles();
 
     void reset();
 };

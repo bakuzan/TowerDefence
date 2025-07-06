@@ -68,9 +68,17 @@ std::vector<std::unique_ptr<Enemy>> &GameData::getEnemies()
     return enemies;
 }
 
+std::vector<std::unique_ptr<Projectile>> &GameData::getProjectiles()
+{
+    return projectiles;
+}
+
 void GameData::reset()
 {
     towerSpots.clear();
+    enemies.clear();
+    projectiles.clear();
+
     playerGold = 1000; // TODO 250
     playerLives = 10;
     playerScore = 0;

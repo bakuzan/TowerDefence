@@ -37,8 +37,11 @@ std::optional<ProjectileData> MageTower::getShootData(float deltaTime,
         return std::nullopt;
     }
 
+    sf::FloatRect bounds = sprite.getLocalBounds();
+    sf::Vector2f spawnPosition = sprite.getPosition() - sf::Vector2f(bounds.width / 4.0f, bounds.height / 4.0f);
+
     return ProjectileData::createMagic(
-        sprite.getPosition(),
+        spawnPosition,
         target->getID(),
         attrs.projectileSpeed,
         attrs.projectileDamage);

@@ -69,12 +69,27 @@ const EnemyType Enemy::getType() const
     return type;
 }
 
-const sf::Vector2f Enemy::getPosition() const
+const sf::Sprite &Enemy::getSprite() const
 {
-    return sprite.getPosition();
+    return sprite;
 }
 
 bool Enemy::hasReachedGoal() const
 {
     return currentPathIndex + 1 >= path.size();
+}
+
+const int Enemy::getHealth() const
+{
+    return stats.health;
+}
+
+void Enemy::updateHealth(int adjustment)
+{
+    stats.health = std::max(0, stats.health + adjustment);
+}
+
+const int Enemy::getPointsValue() const
+{
+    return stats.pointsValue;
 }

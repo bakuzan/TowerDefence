@@ -38,10 +38,11 @@ std::optional<ProjectileData> ArcherTower::getShootData(float deltaTime,
         return std::nullopt;
     }
 
-    sf::Vector2f direction = GameUtils::normaliseVector(target->getPosition() - sprite.getPosition());
+    sf::Vector2f spawnPosition = sprite.getPosition() - sf::Vector2f(0, sprite.getLocalBounds().height / 2.0f);
+    sf::Vector2f direction = GameUtils::normaliseVector(target->getSprite().getPosition() - sprite.getPosition());
 
     return ProjectileData::createArrow(
-        sprite.getPosition(),
+        spawnPosition,
         direction,
         attrs.projectileSpeed,
         attrs.projectileDamage);

@@ -6,12 +6,13 @@ WaveManager::WaveManager()
 {
     int health = 100;
     float speed = 100;
+    int points = 50;
 
     allWaves = {
         Wave::create({
-            SpawnGroup::create(EnemyType::BASIC, 8, 1.0f, 0.0f, EnemyStats::create(health, speed)),
-            SpawnGroup::create(EnemyType::BASIC, 6, 0.5f, 0.0f, EnemyStats::create(health, speed)),
-            SpawnGroup::create(EnemyType::BASIC, 4, 0.25f, 0.0f, EnemyStats::create(health, speed)),
+            SpawnGroup::create(EnemyType::BASIC, 8, 1.0f, 0.0f, EnemyStats::create(health, speed, points)),
+            SpawnGroup::create(EnemyType::BASIC, 6, 0.5f, 0.0f, EnemyStats::create(health, speed, points)),
+            SpawnGroup::create(EnemyType::BASIC, 4, 0.25f, 0.0f, EnemyStats::create(health, speed, points)),
         }),
     };
 }
