@@ -10,22 +10,25 @@ struct ProjectileData
     ProjectileType type;
     sf::Vector2f spawnPosition;
     int damage;
+    float speed = 0.f;
 
     // Optional for physics-based
-    sf::Vector2f direction = {0.f, 0.f};
-    float speed = 0.f;
+    sf::Vector2f targetPosition = {0.f, 0.f};
+    float timeToTarget = 0.0f;
 
     // Optional for guaranteed-hit
     EnemyID targetId = InvalidEnemyID;
 
-    static ProjectileData createArrow(sf::Vector2f pos, sf::Vector2f dir, float spd, int dmg)
+    static ProjectileData createArrow(sf::Vector2f pos, sf::Vector2f trgt, float time, float spd, int dmg)
     {
         return ProjectileData{
             ProjectileType::ARROW,
             pos,
             dmg,
-            dir,
             spd,
+
+            trgt,
+            time,
             InvalidEnemyID};
     }
 
@@ -35,8 +38,10 @@ struct ProjectileData
             ProjectileType::MAGIC,
             pos,
             dmg,
-            {}, // Omitted: direction
             spd,
+
+            {},   // Omitted: direction
+            0.0f, // Ommitted: time-to-target
             target};
     }
 };

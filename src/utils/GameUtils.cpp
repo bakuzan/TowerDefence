@@ -39,4 +39,11 @@ namespace GameUtils
         return sf::Vector2f(0.0f, 0.0f);
     }
 
+    float calculateEuclideanDistance(const sf::Vector2f &a,
+                                     const sf::Vector2f &b)
+    {
+        sf::Vector2f d = b - a;
+        return std::sqrt(d.x * d.x + d.y * d.y);
+    }
+
 }

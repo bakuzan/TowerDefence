@@ -1,6 +1,7 @@
 #include <cmath>
 
 #include "RangedTower.h"
+#include "utils/GameUtils.h"
 
 RangedTower::RangedTower(TowerType towerType,
                          const sf::Texture &texture, const std::vector<sf::IntRect> &textureRects,
@@ -38,7 +39,9 @@ Enemy *RangedTower::acquireTarget(const std::vector<std::unique_ptr<Enemy>> &ene
 
     for (const auto &enemy : enemies)
     {
-        float distance = calculateDistanceToTargetMagnitude(enemy->getSprite().getPosition());
+        float distance = GameUtils::calculateEuclideanDistance(sprite.getPosition(),
+                                                               enemy->getSprite().getPosition());
+
         if (distance <= minDistance)
         {
             minDistance = distance;
@@ -68,12 +71,4 @@ Enemy *RangedTower::tryAcquireTargetAndCooldown(float deltaTime,
 
     timeSinceLastShot = 0.0f;
     return target;
-}
-
-// Privates
-
-float RangedTower::calculateDistanceToTargetMagnitude(const sf::Vector2f &targetPosition)
-{
-    sf::Vector2f direction = targetPosition - sprite.getPosition();
-    return std::sqrt(direction.x * direction.x + direction.y * direction.y);
 }

@@ -39,9 +39,10 @@ std::unique_ptr<Projectile> ProjectileSpawnManager::spawnProjectile(
             texture,
             projectileRectManager.getTextureRect(data.type),
             data.spawnPosition,
+            data.targetPosition,
+            data.timeToTarget,
             data.speed,
-            data.damage,
-            data.direction);
+            data.damage);
     case ProjectileType::MAGIC:
         return std::make_unique<MagicProjectile>(
             data.type,

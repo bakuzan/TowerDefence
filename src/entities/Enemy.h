@@ -20,6 +20,9 @@ protected:
     const std::vector<sf::Vector2f> &path;
     size_t currentPathIndex;
 
+private:
+    sf::Vector2f getCurrentTargetPosition() const;
+
 public:
     Enemy(EnemyID enemyId, EnemyType enemyType,
           const sf::Texture &texture, const sf::IntRect &textureRect,
@@ -39,6 +42,7 @@ public:
     void updateHealth(int adjustment);
 
     const int getPointsValue() const;
+    sf::Vector2f getVelocity() const;
 };
 
 #endif // ENEMY_H

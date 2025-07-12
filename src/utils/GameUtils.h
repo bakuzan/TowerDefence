@@ -12,6 +12,8 @@ namespace GameUtils
                                         float margin = 10.0f);
 
     sf::Vector2f normaliseVector(const sf::Vector2f &vector);
+    float calculateEuclideanDistance(const sf::Vector2f &a,
+                                     const sf::Vector2f &b);
 };
 
 #endif // GAMEUTILS_H

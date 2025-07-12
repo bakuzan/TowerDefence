@@ -17,9 +17,6 @@ class RangedTower : public Tower
 protected:
     float timeSinceLastShot;
 
-private:
-    float calculateDistanceToTargetMagnitude(const sf::Vector2f &targetPosition);
-
 protected:
     bool isCooldownReady(float deltaTime, float cooldown);
     Enemy *acquireTarget(const std::vector<std::unique_ptr<Enemy>> &enemies,

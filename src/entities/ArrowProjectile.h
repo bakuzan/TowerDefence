@@ -14,15 +14,21 @@
 class ArrowProjectile : public Projectile
 {
 private:
-    sf::Vector2f direction;
+    sf::Vector2f spawnPos;
+    sf::Vector2f targetPos;
+    float totalTimeToTarget;
+    float elapsedTime;
+
+    static constexpr float rotationOffset = 90.0f;
 
 public:
     ArrowProjectile(ProjectileType type,
                     const sf::Texture &texture, sf::IntRect textureRect,
                     sf::Vector2f spawnPosition,
+                    sf::Vector2f targetPosition,
+                    float travelTime,
                     float speed,
-                    int damage,
-                    sf::Vector2f dir);
+                    int damage);
     ~ArrowProjectile() override;
 
     void update(float deltaTime,
