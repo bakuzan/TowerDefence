@@ -222,7 +222,7 @@ void GameState::update(sf::Time deltaTime, sf::RenderWindow &window)
                 if (projectile.getSprite().getGlobalBounds().intersects(enemy.getSprite().getGlobalBounds()) &&
                     CollisionUtils::checkSpritesIntersect(projectile.getSprite(), enemy.getSprite()))
                 {
-                    enemy.updateHealth(-projectile.getDamageInflicts());
+                    enemy.applyDamage(projectile.getDamageInflicts());
 
                     if (enemy.getHealth() <= 0)
                     {

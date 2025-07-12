@@ -9,7 +9,8 @@ Enemy::Enemy(EnemyID enemyId, EnemyType enemyType,
              const std::vector<sf::Vector2f> &mapPath)
     : type(enemyType),
       initialStats(enemyStats), stats(enemyStats),
-      path(mapPath), currentPathIndex(0)
+      path(mapPath), currentPathIndex(0),
+      damageFeedbackTimer(0.0f)
 {
     sprite.setTexture(texture);
     sprite.setTextureRect(textureRect);
@@ -52,6 +53,17 @@ void Enemy::update(float dt)
     sf::Vector2f normalized = direction / distance;
     sf::Vector2f movement = normalized * stats.speed * dt;
     sprite.move(movement);
+
+    // Visual feedback for taking damage
+    if (damageFeedbackTimer > 0.0f)
+    {
+        damageFeedbackTimer -= dt;
+        sprite.setColor(sf::Color(240, 61, 61)); // Red tint
+    }
+    else
+    {
+        sprite.setColor(sf::Color(255, 255, 255)); // Normal
+    }
 }
 
 void Enemy::render(sf::RenderWindow &window) const
@@ -84,9 +96,10 @@ const int Enemy::getHealth() const
     return stats.health;
 }
 
-void Enemy::updateHealth(int adjustment)
+void Enemy::applyDamage(int adjustment)
 {
-    stats.health = std::max(0, stats.health + adjustment);
+    stats.health = std::max(0, stats.health - adjustment);
+    damageFeedbackTimer = damageFlashDuration;
 }
 
 const int Enemy::getPointsValue() const

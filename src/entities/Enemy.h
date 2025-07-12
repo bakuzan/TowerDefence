@@ -20,6 +20,9 @@ protected:
     const std::vector<sf::Vector2f> &path;
     size_t currentPathIndex;
 
+    float damageFeedbackTimer;
+    static constexpr float damageFlashDuration = 0.1f;
+
 private:
     sf::Vector2f getCurrentTargetPosition() const;
 
@@ -39,7 +42,7 @@ public:
     bool hasReachedGoal() const;
 
     const int getHealth() const;
-    void updateHealth(int adjustment);
+    void applyDamage(int adjustment);
 
     const int getPointsValue() const;
     sf::Vector2f getVelocity() const;
