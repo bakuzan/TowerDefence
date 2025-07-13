@@ -43,7 +43,7 @@ void ArrowProjectile::update(float deltaTime,
     }
 
     float flightDistance = GameUtils::calculateEuclideanDistance(spawnPos, targetPos);
-    float arcHeight = std::clamp(flightDistance * 0.25f, 20.f, 100.f);
+    float arcHeight = std::clamp(flightDistance * 0.25f, 50.f, 200.f);
 
     sf::Vector2f linearPos = spawnPos + (targetPos - spawnPos) * t;
     float heightOffset = 4 * arcHeight * t * (1 - t); // Parabola

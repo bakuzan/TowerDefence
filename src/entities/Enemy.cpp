@@ -7,7 +7,8 @@ Enemy::Enemy(EnemyID enemyId, EnemyType enemyType,
              const sf::Texture &texture, const sf::IntRect &textureRect,
              EnemyStats enemyStats,
              const std::vector<sf::Vector2f> &mapPath)
-    : type(enemyType),
+    : id(enemyId),
+      type(enemyType),
       initialStats(enemyStats), stats(enemyStats),
       path(mapPath), currentPathIndex(0),
       damageFeedbackTimer(0.0f)
