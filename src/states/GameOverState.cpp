@@ -166,6 +166,7 @@ void GameOverState::render(sf::RenderWindow &window)
 }
 
 // Privates
+
 void GameOverState::updateMenuItemPositions()
 {
     sf::Vector2f viewCenter = gameOverView.getCenter();

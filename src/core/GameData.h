@@ -25,6 +25,7 @@ private:
 
     std::vector<std::unique_ptr<Enemy>> enemies;
     std::vector<std::unique_ptr<Projectile>> projectiles;
+    std::vector<std::string> levelMapPaths;
 
 public:
     sf::Font gameFont;
@@ -51,7 +52,9 @@ public:
 
     std::vector<std::unique_ptr<Enemy>> &getEnemies();
     std::vector<std::unique_ptr<Projectile>> &getProjectiles();
+    std::string getLevelMap(int index);
 
+    void resetLevel();
     void reset();
 };
 

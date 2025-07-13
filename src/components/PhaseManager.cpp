@@ -33,7 +33,7 @@ bool PhaseManager::isResultsPhase()
     return currentPhase == Phase::RESULTS;
 }
 
-void PhaseManager::advanceToNextPhase()
+void PhaseManager::setPhase(Phase desiredPhase)
 {
-    currentPhase = static_cast<Phase>((static_cast<int>(currentPhase) + 1) % static_cast<int>(Phase::COUNT));
+    currentPhase = desiredPhase;
 }

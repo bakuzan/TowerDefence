@@ -61,6 +61,8 @@ void UIManager::handleEvent(sf::Event event)
 
     trayUI.handleEvent(event);
 
+    resultsPanel.handleEvent(event, *window);
+
     window->setView(prevView); // Restore previous view
 }
 
@@ -88,7 +90,14 @@ void UIManager::render()
 
     trayUI.render(*window);
 
+    resultsPanel.render(*window);
+
     window->setView(prevView); // Restore previous view
+}
+
+void UIManager::hideTray()
+{
+    trayUI.setVisible(false);
 }
 
 void UIManager::showTray(std::vector<TrayOption> options)
@@ -129,6 +138,19 @@ void UIManager::setButtonVisible(const std::string &name, bool state)
     {
         buttonVisibility[name] = state;
     }
+}
+
+void UIManager::showResultsPanel(const std::string &statsText,
+                                 std::function<void()> callback)
+{
+    resultsPanel.init(gameData.gameFont, *window, callback);
+    resultsPanel.setStatsText(statsText);
+    resultsPanel.toggleVisible();
+}
+
+void UIManager::hideResultsPanel()
+{
+    resultsPanel.toggleVisible();
 }
 
 // Privates

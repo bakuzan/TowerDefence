@@ -9,6 +9,7 @@
 
 #include "core/GameData.h"
 #include "components/TrayUI.h"
+#include "components/ResultsPanel.h"
 #include "data/TrayOption.h"
 #include "ui/Button.h"
 
@@ -29,6 +30,8 @@ private:
     std::vector<Button> buttons;
     std::unordered_map<std::string, bool> buttonVisibility;
 
+    ResultsPanel resultsPanel;
+
 private:
     void updateUITexts();
 
@@ -40,6 +43,7 @@ public:
     void update();
     void render();
 
+    void hideTray();
     void showTray(std::vector<TrayOption> options);
     void handleOptionSelection(const TrayOption &option);
 
@@ -48,6 +52,10 @@ public:
                    const std::string &text,
                    std::function<void()> callback);
     void setButtonVisible(const std::string &name, bool state);
+
+    void showResultsPanel(const std::string &statsText,
+                          std::function<void()> callback);
+    void hideResultsPanel();
 };
 
 #endif // UIMANAGER_H

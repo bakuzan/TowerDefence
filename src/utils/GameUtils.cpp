@@ -18,7 +18,7 @@ namespace GameUtils
         return padNumberAsText(score, 8, '0');
     }
 
-    sf::Vector2f getBottomRightPosition(sf::RenderWindow &window,
+    sf::Vector2f getBottomRightPosition(const sf::RenderWindow &window,
                                         sf::Vector2f elementSize,
                                         float margin)
     {

@@ -19,7 +19,7 @@ public:
     bool isAssaultPhase();
     bool isResultsPhase();
 
-    void advanceToNextPhase();
+    void setPhase(Phase desiredPhase);
 };
 
 #endif // PHASEMANAGER_H

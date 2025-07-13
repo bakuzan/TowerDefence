@@ -7,7 +7,7 @@ namespace GameUtils
 {
     std::string padNumberAsText(int value, int width, char padChar);
     std::string formatScoreText(int score);
-    sf::Vector2f getBottomRightPosition(sf::RenderWindow &window,
+    sf::Vector2f getBottomRightPosition(const sf::RenderWindow &window,
                                         sf::Vector2f elementSize,
                                         float margin = 10.0f);
 

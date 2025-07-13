@@ -12,6 +12,9 @@ GameData::GameData()
     // Load audio
     // TODO
 
+    // Load maps
+    levelMapPaths.push_back("resources/maps/level_01.txt");
+
     // Load font
     if (!gameFont.loadFromFile("resources/fonts/PressStart2P-Regular.ttf"))
     {
@@ -71,6 +74,22 @@ std::vector<std::unique_ptr<Enemy>> &GameData::getEnemies()
 std::vector<std::unique_ptr<Projectile>> &GameData::getProjectiles()
 {
     return projectiles;
+}
+
+std::string GameData::getLevelMap(int index)
+{
+    if (index < 0 ||
+        index >= levelMapPaths.size())
+    {
+        return levelMapPaths[0];
+    }
+
+    return levelMapPaths[index];
+}
+
+void GameData::resetLevel()
+{
+    towerSpots.clear();
 }
 
 void GameData::reset()

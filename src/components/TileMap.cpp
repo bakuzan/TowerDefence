@@ -28,7 +28,10 @@ void TileMap::loadMapFromFile(const std::string &filename)
     std::ifstream file(filename);
     std::string line;
     int rowIndex = 0;
+
     towerSpots.clear();
+    entranceSpots.clear();
+    mapPaths.clear();
 
     while (std::getline(file, line) &&
            rowIndex < mapHeight)

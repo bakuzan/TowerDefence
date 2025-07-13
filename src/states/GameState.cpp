@@ -1,3 +1,4 @@
+#include <format>
 #include <iostream>
 
 #include "utils/GameUtils.h"
@@ -25,15 +26,16 @@ GameState::GameState(GameData &data, StateManager &manager, sf::RenderWindow &wi
                         gameData.textureManager.getTexture(TextureId::ENEMIES)),
       projectileSpawnManager(data.rectManager),
       zoomFactor(2.5f),
-      moveSpeed(60.0f)
+      moveSpeed(60.0f),
+      level(0)
 {
-    loadMap("resources/maps/level_01.txt");
+    loadMap(gameData.getLevelMap(level));
 
     // Set up ui elements...
     sf::Vector2f buttonSize(Constants::BUTTON_WIDTH, Constants::BUTTON_HEIGHT);
     sf::Vector2f btnPlacement = GameUtils::getBottomRightPosition(window, buttonSize);
     uiManager.addButton("StartCombat", btnPlacement, "Start", [this]()
-                        { phaseManager.advanceToNextPhase(); 
+                        { phaseManager.setPhase(Phase::COMBAT); 
                             uiManager.setButtonVisible("StartCombat", false); });
 
     // Set up the view
@@ -155,6 +157,19 @@ void GameState::update(sf::Time deltaTime, sf::RenderWindow &window)
                 enemySpawnManager.setWave(wave->spawnGroups);
                 waveManager.markWaveStarted(wave);
             }
+            else
+            {
+                // TODO Populate the results text.
+                std::string statsText = std::format("Cleared level {}!", level + 1);
+                uiManager.hideTray();
+                phaseManager.setPhase(Phase::RESULTS);
+                uiManager.showResultsPanel(statsText, [this]()
+                                           { level++;
+                                            uiManager.hideResultsPanel(); 
+                                            loadMap(gameData.getLevelMap(level)); 
+                                            phaseManager.setPhase(Phase::PLACEMENT); 
+                                            uiManager.setButtonVisible("StartCombat", true); });
+            }
         }
 
         enemySpawnManager.spawnEnemies(dt,
@@ -206,51 +221,49 @@ void GameState::update(sf::Time deltaTime, sf::RenderWindow &window)
     }
 
     // Projectile handling
-    if (phaseManager.isAssaultPhase())
+    for (auto projIt = projectiles.begin(); projIt != projectiles.end();)
     {
-        for (auto projIt = projectiles.begin(); projIt != projectiles.end();)
+        auto &projectile = **projIt;
+        projectile.update(dt, enemies);
+
+        bool isRemoved = false;
+
+        for (auto enemyIt = enemies.begin(); enemyIt != enemies.end();)
         {
-            auto &projectile = **projIt;
-            projectile.update(dt, enemies);
+            auto &enemy = **enemyIt;
 
-            bool isRemoved = false;
-
-            for (auto enemyIt = enemies.begin(); enemyIt != enemies.end();)
+            if (projectile.getSprite().getGlobalBounds().intersects(enemy.getSprite().getGlobalBounds()) &&
+                CollisionUtils::checkSpritesIntersect(projectile.getSprite(), enemy.getSprite()))
             {
-                auto &enemy = **enemyIt;
+                enemy.applyDamage(projectile.getDamageInflicts());
 
-                if (projectile.getSprite().getGlobalBounds().intersects(enemy.getSprite().getGlobalBounds()) &&
-                    CollisionUtils::checkSpritesIntersect(projectile.getSprite(), enemy.getSprite()))
+                if (enemy.getHealth() <= 0)
                 {
-                    enemy.applyDamage(projectile.getDamageInflicts());
+                    gameData.updatePlayerScore(enemy.getPointsValue());
+                    gameData.updatePlayerGold(enemy.getPointsValue()); // TODO check this...
 
-                    if (enemy.getHealth() <= 0)
-                    {
-                        gameData.updatePlayerScore(enemy.getPointsValue());
-
-                        enemyIt = enemies.erase(enemyIt);
-                    }
-
-                    projIt = projectiles.erase(projIt);
-                    isRemoved = true;
-                    break;
+                    enemyIt = enemies.erase(enemyIt);
                 }
-                else
-                {
-                    ++enemyIt;
-                }
+
+                projIt = projectiles.erase(projIt);
+                isRemoved = true;
+                break;
             }
-
-            if (!isRemoved)
+            else
             {
-                if (projectile.canBeRemoved())
-                {
-                    projIt = projectiles.erase(projIt);
-                }
-                else
-                {
-                    ++projIt;
-                }
+                ++enemyIt;
+            }
+        }
+
+        if (!isRemoved)
+        {
+            if (projectile.canBeRemoved())
+            {
+                projIt = projectiles.erase(projIt);
+            }
+            else
+            {
+                ++projIt;
             }
         }
     }
@@ -297,11 +310,15 @@ void GameState::loadMap(const std::string filename)
 {
     tileMap.loadMapFromFile(filename);
 
+    gameData.resetLevel();
+
     auto &towerSpots = gameData.getTowerSpots();
     for (const auto &spot : tileMap.getTowerSpots())
     {
         towerSpots.emplace(spot, TowerSpot{});
     }
+
+    waveManager.reset();
 }
 
 void GameState::adjustZoom(float newZoomFactor)
