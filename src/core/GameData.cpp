@@ -8,6 +8,7 @@ GameData::GameData()
     textureManager.loadTexture(TextureId::TOWERS, "resources/images/Towers.png");
     textureManager.loadTexture(TextureId::ENEMIES, "resources/images/Enemies.png");
     textureManager.loadTexture(TextureId::PROJECTILES, "resources/images/Projectiles.png");
+    textureManager.loadTexture(TextureId::ICONS, "resources/images/Icons.png");
 
     // Load audio
     // TODO

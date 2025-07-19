@@ -5,6 +5,7 @@ TextureRectManager::TextureRectManager()
     initTowerTextureRects();
     initEnemyTextureRects();
     initProjectileTextureRects();
+    initIconTextureRects();
 }
 
 TextureRectManager::~TextureRectManager()
@@ -34,6 +35,11 @@ const sf::IntRect &TextureRectManager::getTextureRect(ProjectileType type) const
     return projectileTextureRects.at(type);
 }
 
+const sf::IntRect &TextureRectManager::getTextureRect(IconType type) const
+{
+    return iconTextureRects.at(type);
+}
+
 // Privates
 
 void TextureRectManager::initTowerTextureRects()
@@ -61,4 +67,10 @@ void TextureRectManager::initProjectileTextureRects()
 {
     projectileTextureRects[ProjectileType::ARROW] = {0, 0, 21, 35};
     projectileTextureRects[ProjectileType::MAGIC] = {21, 11, 14, 15};
+}
+
+void TextureRectManager::initIconTextureRects()
+{
+    iconTextureRects[IconType::COIN] = {5, 3, 23, 36};
+    iconTextureRects[IconType::HEART] = {35, 3, 36, 35};
 }

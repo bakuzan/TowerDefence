@@ -8,6 +8,7 @@
 #include "constants/EnemyType.h"
 #include "constants/TowerType.h"
 #include "constants/ProjectileType.h"
+#include "constants/IconType.h"
 
 class TextureRectManager
 {
@@ -15,11 +16,13 @@ private:
     std::unordered_map<TowerType, std::vector<sf::IntRect>> towerTextureRects;
     std::unordered_map<EnemyType, sf::IntRect> enemyTextureRects;
     std::unordered_map<ProjectileType, sf::IntRect> projectileTextureRects;
+    std::unordered_map<IconType, sf::IntRect> iconTextureRects;
 
 private:
     void initTowerTextureRects();
     void initEnemyTextureRects();
     void initProjectileTextureRects();
+    void initIconTextureRects();
 
 public:
     TextureRectManager();
@@ -30,6 +33,7 @@ public:
 
     const sf::IntRect &getTextureRect(EnemyType type) const;
     const sf::IntRect &getTextureRect(ProjectileType type) const;
+    const sf::IntRect &getTextureRect(IconType type) const;
 };
 
 #endif // TEXTURERECTMANAGER_H

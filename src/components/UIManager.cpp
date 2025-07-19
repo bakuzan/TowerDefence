@@ -14,6 +14,8 @@ UIManager::UIManager(sf::RenderWindow *gameWindow, const GameData &data)
 {
     updateUITexts(); // Initial text so size checks work out correct below.
 
+    const sf::Texture &iconTexture = gameData.textureManager.getTexture(TextureId::ICONS);
+
     // Score UI setup
     scoreText.setFont(gameData.gameFont);
     scoreText.setCharacterSize(24);
@@ -27,9 +29,10 @@ UIManager::UIManager(sf::RenderWindow *gameWindow, const GameData &data)
     goldText.setCharacterSize(24);
     goldText.setFillColor(sf::Color::Yellow);
     goldText.setPosition(40, 10);
-    // TODO get a coin texture...
-    // goldIcon.setTexture(goldTexture);
-    // goldIcon.setPosition(10, 20);
+
+    goldIcon.setTexture(iconTexture);
+    goldIcon.setTextureRect(gameData.rectManager.getTextureRect(IconType::COIN));
+    goldIcon.setPosition(10, 5);
 
     // Lives UI setup
     livesText.setFont(gameData.gameFont);
@@ -38,11 +41,15 @@ UIManager::UIManager(sf::RenderWindow *gameWindow, const GameData &data)
 
     sf::FloatRect livesBounds = livesText.getLocalBounds();
     sf::Vector2f livesTextSize(livesBounds.width, livesBounds.height);
+    sf::Vector2f bottomRightPosition = GameUtils::getBottomRightPosition(*window, livesTextSize);
+
     livesText.setOrigin(livesBounds.left, livesBounds.top);
-    livesText.setPosition(GameUtils::getBottomRightPosition(*window, livesTextSize));
-    // TODO get a heart texture...
-    // livesIcon.setTexture(heartTexture);
-    // livesIcon.setPosition(10, 20);
+    livesText.setPosition(bottomRightPosition);
+
+    livesIcon.setTexture(iconTexture);
+    livesIcon.setTextureRect(gameData.rectManager.getTextureRect(IconType::HEART));
+    livesIcon.setPosition(bottomRightPosition.x - 45.0f,
+                          bottomRightPosition.y - 12.0f);
 }
 
 UIManager::~UIManager()
@@ -77,7 +84,9 @@ void UIManager::render()
     window->setView(window->getDefaultView()); // Switch to UI view
 
     window->draw(scoreText);
+    window->draw(livesIcon);
     window->draw(livesText);
+    window->draw(goldIcon);
     window->draw(goldText);
 
     for (Button &button : buttons)

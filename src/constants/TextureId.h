@@ -6,4 +6,5 @@ enum class TextureId
     TOWERS,
     ENEMIES,
     PROJECTILES,
+    ICONS,
 };
