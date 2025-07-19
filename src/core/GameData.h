@@ -53,6 +53,7 @@ public:
     std::vector<std::unique_ptr<Enemy>> &getEnemies();
     std::vector<std::unique_ptr<Projectile>> &getProjectiles();
     std::string getLevelMap(int index);
+    bool hasLevelMap(int index);
 
     void resetLevel();
     void reset();

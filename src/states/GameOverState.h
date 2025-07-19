@@ -9,6 +9,7 @@
 #include "core/StateManager.h"
 #include "core/HighScoreManager.h"
 #include "data/HighScore.h"
+#include "data/GameOverStateConfig.h"
 
 class GameOverState : public State
 {
@@ -17,6 +18,8 @@ private:
     StateManager &stateManager;
     sf::RenderWindow &window;
     sf::View gameOverView;
+
+    GameOverStateConfig stateConfig;
 
     HighScoreManager highScoreManager;
 
@@ -41,7 +44,8 @@ private:
     int calculateFinalScore();
 
 public:
-    GameOverState(GameData &data, StateManager &manager, sf::RenderWindow &window);
+    GameOverState(GameData &data, StateManager &manager, sf::RenderWindow &window,
+                  GameOverStateConfig config = GameOverStateConfig::defaultValues());
     ~GameOverState();
 
     void handleEvent(const sf::Event &event) override;

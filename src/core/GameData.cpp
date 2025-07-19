@@ -13,7 +13,9 @@ GameData::GameData()
     // TODO
 
     // Load maps
+    levelMapPaths.push_back("resources/maps/level_00.txt");
     levelMapPaths.push_back("resources/maps/level_01.txt");
+    levelMapPaths.push_back("resources/maps/level_02.txt");
 
     // Load font
     if (!gameFont.loadFromFile("resources/fonts/PressStart2P-Regular.ttf"))
@@ -78,13 +80,18 @@ std::vector<std::unique_ptr<Projectile>> &GameData::getProjectiles()
 
 std::string GameData::getLevelMap(int index)
 {
-    if (index < 0 ||
-        index >= levelMapPaths.size())
+    if (hasLevelMap(index))
     {
-        return levelMapPaths[0];
+        return levelMapPaths[index];
     }
 
-    return levelMapPaths[index];
+    return levelMapPaths[0]; // Fallback
+}
+
+bool GameData::hasLevelMap(int index)
+{
+    return index >= 0 &&
+           index < levelMapPaths.size();
 }
 
 void GameData::resetLevel()

@@ -7,7 +7,9 @@ WaveManager::WaveManager()
     int health = 100;
     float speed = 100;
     int points = 50;
-
+    // TODO
+    // Need to add more waves and probably make them dynamic so they can be
+    // calculated based on level
     allWaves = {
         Wave::create({
             SpawnGroup::create(EnemyType::BASIC, 8, 1.0f, 0.0f, EnemyStats::create(health, speed, points)),

@@ -10,8 +10,10 @@
 #include "MenuState.h"
 #include "GameOverState.h"
 
-GameOverState::GameOverState(GameData &data, StateManager &manager, sf::RenderWindow &win)
+GameOverState::GameOverState(GameData &data, StateManager &manager, sf::RenderWindow &win,
+                             GameOverStateConfig config)
     : gameData(data), stateManager(manager), window(win),
+      stateConfig(config),
       isAskingForPlayerName(false),
       playerHasHighScore(false),
       playerName(""),
@@ -28,9 +30,9 @@ GameOverState::GameOverState(GameData &data, StateManager &manager, sf::RenderWi
 
     // Configure text
     gameOverText.setFont(gameData.gameFont);
-    gameOverText.setString("Game Over");
+    gameOverText.setString(stateConfig.titleText);
     gameOverText.setCharacterSize(60);
-    gameOverText.setFillColor(sf::Color::Red);
+    gameOverText.setFillColor(stateConfig.titleTextColour);
 
     finalScoreText.setFont(gameData.gameFont);
     finalScoreText.setString(GameUtils::formatScoreText(calculateFinalScore()));
@@ -255,5 +257,7 @@ bool GameOverState::checkIfHighScore()
 
 int GameOverState::calculateFinalScore()
 {
-    return 0;
+    return gameData.getPlayerScore() +
+           gameData.getPlayerGold() +
+           (gameData.getPlayerLives() * 100);
 }

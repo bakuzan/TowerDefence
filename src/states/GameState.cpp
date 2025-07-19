@@ -8,6 +8,7 @@
 #include "constants/TowerChange.h"
 #include "constants/TowerType.h"
 #include "data/TrayOption.h"
+#include "data/GameOverStateConfig.h"
 #include "entities/RangedTower.h"
 
 #include "GameState.h"
@@ -159,16 +160,31 @@ void GameState::update(sf::Time deltaTime, sf::RenderWindow &window)
             }
             else
             {
-                // TODO Populate the results text.
-                std::string statsText = std::format("Cleared level {}!", level + 1);
-                uiManager.hideTray();
-                phaseManager.setPhase(Phase::RESULTS);
-                uiManager.showResultsPanel(statsText, [this]()
-                                           { level++;
+                if (gameData.hasLevelMap(level + 1))
+                {
+                    // TODO Populate the results text.
+                    std::string statsText = std::format("Cleared level {}!", level + 1);
+                    uiManager.hideTray();
+                    phaseManager.setPhase(Phase::RESULTS);
+                    uiManager.showResultsPanel(statsText, [this]()
+                                               { level++;
                                             uiManager.hideResultsPanel(); 
                                             loadMap(gameData.getLevelMap(level)); 
                                             phaseManager.setPhase(Phase::PLACEMENT); 
                                             uiManager.setButtonVisible("StartCombat", true); });
+                }
+                else
+                {
+                    // In the event there are no more maps:
+                    // Trigger GameOverState, but configured to "successful"
+                    stateManager.pushState(
+                        std::make_unique<GameOverState>(gameData,
+                                                        stateManager,
+                                                        window,
+                                                        GameOverStateConfig::init(
+                                                            "Cleared!",
+                                                            sf::Color::Green)));
+                }
             }
         }
 
