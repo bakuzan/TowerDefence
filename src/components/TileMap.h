@@ -32,7 +32,7 @@ private:
     int surfaceHeight;
 
 private:
-    sf::IntRect getTileRect(TileId tileId, int x, int y);
+    sf::IntRect getTileRect(TileId tileId, int row, int x, int y);
     PathType resolvePathType(int x, int y);
     void extractImportantTileIndexes(TileId tileId, int colIndex, int rowIndex);
 

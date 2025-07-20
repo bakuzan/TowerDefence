@@ -3,6 +3,7 @@
 #include <queue>
 #include <cassert>
 
+#include "components/SettingsManager.h"
 #include "constants/Constants.h"
 #include "TileMap.h"
 
@@ -90,6 +91,8 @@ void TileMap::render(sf::RenderWindow &window,
     sf::Sprite sprite;
     sprite.setTexture(textureAtlas);
 
+    const int row = static_cast<int>(SettingsManager::getInstance().getEnvironmentType());
+
     for (int y = 0; y < mapHeight; ++y)
     {
         for (int x = 0; x < mapWidth; ++x)
@@ -104,7 +107,7 @@ void TileMap::render(sf::RenderWindow &window,
                              : TileId::TOWER_SPOT;
             }
 
-            sprite.setTextureRect(getTileRect(tileId, x, y));
+            sprite.setTextureRect(getTileRect(tileId, row, x, y));
             sprite.setOrigin(tileWidth / 2, 0);
             sprite.setPosition(tileIndexToIsoPoint(x, y));
             window.draw(sprite);
@@ -157,7 +160,8 @@ sf::Vector2i TileMap::isoPointToTileIndex(const sf::Vector2f &isoPoint)
 
 // Privates
 
-sf::IntRect TileMap::getTileRect(TileId tileId, int x, int y)
+sf::IntRect TileMap::getTileRect(TileId tileId, int row,
+                                 int x, int y)
 {
     int id = static_cast<int>(tileId);
 
@@ -166,7 +170,8 @@ sf::IntRect TileMap::getTileRect(TileId tileId, int x, int y)
         id = 2 + static_cast<int>(resolvePathType(x, y));
     }
 
-    return sf::IntRect(id * tileWidth, 0, tileWidth, tileHeight);
+    return sf::IntRect(id * tileWidth, row * tileHeight,
+                       tileWidth, tileHeight);
 }
 
 PathType TileMap::resolvePathType(int x, int y)

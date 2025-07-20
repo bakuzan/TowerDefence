@@ -2,6 +2,7 @@
 #include "GameState.h"
 #include "utils/InputUtils.h"
 #include "MenuState.h"
+#include "SettingsState.h"
 
 MenuState::MenuState(GameData &data, StateManager &manager, sf::RenderWindow &win)
     : gameData(data), stateManager(manager), window(win)
@@ -20,13 +21,12 @@ MenuState::MenuState(GameData &data, StateManager &manager, sf::RenderWindow &wi
     buttons.emplace_back("New", data.gameFont, "New Game", sf::Vector2f(center.x - 100.f, center.y - 60.f),
                          [this]()
                          { stateManager.changeState(std::make_unique<GameState>(gameData, stateManager, window)); });
-    buttons.emplace_back("Exit", data.gameFont, "Exit", sf::Vector2f(center.x - 100.f, center.y + buttonSpacing),
+    buttons.emplace_back("Settings", data.gameFont, "Settings", sf::Vector2f(center.x - 100.f, center.y + buttonSpacing),
+                         [this]()
+                         { stateManager.changeState(std::make_unique<SettingsState>(gameData, stateManager, window)); });
+    buttons.emplace_back("Exit", data.gameFont, "Exit", sf::Vector2f(center.x - 100.f, center.y + (buttonSpacing * 2.0f)),
                          [this]()
                          { window.close(); });
-
-    // Set up the background
-    background.setSize(sf::Vector2f(800, 600));
-    background.setFillColor(sf::Color(13, 55, 13));
 
     // To ensure positioning is updated relative to window resizing
     updateMenuItemPositions();
@@ -57,7 +57,6 @@ void MenuState::update(sf::Time deltaTime, sf::RenderWindow &window)
 void MenuState::render(sf::RenderWindow &window)
 {
     window.setView(menuView);
-    window.draw(background);
     window.draw(gameTitle);
 
     for (const auto &button : buttons)
@@ -72,13 +71,11 @@ void MenuState::updateMenuItemPositions()
     sf::Vector2f viewCenter = menuView.getCenter();
     sf::Vector2f viewSize = menuView.getSize();
 
-    background.setSize(viewSize);
-    background.setPosition(viewCenter - viewSize / 2.0f);
-
     gameTitle.setPosition(viewCenter.x - viewSize.x / 2.f + 25.f,
                           viewCenter.y - viewSize.y / 2.f + 25.f);
 
     float offsetX = Constants::BUTTON_WIDTH / 2.0f;
     buttons[0].setPosition(sf::Vector2f(viewCenter.x - offsetX, viewCenter.y - (buttonSpacing / 2.0f)));
     buttons[1].setPosition(sf::Vector2f(viewCenter.x - offsetX, viewCenter.y + (buttonSpacing / 2.0f)));
+    buttons[2].setPosition(sf::Vector2f(viewCenter.x - offsetX, viewCenter.y + (buttonSpacing * 1.5f)));
 }

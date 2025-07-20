@@ -1,18 +1,21 @@
-#ifndef MENUSTATE_H
-#define MENUSTATE_H
+#ifndef SETTINGSSTATE_H
+#define SETTINGSSTATE_H
+
+#include <SFML/Graphics.hpp>
 
 #include "ui/Button.h"
 #include "core/GameData.h"
 #include "core/State.h"
 #include "core/StateManager.h"
+#include "data/EnvironmentOption.h"
 
-class MenuState : public State
+class SettingsState : public State
 {
 private:
     GameData &gameData;
     StateManager &stateManager;
     sf::RenderWindow &window;
-    sf::View menuView;
+    sf::View settingsView;
 
     sf::Text gameTitle;
 
@@ -20,16 +23,19 @@ private:
     std::vector<Button> buttons;
     int selectedButtonIndex = 0;
 
+    std::vector<EnvironmentOption> envOptions;
+
 private:
     void updateMenuItemPositions();
+    void initEnvironmentOptions();
 
 public:
-    MenuState(GameData &data, StateManager &manager, sf::RenderWindow &window);
-    ~MenuState();
+    SettingsState(GameData &data, StateManager &manager, sf::RenderWindow &win);
+    ~SettingsState();
 
     void handleEvent(const sf::Event &event) override;
     void update(sf::Time deltaTime, sf::RenderWindow &window) override;
     void render(sf::RenderWindow &window) override;
 };
 
-#endif // MENUSTATE_H
+#endif // SETTINGSSTATE_H
