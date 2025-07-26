@@ -25,6 +25,8 @@ private:
 
     std::vector<EnvironmentOption> envOptions;
 
+    bool shouldReturnToMenuState;
+
 private:
     void updateMenuItemPositions();
     void initEnvironmentOptions();

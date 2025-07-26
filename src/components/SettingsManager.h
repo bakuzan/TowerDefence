@@ -14,7 +14,7 @@ private:
     EnvironmentType environmentType = EnvironmentType::SPRING;
 
 private:
-    SettingsManager() = default;
+    SettingsManager();
     ~SettingsManager() = default;
 
     void load();
@@ -23,7 +23,6 @@ public:
     static SettingsManager &getInstance()
     {
         static SettingsManager instance;
-        instance.load();
         return instance;
     }
 

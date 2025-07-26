@@ -5,6 +5,11 @@
 
 #include "SettingsManager.h"
 
+SettingsManager::SettingsManager()
+{
+    load();
+}
+
 // Publics
 
 void SettingsManager::save()

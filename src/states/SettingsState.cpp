@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include "SettingsState.h"
 #include "MenuState.h"
 
@@ -6,10 +8,16 @@
 #include "utils/InputUtils.h"
 
 SettingsState::SettingsState(GameData &data, StateManager &manager, sf::RenderWindow &win)
-    : gameData(data), stateManager(manager), window(win)
+    : gameData(data), stateManager(manager), window(win),
+      shouldReturnToMenuState(false)
 {
+    std::cerr << "[SettingsState] Constructing state\n";
+    std::cerr << "[SettingsState] settingsView size: "
+              << settingsView.getSize().x << ", " << settingsView.getSize().y
+              << "\n";
+
     buttonSpacing = Constants::BUTTON_HEIGHT + 10.f;
-    window.setView(settingsView);
+    // window.setView(settingsView);
     sf::Vector2f viewSize = settingsView.getSize();
 
     // Setup title
@@ -22,11 +30,11 @@ SettingsState::SettingsState(GameData &data, StateManager &manager, sf::RenderWi
     buttons.emplace_back("Save", data.gameFont, "Save", sf::Vector2f(viewSize.x - Constants::BUTTON_WIDTH, viewSize.y - buttonSpacing),
                          [this]()
                          { SettingsManager::getInstance().save();
-                            stateManager.changeState(std::make_unique<MenuState>(gameData, stateManager, window)); });
+                            shouldReturnToMenuState=true; });
     buttons.emplace_back("Back", data.gameFont, "Back", sf::Vector2f(10.0f, viewSize.y - buttonSpacing),
                          [this]()
                          { SettingsManager::getInstance().reset();
-                            stateManager.changeState(std::make_unique<MenuState>(gameData, stateManager, window)); });
+                            shouldReturnToMenuState=true; });
 
     initEnvironmentOptions();
 
@@ -43,6 +51,7 @@ SettingsState::~SettingsState()
 
 void SettingsState::handleEvent(const sf::Event &event)
 {
+    std::cerr << "[HandleEvent]...\n";
     InputUtils::handleButtonEvent(event, buttons, window, selectedButtonIndex);
 
     if (event.type == sf::Event::Resized)
@@ -68,11 +77,16 @@ void SettingsState::handleEvent(const sf::Event &event)
 
 void SettingsState::update(sf::Time deltaTime, sf::RenderWindow &window)
 {
-    gameData.audioManager.cleanupSounds();
+    std::cerr << "[Update]...\n";
+    if (shouldReturnToMenuState)
+    {
+        stateManager.changeState(std::make_unique<MenuState>(gameData, stateManager, window));
+    }
 }
 
 void SettingsState::render(sf::RenderWindow &window)
 {
+    std::cerr << "[Render] Drawing buttons...\n";
     window.setView(settingsView);
     window.draw(gameTitle);
 
@@ -103,18 +117,21 @@ void SettingsState::render(sf::RenderWindow &window)
 
 void SettingsState::updateMenuItemPositions()
 {
+    std::cerr << "[SettingsState] updateMenuItemPositions\n";
     sf::Vector2f viewCenter = settingsView.getCenter();
     sf::Vector2f viewSize = settingsView.getSize();
 
-    gameTitle.setPosition(viewCenter.x - viewSize.x / 2.f + 25.f,
-                          viewCenter.y - viewSize.y / 2.f + 25.f);
-
+    // gameTitle.setPosition(viewCenter.x - viewSize.x / 2.f + 25.f,
+    //                       viewCenter.y - viewSize.y / 2.f + 25.f);
+    std::cerr << "[SettingsState] updateMenuItemPositions...buttons\n";
     buttons[0].setPosition(sf::Vector2f(viewSize.x - Constants::BUTTON_WIDTH - 10.0f, viewSize.y - buttonSpacing));
     buttons[1].setPosition(sf::Vector2f(10.0f, viewSize.y - buttonSpacing));
+    std::cerr << "[SettingsState] updateMenuItemPositions...buttons DONE\n";
 }
 
 void SettingsState::initEnvironmentOptions()
 {
+    std::cerr << "[SettingsState] initEnvironmentOptions\n";
     const std::vector<std::string> names = {"Spring", "Winter", "Desert"};
     const std::vector<EnvironmentType> types = {
         EnvironmentType::SPRING, EnvironmentType::WINTER, EnvironmentType::DESERT};
