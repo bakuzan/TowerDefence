@@ -72,12 +72,12 @@ void Enemy::render(sf::RenderWindow &window) const
     window.draw(sprite);
 }
 
-const EnemyID Enemy::getID() const
+EnemyID Enemy::getID() const
 {
     return id;
 }
 
-const EnemyType Enemy::getType() const
+EnemyType Enemy::getType() const
 {
     return type;
 }
@@ -92,7 +92,7 @@ bool Enemy::hasReachedGoal() const
     return currentPathIndex + 1 >= path.size();
 }
 
-const int Enemy::getHealth() const
+int Enemy::getHealth() const
 {
     return stats.health;
 }
@@ -103,7 +103,7 @@ void Enemy::applyDamage(int adjustment)
     damageFeedbackTimer = damageFlashDuration;
 }
 
-const int Enemy::getPointsValue() const
+int Enemy::getPointsValue() const
 {
     return stats.pointsValue;
 }

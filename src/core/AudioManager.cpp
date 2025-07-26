@@ -35,7 +35,7 @@ sf::Sound &AudioManager::getSound(AudioId uniqueId)
     return sounds.at(uniqueId);
 }
 
-const sf::Sound::Status AudioManager::getSoundStatus(AudioId uniqueId) const
+sf::Sound::Status AudioManager::getSoundStatus(AudioId uniqueId) const
 {
     const sf::Sound &sound = sounds.at(uniqueId);
     return sound.getStatus();

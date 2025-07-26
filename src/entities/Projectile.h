@@ -21,7 +21,7 @@ protected:
     bool canRemove;
 
 public:
-    Projectile(ProjectileType type,
+    Projectile(ProjectileType projectileType,
                const sf::Texture &texture, sf::IntRect textureRect,
                sf::Vector2f spawnPosition,
                float speed,
@@ -31,7 +31,7 @@ public:
     virtual void update(float deltaTime, const std::vector<std::unique_ptr<Enemy>> &enemies) = 0;
     void render(sf::RenderWindow &window) const;
 
-    const int getDamageInflicts() const;
+    int getDamageInflicts() const;
     const sf::Sprite &getSprite() const;
     bool canBeRemoved() const;
 };

@@ -3,8 +3,9 @@
 Tower::Tower(TowerType towerType,
              const sf::Texture &texture, const std::vector<sf::IntRect> &rects,
              sf::Vector2f position)
-    : textureRects(rects),
-      type(towerType), level(1),
+    : type(towerType),
+      textureRects(rects),
+      level(1),
       tileOriginPosition(position)
 {
     sprite.setTexture(texture);
@@ -22,12 +23,12 @@ void Tower::render(sf::RenderWindow &window) const
     window.draw(sprite);
 }
 
-const int Tower::getLevel() const
+int Tower::getLevel() const
 {
     return level;
 }
 
-const TowerType Tower::getType() const
+TowerType Tower::getType() const
 {
     return type;
 }
@@ -41,7 +42,7 @@ void Tower::levelUp()
 
 void Tower::updateTextureRect(int textureIndex, float verticalOffset)
 {
-    if (textureIndex < textureRects.size())
+    if (textureIndex < static_cast<int>(textureRects.size()))
     {
         sf::IntRect rect = textureRects[textureIndex];
         sprite.setTextureRect(rect);

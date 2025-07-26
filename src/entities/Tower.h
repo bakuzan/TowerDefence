@@ -11,9 +11,9 @@ class Tower
 {
 protected:
     TowerType type;
-    int level;
-
     const std::vector<sf::IntRect> &textureRects;
+
+    int level;
     sf::Sprite sprite;
     sf::Vector2f tileOriginPosition;
 
@@ -29,8 +29,8 @@ public:
     virtual void update(float dt) = 0;
     virtual void render(sf::RenderWindow &window) const;
 
-    const int getLevel() const;
-    const TowerType getType() const;
+    int getLevel() const;
+    TowerType getType() const;
 
     void levelUp();
 };

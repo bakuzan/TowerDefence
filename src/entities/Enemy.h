@@ -36,15 +36,15 @@ public:
     virtual void update(float dt);
     void render(sf::RenderWindow &window) const;
 
-    const EnemyID getID() const;
-    const EnemyType getType() const;
+    EnemyID getID() const;
+    EnemyType getType() const;
     const sf::Sprite &getSprite() const;
     bool hasReachedGoal() const;
 
-    const int getHealth() const;
+    int getHealth() const;
     void applyDamage(int adjustment);
 
-    const int getPointsValue() const;
+    int getPointsValue() const;
     sf::Vector2f getVelocity() const;
 };
 

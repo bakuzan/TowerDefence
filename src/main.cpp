@@ -21,6 +21,12 @@ void LoadWindowIcon(sf::Window &window)
 
 int main()
 {
+    sf::err().rdbuf(std::cerr.rdbuf());
+    std::set_terminate([]
+                       {
+                        std::cerr << "[FATAL] Uncaught exception\n";
+                        std::abort(); });
+
     std::srand(std::time(0)); // Seed for rand
 
     sf::RenderWindow window(sf::VideoMode(800, 600), "Tower Defence");

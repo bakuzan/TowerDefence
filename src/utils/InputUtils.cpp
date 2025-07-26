@@ -75,7 +75,7 @@ namespace InputUtils
         // Update button hover states
         for (size_t i = 0; i < buttons.size(); ++i)
         {
-            buttons[i].onHover(i == selectedButtonIndex);
+            buttons[i].onHover(static_cast<int>(i) == selectedButtonIndex);
         }
     }
 }

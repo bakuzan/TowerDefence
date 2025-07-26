@@ -16,8 +16,8 @@
 class UIManager
 {
 private:
-    const GameData &gameData;
     sf::RenderWindow *window;
+    const GameData &gameData;
     TrayUI trayUI;
 
     sf::Text scoreText;

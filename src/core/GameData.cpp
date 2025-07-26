@@ -39,7 +39,7 @@ std::unordered_map<sf::Vector2i, TowerSpot> &GameData::getTowerSpots()
     return towerSpots;
 }
 
-const int GameData::getPlayerGold() const
+int GameData::getPlayerGold() const
 {
     return playerGold;
 }
@@ -49,7 +49,7 @@ void GameData::updatePlayerGold(int adjustment)
     playerGold = std::max(0, playerGold + adjustment);
 }
 
-const int GameData::getPlayerLives() const
+int GameData::getPlayerLives() const
 {
     return playerLives;
 }
@@ -59,7 +59,7 @@ void GameData::updatePlayerLives(int adjustment)
     playerLives = std::max(0, playerLives + adjustment);
 }
 
-const int GameData::getPlayerScore() const
+int GameData::getPlayerScore() const
 {
     return playerScore;
 }
@@ -92,7 +92,7 @@ std::string GameData::getLevelMap(int index)
 bool GameData::hasLevelMap(int index)
 {
     return index >= 0 &&
-           index < levelMapPaths.size();
+           index < static_cast<int>(levelMapPaths.size());
 }
 
 void GameData::resetLevel()

@@ -28,7 +28,7 @@ private:
                                             int playerGold,
                                             std::function<void(int)> selectionCallback);
 
-    const int getUpgradeCost(const Tower &tower) const;
+    int getUpgradeCost(const Tower &tower) const;
 
 public:
     TrayOptionManager(const TextureManager &tm,
@@ -39,9 +39,9 @@ public:
                                            int playerGold,
                                            std::function<void(int)> selectionCallback);
 
-    const int getOptionCost(TowerType towerType) const;
-    const int getOptionCost(TowerSpot &spot) const;
-    const int getRemoveValue(TowerSpot &spot) const;
+    int getOptionCost(TowerType towerType) const;
+    int getOptionCost(TowerSpot &spot) const;
+    int getRemoveValue(TowerSpot &spot) const;
 };
 
 #endif // TRAYOPTIONMANAGER_H

@@ -129,6 +129,9 @@ void GameOverState::handleEvent(const sf::Event &event)
 
 void GameOverState::update(sf::Time deltaTime, sf::RenderWindow &window)
 {
+    (void)deltaTime;
+    (void)window;
+
     gameData.audioManager.cleanupSounds();
 }
 

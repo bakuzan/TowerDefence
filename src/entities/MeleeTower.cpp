@@ -17,6 +17,8 @@ MeleeTower::~MeleeTower()
 
 void MeleeTower::update(float dt)
 {
+    (void)dt; // ignored
+
     int textureIndex = calculateTextureIndex();
     updateTextureRect(textureIndex, (Constants::TILE_SURFACE_HEIGHT / 4.0f));
 }

@@ -113,7 +113,7 @@ void UIManager::showTray(std::vector<TrayOption> options)
 {
     trayUI.clearOptions();
 
-    for (const TrayOption option : options)
+    for (const TrayOption &option : options)
     {
         trayUI.addOption(option);
     }

@@ -15,12 +15,12 @@ struct TowerSpot
 {
     std::unique_ptr<Tower> tower = nullptr;
 
-    const bool hasTower() const
+    bool hasTower() const
     {
         return tower != nullptr;
     }
 
-    const bool isUpgradeable() const
+    bool isUpgradeable() const
     {
         return tower && tower->getLevel() < 3;
     }

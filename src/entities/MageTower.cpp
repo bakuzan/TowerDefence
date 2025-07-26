@@ -19,6 +19,8 @@ MageTower::~MageTower()
 
 void MageTower::update(float dt)
 {
+    (void)dt; // ignore
+
     updateTextureRect(level - 1, (Constants::TILE_SURFACE_HEIGHT / 3.0f));
 }
 

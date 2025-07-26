@@ -13,6 +13,15 @@ file(GLOB_RECURSE SOURCES "src/**/*.cpp" "src/*.cpp")
 message(STATUS "Source files: ${SOURCES}")
 add_executable(${PROJECT_NAME} ${SOURCES})
 
+# Enable maximum compiler warnings
+if (MSVC)
+    target_compile_options(${PROJECT_NAME} PRIVATE /W4 /WX)
+else()
+    target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -Wpedantic -Werror)
+    # set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address -g")
+endif()
+
+
 # Include directories
 target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/src)
 

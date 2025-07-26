@@ -1,11 +1,12 @@
 #include "Projectile.h"
 
-Projectile::Projectile(ProjectileType type,
+Projectile::Projectile(ProjectileType projectileType,
                        const sf::Texture &texture, sf::IntRect textureRect,
                        sf::Vector2f spawnPosition,
                        float speed,
                        int damage)
-    : speed(speed), damage(damage),
+    : type(projectileType),
+      speed(speed), damage(damage),
       canRemove(false)
 {
     sprite.setTexture(texture);
@@ -20,7 +21,7 @@ void Projectile::render(sf::RenderWindow &window) const
     window.draw(sprite);
 }
 
-const int Projectile::getDamageInflicts() const
+int Projectile::getDamageInflicts() const
 {
     return damage;
 }

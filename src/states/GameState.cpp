@@ -362,6 +362,8 @@ void GameState::handleTowerOption(sf::Vector2i tileIndex,
                                   TowerSpot &spot,
                                   int optionId)
 {
+    (void)tileIndex;
+
     TowerChange change = static_cast<TowerChange>(optionId);
 
     switch (change)

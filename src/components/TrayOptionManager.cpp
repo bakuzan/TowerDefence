@@ -33,17 +33,17 @@ std::vector<TrayOption> TrayOptionManager::getTrayOptions(
                : getPlacementOptions(playerGold, selectionCallback);
 }
 
-const int TrayOptionManager::getOptionCost(TowerType towerType) const
+int TrayOptionManager::getOptionCost(TowerType towerType) const
 {
     return towerCosts.at(towerType);
 }
 
-const int TrayOptionManager::getOptionCost(TowerSpot &spot) const
+int TrayOptionManager::getOptionCost(TowerSpot &spot) const
 {
     return getUpgradeCost(*spot.tower);
 }
 
-const int TrayOptionManager::getRemoveValue(TowerSpot &spot) const
+int TrayOptionManager::getRemoveValue(TowerSpot &spot) const
 {
     int towerValue = towerCosts.at(spot.tower->getType()) * (spot.tower->getLevel());
     return static_cast<int>(towerValue * REMOVE_MULTIPLIER);
@@ -125,7 +125,7 @@ std::vector<TrayOption> TrayOptionManager::getTowerOptions(
     return trayOptions;
 }
 
-const int TrayOptionManager::getUpgradeCost(const Tower &tower) const
+int TrayOptionManager::getUpgradeCost(const Tower &tower) const
 {
     return towerCosts.at(tower.getType()) * (tower.getLevel() + 1);
 }

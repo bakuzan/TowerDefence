@@ -66,6 +66,9 @@ void PauseState::handleEvent(const sf::Event &event)
 
 void PauseState::update(sf::Time deltaTime, sf::RenderWindow &window)
 {
+    (void)deltaTime;
+    (void)window;
+
     gameData.audioManager.cleanupSounds();
 }
 
@@ -85,7 +88,6 @@ void PauseState::render(sf::RenderWindow &window)
 void PauseState::updateMenuItemPositions()
 {
     sf::Vector2f viewCenter = pauseView.getCenter();
-    sf::Vector2f viewSize = pauseView.getSize();
     sf::Vector2f backgroundSize = background.getSize();
 
     background.setPosition(

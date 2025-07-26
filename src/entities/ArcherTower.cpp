@@ -20,6 +20,7 @@ ArcherTower::~ArcherTower()
 
 void ArcherTower::update(float dt)
 {
+    (void)dt; // safely ignore parameter
     updateTextureRect(level - 1, (Constants::TILE_SURFACE_HEIGHT / 4.0f));
 }
 

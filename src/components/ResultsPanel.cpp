@@ -19,7 +19,6 @@ void ResultsPanel::init(const sf::Font &font,
                         const sf::RenderWindow &window,
                         std::function<void()> nextLevelCallback)
 {
-    sf::Vector2u windowSize = window.getSize();
     sf::View view = window.getDefaultView();
     sf::Vector2f viewSize = view.getSize();
     sf::Vector2f viewCenter = view.getCenter();

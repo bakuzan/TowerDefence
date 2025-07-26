@@ -11,6 +11,10 @@
 class TrayUI
 {
 private:
+    sf::RenderWindow *window;
+    const sf::Font &font;
+    sf::Vector2f position;
+
     sf::RectangleShape background, shadow;
     std::vector<sf::Sprite> optionIcons;
     std::vector<sf::Text> optionTexts;
@@ -20,10 +24,6 @@ private:
     sf::Text tooltipText;
     sf::Vector2f tooltipPosition;
     bool isTooltipVisible = false;
-
-    sf::Vector2f position;
-    sf::RenderWindow *window;
-    const sf::Font &font;
 
     bool isVisible;
     std::function<void(const TrayOption &option)> onOptionSelectedCallback;

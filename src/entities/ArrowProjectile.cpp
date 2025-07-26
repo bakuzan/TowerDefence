@@ -33,6 +33,8 @@ ArrowProjectile::~ArrowProjectile()
 void ArrowProjectile::update(float deltaTime,
                              const std::vector<std::unique_ptr<Enemy>> &enemies)
 {
+    (void)enemies; // safely ignore parameter
+
     elapsedTime += deltaTime;
 
     float t = elapsedTime / totalTimeToTarget;

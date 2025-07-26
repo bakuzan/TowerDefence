@@ -32,7 +32,7 @@ public:
     void loadSound(AudioId uniqueId, const std::string &filename);
 
     sf::Sound &getSound(AudioId uniqueId);
-    const sf::Sound::Status getSoundStatus(AudioId uniqueId) const;
+    sf::Sound::Status getSoundStatus(AudioId uniqueId) const;
 
     void playSound(AudioId uniqueId, bool loop = false);
     void playPooledSound(AudioId uniqueId);

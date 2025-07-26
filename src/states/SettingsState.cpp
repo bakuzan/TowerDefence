@@ -17,7 +17,7 @@ SettingsState::SettingsState(GameData &data, StateManager &manager, sf::RenderWi
               << "\n";
 
     buttonSpacing = Constants::BUTTON_HEIGHT + 10.f;
-    // window.setView(settingsView);
+    window.setView(settingsView);
     sf::Vector2f viewSize = settingsView.getSize();
 
     // Setup title
@@ -77,6 +77,8 @@ void SettingsState::handleEvent(const sf::Event &event)
 
 void SettingsState::update(sf::Time deltaTime, sf::RenderWindow &window)
 {
+    (void)deltaTime;
+
     std::cerr << "[Update]...\n";
     if (shouldReturnToMenuState)
     {
@@ -121,9 +123,9 @@ void SettingsState::updateMenuItemPositions()
     sf::Vector2f viewCenter = settingsView.getCenter();
     sf::Vector2f viewSize = settingsView.getSize();
 
-    // gameTitle.setPosition(viewCenter.x - viewSize.x / 2.f + 25.f,
-    //                       viewCenter.y - viewSize.y / 2.f + 25.f);
-    std::cerr << "[SettingsState] updateMenuItemPositions...buttons\n";
+    gameTitle.setPosition(viewCenter.x - viewSize.x / 2.f + 25.f,
+                          viewCenter.y - viewSize.y / 2.f + 25.f);
+
     buttons[0].setPosition(sf::Vector2f(viewSize.x - Constants::BUTTON_WIDTH - 10.0f, viewSize.y - buttonSpacing));
     buttons[1].setPosition(sf::Vector2f(10.0f, viewSize.y - buttonSpacing));
     std::cerr << "[SettingsState] updateMenuItemPositions...buttons DONE\n";

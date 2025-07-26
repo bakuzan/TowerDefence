@@ -41,13 +41,13 @@ public:
 
     std::unordered_map<sf::Vector2i, TowerSpot> &getTowerSpots();
 
-    const int getPlayerGold() const;
+    int getPlayerGold() const;
     void updatePlayerGold(int adjustment);
 
-    const int getPlayerLives() const;
+    int getPlayerLives() const;
     void updatePlayerLives(int adjustment);
 
-    const int getPlayerScore() const;
+    int getPlayerScore() const;
     void updatePlayerScore(int adjustment);
 
     std::vector<std::unique_ptr<Enemy>> &getEnemies();
