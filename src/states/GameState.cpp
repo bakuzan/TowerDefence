@@ -5,6 +5,7 @@
 #include "utils/InputUtils.h"
 #include "utils/CollisionUtils.h"
 #include "constants/Constants.h"
+#include "constants/SoldierType.h"
 #include "constants/TowerChange.h"
 #include "constants/TowerType.h"
 #include "data/TrayOption.h"
@@ -26,6 +27,7 @@ GameState::GameState(GameData &data, StateManager &manager, sf::RenderWindow &wi
       enemySpawnManager(data.rectManager,
                         gameData.textureManager.getTexture(TextureId::ENEMIES)),
       projectileSpawnManager(data.rectManager),
+      soldierSpawnManager(data.rectManager),
       zoomFactor(2.5f),
       moveSpeed(60.0f),
       level(0)
@@ -215,6 +217,7 @@ void GameState::update(sf::Time deltaTime, sf::RenderWindow &window)
     }
 
     // Tower handling
+    auto &soldiers = gameData.getSoldiers();
     auto &projectiles = gameData.getProjectiles();
     std::unordered_map<sf::Vector2i, TowerSpot> &towerSpots = gameData.getTowerSpots();
     for (const auto &[position, spot] : towerSpots)
@@ -222,6 +225,20 @@ void GameState::update(sf::Time deltaTime, sf::RenderWindow &window)
         if (spot.hasTower())
         {
             spot.tower->update(dt);
+
+            if (auto meleeTower = dynamic_cast<MeleeTower *>(spot.tower.get()))
+            {
+                if (auto soldierData = meleeTower->getSoldierData(dt))
+                {
+                    auto newSoldier = soldierSpawnManager.spawnSoldier(
+                        gameData.textureManager.getTexture(TextureId::SOLDIER),
+                        soldiers,
+                        *soldierData,
+                        tileMap.tileIndexToIsoPoint(position.x, position.y - 1, true));
+
+                    meleeTower->setDeployedSoldier(newSoldier);
+                }
+            }
 
             if (auto rangedTower = dynamic_cast<RangedTower *>(spot.tower.get()))
             {
@@ -233,6 +250,22 @@ void GameState::update(sf::Time deltaTime, sf::RenderWindow &window)
                         *projectile);
                 }
             }
+        }
+    }
+
+    // Soldier handling
+    for (auto soldierIt = soldiers.begin(); soldierIt != soldiers.end();)
+    {
+        auto &soldier = **soldierIt;
+        soldier.update(dt);
+
+        if (soldier.isDead())
+        {
+            soldierIt = soldiers.erase(soldierIt);
+        }
+        else
+        {
+            ++soldierIt;
         }
     }
 
@@ -310,6 +343,12 @@ void GameState::render(sf::RenderWindow &window)
         }
     }
 
+    auto &soldiers = gameData.getSoldiers();
+    for (const auto &soldier : soldiers)
+    {
+        soldier->render(window);
+    }
+
     auto &projectiles = gameData.getProjectiles();
     for (const auto &projectile : projectiles)
     {
@@ -375,6 +414,7 @@ void GameState::handleTowerOption(sf::Vector2i tileIndex,
     case TowerChange::REMOVE:
         gameData.updatePlayerGold(trayOptionManager.getRemoveValue(spot));
         spot.removeTower();
+        // TODO If tower is melee, check and remove soldiers
         break;
     }
 }

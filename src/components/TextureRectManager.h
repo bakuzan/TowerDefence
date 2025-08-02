@@ -9,6 +9,7 @@
 #include "constants/TowerType.h"
 #include "constants/ProjectileType.h"
 #include "constants/IconType.h"
+#include "constants/SoldierType.h"
 
 class TextureRectManager
 {
@@ -17,12 +18,14 @@ private:
     std::unordered_map<EnemyType, sf::IntRect> enemyTextureRects;
     std::unordered_map<ProjectileType, sf::IntRect> projectileTextureRects;
     std::unordered_map<IconType, sf::IntRect> iconTextureRects;
+    std::unordered_map<SoldierType, sf::IntRect> soldierTextureRects;
 
 private:
     void initTowerTextureRects();
     void initEnemyTextureRects();
     void initProjectileTextureRects();
     void initIconTextureRects();
+    void initSoldierTextureRects();
 
 public:
     TextureRectManager();
@@ -34,6 +37,7 @@ public:
     const sf::IntRect &getTextureRect(EnemyType type) const;
     const sf::IntRect &getTextureRect(ProjectileType type) const;
     const sf::IntRect &getTextureRect(IconType type) const;
+    const sf::IntRect &getTextureRect(SoldierType type) const;
 };
 
 #endif // TEXTURERECTMANAGER_H

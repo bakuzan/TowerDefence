@@ -7,4 +7,5 @@ enum class TextureId
     ENEMIES,
     PROJECTILES,
     ICONS,
+    SOLDIER,
 };

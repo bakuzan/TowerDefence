@@ -9,6 +9,7 @@ GameData::GameData()
     textureManager.loadTexture(TextureId::ENEMIES, "resources/images/Enemies.png");
     textureManager.loadTexture(TextureId::PROJECTILES, "resources/images/Projectiles.png");
     textureManager.loadTexture(TextureId::ICONS, "resources/images/Icons.png");
+    textureManager.loadTexture(TextureId::SOLDIER, "resources/images/Soldiers.png");
 
     // Load audio
     // TODO
@@ -77,6 +78,11 @@ std::vector<std::unique_ptr<Enemy>> &GameData::getEnemies()
 std::vector<std::unique_ptr<Projectile>> &GameData::getProjectiles()
 {
     return projectiles;
+}
+
+std::vector<std::shared_ptr<Soldier>> &GameData::getSoldiers()
+{
+    return soldiers;
 }
 
 std::string GameData::getLevelMap(int index)

@@ -57,7 +57,7 @@ public:
     const sf::Vector2i &getExitSpot() const;
     const PathMap &getMapPaths() const;
 
-    sf::Vector2f tileIndexToIsoPoint(int x, int y);
+    sf::Vector2f tileIndexToIsoPoint(int x, int y, bool centered = false);
     sf::Vector2i isoPointToTileIndex(const sf::Vector2f &isoPoint);
 };
 

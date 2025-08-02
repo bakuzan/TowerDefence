@@ -140,10 +140,16 @@ const PathMap &TileMap::getMapPaths() const
     return mapPaths;
 }
 
-sf::Vector2f TileMap::tileIndexToIsoPoint(int x, int y)
+sf::Vector2f TileMap::tileIndexToIsoPoint(int x, int y, bool centered)
 {
     float screenX = (x - y) * (tileWidth / 2);
     float screenY = (x + y) * (surfaceHeight / 2);
+
+    if (centered)
+    {
+        screenY += surfaceHeight / 2;
+    }
+
     return {screenX, screenY};
 }
 

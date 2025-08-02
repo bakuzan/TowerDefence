@@ -6,6 +6,7 @@ TextureRectManager::TextureRectManager()
     initEnemyTextureRects();
     initProjectileTextureRects();
     initIconTextureRects();
+    initSoldierTextureRects();
 }
 
 TextureRectManager::~TextureRectManager()
@@ -40,12 +41,17 @@ const sf::IntRect &TextureRectManager::getTextureRect(IconType type) const
     return iconTextureRects.at(type);
 }
 
+const sf::IntRect &TextureRectManager::getTextureRect(SoldierType type) const
+{
+    return soldierTextureRects.at(type);
+}
+
 // Privates
 
 void TextureRectManager::initTowerTextureRects()
 {
     towerTextureRects[TowerType::MELEE] = {
-        {0, 0, 142, 154}, {154, 0, 142, 154}, {284, 0, 142, 154}, {426, 0, 142, 154}, {568, 0, 142, 154}, {710, 0, 142, 154}};
+        {1, 0, 140, 154}, {143, 0, 140, 154}, {285, 0, 140, 154}, {426, 0, 140, 154}, {568, 0, 140, 154}, {710, 0, 140, 154}};
 
     towerTextureRects[TowerType::ARCHER] = {
         {0, 154, 130, 165},
@@ -73,4 +79,11 @@ void TextureRectManager::initIconTextureRects()
 {
     iconTextureRects[IconType::COIN] = {5, 3, 23, 36};
     iconTextureRects[IconType::HEART] = {35, 3, 36, 35};
+}
+
+void TextureRectManager::initSoldierTextureRects()
+{
+    soldierTextureRects[SoldierType::BASIC] = {0, 0, 37, 53};
+    soldierTextureRects[SoldierType::SWORD] = {38, 0, 58, 53};
+    soldierTextureRects[SoldierType::SWORD_AND_SHIELD] = {97, 0, 70, 53};
 }

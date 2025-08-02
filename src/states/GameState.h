@@ -9,6 +9,7 @@
 
 #include "components/EnemySpawnManager.h"
 #include "components/ProjectileSpawnManager.h"
+#include "components/SoldierSpawnManager.h"
 #include "components/PhaseManager.h"
 #include "components/TileMap.h"
 #include "components/TrayOptionManager.h"
@@ -30,6 +31,7 @@ private:
 
     EnemySpawnManager enemySpawnManager;
     ProjectileSpawnManager projectileSpawnManager;
+    SoldierSpawnManager soldierSpawnManager;
     WaveManager waveManager;
 
     float zoomFactor;
