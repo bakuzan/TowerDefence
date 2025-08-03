@@ -58,6 +58,11 @@ void MeleeTower::setDeployedSoldier(const std::shared_ptr<Soldier> &soldier)
     deployedSoldier = soldier;
 }
 
+std::weak_ptr<Soldier> MeleeTower::getSoldier()
+{
+    return deployedSoldier;
+}
+
 // Privates
 
 int MeleeTower::calculateTextureIndex()

@@ -412,10 +412,28 @@ void GameState::handleTowerOption(sf::Vector2i tileIndex,
         spot.tower->levelUp();
         break;
     case TowerChange::REMOVE:
+    {
         gameData.updatePlayerGold(trayOptionManager.getRemoveValue(spot));
+
+        if (spot.tower->getType() == TowerType::MELEE)
+        {
+            auto &soldiers = gameData.getSoldiers();
+            auto *meleeTower = dynamic_cast<MeleeTower *>(spot.tower.get());
+
+            soldiers.erase(
+                std::remove_if(soldiers.begin(), soldiers.end(),
+                               [&meleeTower](const std::shared_ptr<Soldier> &s)
+                               {
+                                   auto towerSoldier = meleeTower->getSoldier().lock();
+                                   return towerSoldier &&
+                                          towerSoldier == s;
+                               }),
+                soldiers.end());
+        }
+
         spot.removeTower();
-        // TODO If tower is melee, check and remove soldiers
         break;
+    }
     }
 }
 

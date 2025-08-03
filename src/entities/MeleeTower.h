@@ -30,6 +30,7 @@ public:
 
     std::optional<SoldierSpawnData> getSoldierData(float dt);
     void setDeployedSoldier(const std::shared_ptr<Soldier> &soldier);
+    std::weak_ptr<Soldier> getSoldier();
 };
 
 #endif // MELEETOWER_H
