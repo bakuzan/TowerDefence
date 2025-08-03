@@ -39,9 +39,11 @@ public:
     EnemyID getID() const;
     EnemyType getType() const;
     const sf::Sprite &getSprite() const;
+    sf::Sprite &getSprite();
     bool hasReachedGoal() const;
 
     int getHealth() const;
+    int getDamageInflicts() const;
     void applyDamage(int adjustment);
 
     int getPointsValue() const;

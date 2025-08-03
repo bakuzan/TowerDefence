@@ -87,6 +87,11 @@ const sf::Sprite &Enemy::getSprite() const
     return sprite;
 }
 
+sf::Sprite &Enemy::getSprite()
+{
+    return sprite;
+}
+
 bool Enemy::hasReachedGoal() const
 {
     return currentPathIndex + 1 >= path.size();
@@ -95,6 +100,11 @@ bool Enemy::hasReachedGoal() const
 int Enemy::getHealth() const
 {
     return stats.health;
+}
+
+int Enemy::getDamageInflicts() const
+{
+    return stats.damage;
 }
 
 void Enemy::applyDamage(int adjustment)

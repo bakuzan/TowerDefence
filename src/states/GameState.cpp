@@ -259,7 +259,56 @@ void GameState::update(sf::Time deltaTime, sf::RenderWindow &window)
         auto &soldier = **soldierIt;
         soldier.update(dt);
 
-        if (soldier.isDead())
+        bool removeSoldier = false;
+        sf::FloatRect soldierBounds = soldier.getSprite().getGlobalBounds();
+
+        for (auto enemyIt = enemies.begin(); enemyIt != enemies.end();)
+        {
+            auto &enemy = **enemyIt;
+
+            sf::FloatRect enemyBounds = enemy.getSprite().getGlobalBounds();
+            sf::FloatRect intersection;
+
+            if (soldierBounds.intersects(enemyBounds, intersection))
+            {
+                sf::Vector2f direction = enemy.getSprite().getPosition() - soldier.getSprite().getPosition();
+                float length = std::sqrt(direction.x * direction.x + direction.y * direction.y);
+
+                if (length > 0.f)
+                {
+                    sf::Vector2f normalized = direction / length;
+
+                    float overlapMagnitude = std::sqrt(intersection.width * intersection.width +
+                                                       intersection.height * intersection.height);
+
+                    sf::Vector2f knockback = normalized * (overlapMagnitude / 2.f);
+
+                    enemy.applyDamage(soldier.getDamageInflicts());
+                    soldier.applyDamage(enemy.getDamageInflicts());
+
+                    if (enemy.getHealth() <= 0)
+                    {
+                        onEnemyDeath(enemy);
+                        enemyIt = enemies.erase(enemyIt);
+                        continue;
+                    }
+                    else
+                    {
+                        enemy.getSprite().move(knockback);
+                        // soldier.getSprite().move(-knockback);
+                        ++enemyIt;
+                    }
+
+                    if (soldier.isDead())
+                    {
+                        removeSoldier = true;
+                        break;
+                    }
+                }
+            }
+        }
+
+        if (removeSoldier)
         {
             soldierIt = soldiers.erase(soldierIt);
         }
@@ -288,8 +337,7 @@ void GameState::update(sf::Time deltaTime, sf::RenderWindow &window)
 
                 if (enemy.getHealth() <= 0)
                 {
-                    gameData.updatePlayerScore(enemy.getPointsValue());
-                    gameData.updatePlayerGold(enemy.getPointsValue()); // TODO check this...
+                    onEnemyDeath(enemy);
 
                     enemyIt = enemies.erase(enemyIt);
                 }
@@ -440,4 +488,10 @@ void GameState::handleTowerOption(sf::Vector2i tileIndex,
 void GameState::onPlayerDeath()
 {
     stateManager.pushState(std::make_unique<GameOverState>(gameData, stateManager, window));
+}
+
+void GameState::onEnemyDeath(Enemy &enemy)
+{
+    gameData.updatePlayerScore(enemy.getPointsValue());
+    gameData.updatePlayerGold(enemy.getPointsValue());
 }

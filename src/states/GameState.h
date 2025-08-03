@@ -15,6 +15,7 @@
 #include "components/TrayOptionManager.h"
 #include "components/UIManager.h"
 #include "components/WaveManager.h"
+#include "entities/Enemy.h"
 
 class GameState : public State
 {
@@ -49,6 +50,7 @@ private:
                            TowerSpot &spot,
                            int optionId);
     void onPlayerDeath();
+    void onEnemyDeath(Enemy &enemy);
 
 public:
     GameState(GameData &data, StateManager &manager, sf::RenderWindow &window);

@@ -43,11 +43,48 @@ void Soldier::update(float dt)
     sf::Vector2f movement = normalized * (distance / moveDuration) * dt;
 
     sprite.move(movement);
+
+    // Visual feedback for taking damage
+    if (damageFeedbackTimer > 0.0f)
+    {
+        damageFeedbackTimer -= dt;
+        sprite.setColor(sf::Color(240, 61, 61)); // Red tint
+    }
+    else
+    {
+        sprite.setColor(sf::Color(255, 255, 255)); // Normal
+    }
 }
 
 void Soldier::render(sf::RenderWindow &window) const
 {
     window.draw(sprite);
+}
+
+const sf::Sprite &Soldier::getSprite() const
+{
+    return sprite;
+}
+
+sf::Sprite &Soldier::getSprite()
+{
+    return sprite;
+}
+
+int Soldier::getHealth() const
+{
+    return health;
+}
+
+int Soldier::getDamageInflicts() const
+{
+    return attackDamage;
+}
+
+void Soldier::applyDamage(int adjustment)
+{
+    health = std::max(0, health - adjustment);
+    damageFeedbackTimer = damageFlashDuration;
 }
 
 bool Soldier::isDead() const

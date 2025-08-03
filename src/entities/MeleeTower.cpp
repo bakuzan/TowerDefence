@@ -50,7 +50,7 @@ std::optional<SoldierSpawnData> MeleeTower::getSoldierData(float dt)
     return SoldierSpawnData::create(SoldierType::BASIC,
                                     spawnPos,
                                     100,
-                                    15, 0.5f);
+                                    20, 0.5f);
 }
 
 void MeleeTower::setDeployedSoldier(const std::shared_ptr<Soldier> &soldier)

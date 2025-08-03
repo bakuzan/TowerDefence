@@ -13,6 +13,8 @@ private:
 
     sf::Vector2f target;
 
+    float damageFeedbackTimer;
+    static constexpr float damageFlashDuration = 0.1f;
     static constexpr float moveDuration = 1.0f;
 
 public:
@@ -24,6 +26,13 @@ public:
 
     void update(float dt);
     void render(sf::RenderWindow &window) const;
+
+    const sf::Sprite &getSprite() const;
+    sf::Sprite &getSprite();
+
+    int getHealth() const;
+    int getDamageInflicts() const;
+    void applyDamage(int adjustment);
 
     bool isDead() const;
 };

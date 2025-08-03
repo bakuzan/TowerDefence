@@ -3,11 +3,12 @@
 struct EnemyStats
 {
     int health;
+    int damage;
     float speed;
     int pointsValue;
 
-    static EnemyStats create(int health, float speed, int points)
+    static EnemyStats create(int health, int damage, float speed, int points)
     {
-        return {health, speed, points};
+        return {health, damage, speed, points};
     }
 };
