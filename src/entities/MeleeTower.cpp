@@ -6,7 +6,8 @@ MeleeTower::MeleeTower(const sf::Texture &texture, const std::vector<sf::IntRect
                        sf::Vector2f position)
     : Tower(TowerType::MELEE, texture, textureRects, position)
 {
-    // Constructor
+    int textureIndex = calculateTextureIndex();
+    updateTextureRect(textureIndex, (Constants::TILE_SURFACE_HEIGHT / 4.0f));
 }
 
 MeleeTower::~MeleeTower()
@@ -26,8 +27,6 @@ void MeleeTower::update(float dt)
 
 std::optional<SoldierSpawnData> MeleeTower::getSoldierData(float dt)
 {
-    spawnCooldownTimer += dt;
-
     // If soldier still exists, don't do anything
     if (auto soldierPtr = deployedSoldier.lock())
     {
@@ -36,6 +35,8 @@ std::optional<SoldierSpawnData> MeleeTower::getSoldierData(float dt)
             return std::nullopt;
         }
     }
+
+    spawnCooldownTimer += dt;
 
     if (spawnCooldownTimer < (spawnCooldown / level))
     {

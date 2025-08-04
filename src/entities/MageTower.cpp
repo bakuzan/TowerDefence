@@ -7,7 +7,7 @@ MageTower::MageTower(const sf::Texture &texture, const std::vector<sf::IntRect> 
                      sf::Vector2f position)
     : RangedTower(TowerType::MAGE, texture, textureRects, position)
 {
-    // Constructor
+    updateTextureRect(level - 1, (Constants::TILE_SURFACE_HEIGHT / 3.0f));
 }
 
 MageTower::~MageTower()

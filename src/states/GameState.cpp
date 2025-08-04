@@ -259,6 +259,12 @@ void GameState::update(sf::Time deltaTime, sf::RenderWindow &window)
         auto &soldier = **soldierIt;
         soldier.update(dt);
 
+        if (soldier.isDead())
+        {
+            soldierIt = soldiers.erase(soldierIt);
+            continue;
+        }
+
         bool removeSoldier = false;
         sf::FloatRect soldierBounds = soldier.getSprite().getGlobalBounds();
 
