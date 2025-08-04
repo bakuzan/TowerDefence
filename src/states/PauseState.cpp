@@ -24,16 +24,16 @@ PauseState::PauseState(GameData &data, StateManager &manager, sf::RenderWindow &
     pauseText.setFillColor(sf::Color::White);
 
     // Add buttons
-    buttons.emplace_back("Resume", data.gameFont, "Resume", sf::Vector2f(center.x - 100.f, center.y - buttonSpacing),
+    buttons.emplace_back("Resume", gameData.gameFont, "Resume", sf::Vector2f(center.x - 100.f, center.y - buttonSpacing),
                          [this]()
                          { stateManager.popState(); });
-    buttons.emplace_back("Quit", data.gameFont, "Quit Game", sf::Vector2f(center.x - 100.f, center.y),
+    buttons.emplace_back("Quit", gameData.gameFont, "Quit Game", sf::Vector2f(center.x - 100.f, center.y),
                          [this]()
                          {
                              gameData.reset();
                              stateManager.replaceStates(std::make_unique<MenuState>(gameData, stateManager, window));
                          });
-    buttons.emplace_back("Exit", data.gameFont, "Exit", sf::Vector2f(center.x - 100.f, center.y + buttonSpacing),
+    buttons.emplace_back("Exit", gameData.gameFont, "Exit", sf::Vector2f(center.x - 100.f, center.y + buttonSpacing),
                          [this]()
                          { window.close(); });
 

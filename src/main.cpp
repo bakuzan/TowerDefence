@@ -3,6 +3,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <iostream>
+#include <signal.h>
 
 #include "core/GameData.h"
 #include "states/MenuState.h"
@@ -19,13 +20,16 @@ void LoadWindowIcon(sf::Window &window)
     window.setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
 }
 
+void signalHandler(int sig)
+{
+    std::cerr << "Caught signal: " << sig << std::endl;
+    exit(sig);
+}
+
 int main()
 {
-    sf::err().rdbuf(std::cerr.rdbuf());
-    std::set_terminate([]
-                       {
-                        std::cerr << "[FATAL] Uncaught exception\n";
-                        std::abort(); });
+    signal(SIGSEGV, signalHandler);
+    signal(SIGABRT, signalHandler);
 
     std::srand(std::time(0)); // Seed for rand
 

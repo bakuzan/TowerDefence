@@ -42,19 +42,19 @@ GameOverState::GameOverState(GameData &data, StateManager &manager, sf::RenderWi
     // Add buttons
     float buttonRowY = center.y + viewSize.y / 2.f - Constants::BUTTON_HEIGHT - buttonSpacing;
 
-    buttons.emplace_back("New", data.gameFont, "New Game", sf::Vector2f(center.x - viewSize.x / 2.f + buttonSpacing, buttonRowY),
+    buttons.emplace_back("New", gameData.gameFont, "New Game", sf::Vector2f(center.x - viewSize.x / 2.f + buttonSpacing, buttonRowY),
                          [this]()
                          {
                              gameData.reset();
                              stateManager.replaceStates(std::make_unique<GameState>(gameData, stateManager, window));
                          });
-    buttons.emplace_back("Menu", data.gameFont, "Main Menu", sf::Vector2f(center.x - viewSize.x / 2.f + (buttonSpacing * 2.0f) + Constants::BUTTON_WIDTH, buttonRowY),
+    buttons.emplace_back("Menu", gameData.gameFont, "Main Menu", sf::Vector2f(center.x - viewSize.x / 2.f + (buttonSpacing * 2.0f) + Constants::BUTTON_WIDTH, buttonRowY),
                          [this]()
                          {
                              gameData.reset();
                              stateManager.replaceStates(std::make_unique<MenuState>(gameData, stateManager, window));
                          });
-    buttons.emplace_back("Exit", data.gameFont, "Exit", sf::Vector2f(center.x + viewSize.x / 2.f - Constants::BUTTON_WIDTH - buttonSpacing, buttonRowY),
+    buttons.emplace_back("Exit", gameData.gameFont, "Exit", sf::Vector2f(center.x + viewSize.x / 2.f - Constants::BUTTON_WIDTH - buttonSpacing, buttonRowY),
                          [this]()
                          { window.close(); });
 

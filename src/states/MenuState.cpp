@@ -18,13 +18,16 @@ MenuState::MenuState(GameData &data, StateManager &manager, sf::RenderWindow &wi
     gameTitle.setFillColor(sf::Color::White);
 
     // Add buttons
-    buttons.emplace_back("New", data.gameFont, "New Game", sf::Vector2f(center.x - 100.f, center.y - 60.f),
+    buttons.emplace_back("New", gameData.gameFont, "New Game",
+                         sf::Vector2f(center.x - 100.f, center.y - 60.f),
                          [this]()
                          { stateManager.changeState(std::make_unique<GameState>(gameData, stateManager, window)); });
-    buttons.emplace_back("Settings", data.gameFont, "Settings", sf::Vector2f(center.x - 100.f, center.y + buttonSpacing),
+    buttons.emplace_back("Settings", gameData.gameFont, "Settings",
+                         sf::Vector2f(center.x - 100.f, center.y + buttonSpacing),
                          [this]()
                          { stateManager.changeState(std::make_unique<SettingsState>(gameData, stateManager, window)); });
-    buttons.emplace_back("Exit", data.gameFont, "Exit", sf::Vector2f(center.x - 100.f, center.y + (buttonSpacing * 2.0f)),
+    buttons.emplace_back("Exit", gameData.gameFont, "Exit",
+                         sf::Vector2f(center.x - 100.f, center.y + (buttonSpacing * 2.0f)),
                          [this]()
                          { window.close(); });
 

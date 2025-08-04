@@ -3,6 +3,8 @@
 
 #include <SFML/Graphics.hpp>
 
+#include <vector>
+
 #include "ui/Button.h"
 #include "core/GameData.h"
 #include "core/State.h"
@@ -21,7 +23,7 @@ private:
 
     float buttonSpacing;
     std::vector<Button> buttons;
-    int selectedButtonIndex = 0;
+    int selectedButtonIndex;
 
     std::vector<EnvironmentOption> envOptions;
 

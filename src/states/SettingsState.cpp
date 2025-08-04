@@ -9,29 +9,32 @@
 
 SettingsState::SettingsState(GameData &data, StateManager &manager, sf::RenderWindow &win)
     : gameData(data), stateManager(manager), window(win),
+      selectedButtonIndex(0),
       shouldReturnToMenuState(false)
 {
     std::cerr << "[SettingsState] Constructing state\n";
-    std::cerr << "[SettingsState] settingsView size: "
-              << settingsView.getSize().x << ", " << settingsView.getSize().y
-              << "\n";
 
     buttonSpacing = Constants::BUTTON_HEIGHT + 10.f;
     window.setView(settingsView);
     sf::Vector2f viewSize = settingsView.getSize();
+    std::cerr << "[SettingsState] settingsView size: "
+              << viewSize.x << ", " << viewSize.y
+              << "\n";
 
-    // Setup title
+    // // Setup title
     gameTitle.setFont(gameData.gameFont);
     gameTitle.setString("Settings");
     gameTitle.setCharacterSize(48);
     gameTitle.setFillColor(sf::Color::White);
 
     // Add buttons
-    buttons.emplace_back("Save", data.gameFont, "Save", sf::Vector2f(viewSize.x - Constants::BUTTON_WIDTH, viewSize.y - buttonSpacing),
+    buttons.emplace_back("Save", gameData.gameFont, "Save",
+                         sf::Vector2f(viewSize.x - Constants::BUTTON_WIDTH - 10.0f, viewSize.y - buttonSpacing),
                          [this]()
                          { SettingsManager::getInstance().save();
                             shouldReturnToMenuState=true; });
-    buttons.emplace_back("Back", data.gameFont, "Back", sf::Vector2f(10.0f, viewSize.y - buttonSpacing),
+    buttons.emplace_back("Back", gameData.gameFont, "Back",
+                         sf::Vector2f(10.0f, viewSize.y - buttonSpacing),
                          [this]()
                          { SettingsManager::getInstance().reset();
                             shouldReturnToMenuState=true; });
@@ -40,11 +43,13 @@ SettingsState::SettingsState(GameData &data, StateManager &manager, sf::RenderWi
 
     // To ensure positioning is updated relative to window resizing
     updateMenuItemPositions();
+    std::cerr << "[SettingsState] Constructor END\n";
 }
 
 SettingsState::~SettingsState()
 {
     // Destructor
+    std::cerr << "[SettingsState] Destructor...\n";
 }
 
 // Publics
@@ -89,6 +94,7 @@ void SettingsState::update(sf::Time deltaTime, sf::RenderWindow &window)
 void SettingsState::render(sf::RenderWindow &window)
 {
     std::cerr << "[Render] Drawing buttons...\n";
+
     window.setView(settingsView);
     window.draw(gameTitle);
 
