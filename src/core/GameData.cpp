@@ -104,13 +104,14 @@ bool GameData::hasLevelMap(int index)
 void GameData::resetLevel()
 {
     towerSpots.clear();
+    enemies.clear();
+    projectiles.clear();
+    soldiers.clear();
 }
 
 void GameData::reset()
 {
-    towerSpots.clear();
-    enemies.clear();
-    projectiles.clear();
+    resetLevel();
 
     playerGold = 1000; // TODO 250
     playerLives = 10;

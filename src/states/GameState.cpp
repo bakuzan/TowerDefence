@@ -306,6 +306,10 @@ void GameState::update(sf::Time deltaTime, sf::RenderWindow &window)
                     }
                 }
             }
+            else
+            {
+                ++enemyIt;
+            }
         }
 
         if (removeSoldier)

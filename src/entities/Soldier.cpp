@@ -5,12 +5,12 @@
 Soldier::Soldier(const sf::Texture &texture, const sf::IntRect &textureRect,
                  sf::Vector2f spawnPosition, sf::Vector2f targetPosition,
                  int soldierHealth,
-                 int soldierAttackDamage, float soldierAttackSpeed)
+                 int soldierAttackDamage)
     : health(soldierHealth),
       attackDamage(soldierAttackDamage),
-      attackSpeed(soldierAttackSpeed),
       target(targetPosition.x,
-             targetPosition.y - (textureRect.height / 4.0f))
+             targetPosition.y - (textureRect.height / 4.0f)),
+      damageFeedbackTimer(0.0f)
 {
     sprite.setTexture(texture);
     sprite.setTextureRect(textureRect);

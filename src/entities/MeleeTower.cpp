@@ -47,10 +47,11 @@ std::optional<SoldierSpawnData> MeleeTower::getSoldierData(float dt)
     sf::Vector2f spawnPos = sprite.getPosition();
     deployedSoldier.reset();
 
-    return SoldierSpawnData::create(SoldierType::BASIC,
+    int levelIndex = level - 1;
+    return SoldierSpawnData::create(static_cast<SoldierType>(levelIndex),
                                     spawnPos,
-                                    100,
-                                    20, 0.5f);
+                                    100 + (levelIndex * 10),
+                                    20 + (levelIndex * 5));
 }
 
 void MeleeTower::setDeployedSoldier(const std::shared_ptr<Soldier> &soldier)
@@ -67,6 +68,5 @@ std::weak_ptr<Soldier> MeleeTower::getSoldier()
 
 int MeleeTower::calculateTextureIndex()
 {
-    int levelIndex = level - 1;
-    return level + (levelIndex * 2);
+    return 2 * level - 1;
 }

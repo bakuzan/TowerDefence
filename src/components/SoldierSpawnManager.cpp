@@ -22,7 +22,7 @@ std::shared_ptr<Soldier> SoldierSpawnManager::spawnSoldier(
     auto soldier = std::make_shared<Soldier>(texture, rectManager.getTextureRect(data.type),
                                              data.spawnPosition, targetPosition,
                                              data.health,
-                                             data.attackDamage, data.attackSpeed);
+                                             data.attackDamage);
 
     soldiers.push_back(soldier);
     return soldier;
