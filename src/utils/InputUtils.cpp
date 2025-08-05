@@ -33,16 +33,17 @@ namespace InputUtils
                            int &selectedButtonIndex)
     {
         sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+        int buttonCount = static_cast<int>(buttons.size());
 
         if (event.type == sf::Event::KeyPressed)
         {
             if (event.key.code == sf::Keyboard::Up)
             {
-                selectedButtonIndex = (selectedButtonIndex - 1 + buttons.size()) % buttons.size();
+                selectedButtonIndex = (selectedButtonIndex - 1 + buttonCount) % buttonCount;
             }
             else if (event.key.code == sf::Keyboard::Down)
             {
-                selectedButtonIndex = (selectedButtonIndex + 1) % buttons.size();
+                selectedButtonIndex = (selectedButtonIndex + 1) % buttonCount;
             }
             else if (event.key.code == sf::Keyboard::Enter)
             {
@@ -51,11 +52,11 @@ namespace InputUtils
         }
         else if (event.type == sf::Event::MouseMoved)
         {
-            for (size_t i = 0; i < buttons.size(); ++i)
+            for (int i = 0; i < buttonCount; ++i)
             {
                 if (buttons[i].isMouseOver(mousePos, window))
                 {
-                    selectedButtonIndex = static_cast<int>(i);
+                    selectedButtonIndex = i;
                     break;
                 }
             }
@@ -73,9 +74,9 @@ namespace InputUtils
         }
 
         // Update button hover states
-        for (size_t i = 0; i < buttons.size(); ++i)
+        for (int i = 0; i < buttonCount; ++i)
         {
-            buttons[i].onHover(static_cast<int>(i) == selectedButtonIndex);
+            buttons[i].onHover(i == selectedButtonIndex);
         }
     }
 }

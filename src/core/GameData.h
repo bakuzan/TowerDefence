@@ -8,7 +8,7 @@
 #include <vector>
 
 #include "TextureManager.h"
-#include "AudioManager.h"
+// #include "AudioManager.h"
 #include "components/TextureRectManager.h"
 #include "data/TowerSpot.h"
 #include "entities/Enemy.h"
@@ -33,7 +33,7 @@ public:
     sf::Font gameFont;
 
     TextureManager textureManager;
-    AudioManager audioManager;
+    // AudioManager audioManager;
 
     TextureRectManager rectManager;
 

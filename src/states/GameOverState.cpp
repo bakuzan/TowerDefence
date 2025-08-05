@@ -1,4 +1,3 @@
-#include <iomanip>
 #include <memory>
 #include <format>
 
@@ -127,16 +126,17 @@ void GameOverState::handleEvent(const sf::Event &event)
     }
 }
 
-void GameOverState::update(sf::Time deltaTime, sf::RenderWindow &window)
+void GameOverState::update(sf::Time deltaTime, sf::RenderWindow &renderWindow)
 {
     (void)deltaTime;
-    (void)window;
+    (void)renderWindow;
 
-    gameData.audioManager.cleanupSounds();
+    // gameData.audioManager.cleanupSounds();
 }
 
-void GameOverState::render(sf::RenderWindow &window)
+void GameOverState::render(sf::RenderWindow &renderWindow)
 {
+    (void)renderWindow;
     window.setView(gameOverView);
     window.draw(background);
     window.draw(gameOverText);
@@ -198,24 +198,29 @@ void GameOverState::updateMenuItemPositions()
     buttons[2].setPosition(sf::Vector2f(viewCenter.x + viewSize.x / 2.f - Constants::BUTTON_WIDTH - buttonSpacing, buttonRowY));
 }
 
-void GameOverState::displayHighScores(const std::vector<HighScore> &scores, sf::RenderWindow &window)
+void GameOverState::displayHighScores(const std::vector<HighScore> &scores, sf::RenderWindow &renderWindow)
 {
+    (void)renderWindow;
     sf::Vector2f viewCenter = gameOverView.getCenter();
     sf::Vector2f viewSize = gameOverView.getSize();
 
-    for (size_t i = 0; i < scores.size(); ++i)
+    for (int i = 0; i < static_cast<int>(scores.size()); ++i)
     {
         const HighScore &entry = scores[i];
 
-        std::tm *timeinfo = std::localtime(&entry.timestamp);
-        std::ostringstream timeStream;
-        timeStream << std::put_time(timeinfo, "%Y-%m-%d %H:%M:%S");
+        // TODO Optionally put the timestamp on the score board
+        // std::tm timeinfo = {};
+        // localtime_s(&timeinfo, &entry.timestamp);
+        // std::ostringstream timeStream;
+        // timeStream << std::put_time(&timeinfo, "%Y-%m-%d %H:%M:%S");
+        // std::string formattedTime = timeStream.str();
 
         // Combine name, score, and timestamp into a display string
         std::string entryName = entry.name;
         std::string entryScore = GameUtils::formatScoreText(entry.score);
-        int nameLength = entryName.length();
-        int scoreLength = entryScore.length();
+        int nameLength = static_cast<int>(entryName.length());
+        int scoreLength = static_cast<int>(entryScore.length());
+        // int timeLength = static_cast<int>(formattedTime.length());
 
         std::string separator(25 - nameLength - scoreLength, '.');
         std::string displayString = entryName + separator + entryScore;

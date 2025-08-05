@@ -3,7 +3,6 @@
 AudioManager::AudioManager()
 {
     initializeVolumeDefaults();
-    initialiseSoundPool();
 }
 
 AudioManager::~AudioManager()
@@ -52,6 +51,11 @@ void AudioManager::playSound(AudioId uniqueId, bool loop)
 
 void AudioManager::playPooledSound(AudioId uniqueId)
 {
+    if (soundPool.empty())
+    {
+        initialiseSoundPool();
+    }
+
     for (auto &sound : soundPool)
     {
         if (sound->getStatus() == sf::Sound::Status::Stopped)

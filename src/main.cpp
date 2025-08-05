@@ -31,7 +31,7 @@ int main()
     signal(SIGSEGV, signalHandler);
     signal(SIGABRT, signalHandler);
 
-    std::srand(std::time(0)); // Seed for rand
+    std::srand(static_cast<int>(std::time(0))); // Seed for rand
 
     sf::RenderWindow window(sf::VideoMode(800, 600), "Tower Defence");
     LoadWindowIcon(window);

@@ -86,30 +86,31 @@ void TrayUI::handleEvent(sf::Event event)
     }
 }
 
-void TrayUI::render(sf::RenderWindow &window)
+void TrayUI::render(sf::RenderWindow &renderWindow)
 {
+    (void)renderWindow;
     if (!isVisible)
     {
         return;
     }
 
-    window.draw(shadow);
-    window.draw(background);
+    window->draw(shadow);
+    window->draw(background);
 
     for (const auto &icon : optionIcons)
     {
-        window.draw(icon);
+        window->draw(icon);
     }
 
     for (const auto &text : optionTexts)
     {
-        window.draw(text);
+        window->draw(text);
     }
 
     if (isTooltipVisible)
     {
-        window.draw(tooltipBackground);
-        window.draw(tooltipText);
+        window->draw(tooltipBackground);
+        window->draw(tooltipText);
     }
 }
 
@@ -121,7 +122,7 @@ void TrayUI::addOption(TrayOption option)
 
     // Fix the icon to the size that the tray will support
     const sf::Vector2f fixedSize(100.0f, 100.0f);
-    sf::Vector2f textureSize(icon.getTextureRect().width, icon.getTextureRect().height);
+    sf::Vector2f textureSize(static_cast<float>(icon.getTextureRect().width), static_cast<float>(icon.getTextureRect().height));
     icon.setScale(fixedSize.x / textureSize.x, fixedSize.y / textureSize.y);
 
     float verticalOffset = 5.0f;

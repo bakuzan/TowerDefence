@@ -5,11 +5,17 @@
 #include <stack>
 
 #include "State.h"
+#include "constants/PendingChange.h"
 
 class StateManager
 {
 private:
     std::vector<std::unique_ptr<State>> states;
+    std::unique_ptr<State> pendingState;
+    PendingChange pendingChange;
+
+private:
+    void applyPendingStateChange();
 
 public:
     StateManager();

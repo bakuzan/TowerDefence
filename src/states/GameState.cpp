@@ -88,9 +88,6 @@ void GameState::handleEvent(const sf::Event &event)
     {
         float scaledMoveSpeed = moveSpeed / zoomFactor;
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wswitch-enum"
-
         switch (event.key.code)
         {
         case sf::Keyboard::W:
@@ -108,8 +105,6 @@ void GameState::handleEvent(const sf::Event &event)
         default:
             break;
         }
-
-#pragma GCC diagnostic pop
     }
 
     if (event.type == sf::Event::MouseButtonPressed &&
@@ -142,8 +137,9 @@ void GameState::handleEvent(const sf::Event &event)
     uiManager.handleEvent(event);
 }
 
-void GameState::update(sf::Time deltaTime, sf::RenderWindow &window)
+void GameState::update(sf::Time deltaTime, sf::RenderWindow &renderWindow)
 {
+    (void)renderWindow;
     float dt = deltaTime.asSeconds();
     auto &enemies = gameData.getEnemies();
 
@@ -379,8 +375,9 @@ void GameState::update(sf::Time deltaTime, sf::RenderWindow &window)
     uiManager.update();
 }
 
-void GameState::render(sf::RenderWindow &window)
+void GameState::render(sf::RenderWindow &renderWindow)
 {
+    (void)renderWindow;
     // Core gameplay rendering
     window.setView(view);
 

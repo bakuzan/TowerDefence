@@ -64,16 +64,17 @@ void PauseState::handleEvent(const sf::Event &event)
     }
 }
 
-void PauseState::update(sf::Time deltaTime, sf::RenderWindow &window)
+void PauseState::update(sf::Time deltaTime, sf::RenderWindow &renderWindow)
 {
     (void)deltaTime;
-    (void)window;
+    (void)renderWindow;
 
-    gameData.audioManager.cleanupSounds();
+    // gameData.audioManager.cleanupSounds();
 }
 
-void PauseState::render(sf::RenderWindow &window)
+void PauseState::render(sf::RenderWindow &renderWindow)
 {
+    (void)renderWindow;
     window.setView(pauseView);
     window.draw(background);
     window.draw(pauseText);

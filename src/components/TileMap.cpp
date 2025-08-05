@@ -108,7 +108,7 @@ void TileMap::render(sf::RenderWindow &window,
             }
 
             sprite.setTextureRect(getTileRect(tileId, row, x, y));
-            sprite.setOrigin(tileWidth / 2, 0);
+            sprite.setOrigin(tileWidth / 2.0f, 0.0f);
             sprite.setPosition(tileIndexToIsoPoint(x, y));
             window.draw(sprite);
         }
@@ -142,8 +142,8 @@ const PathMap &TileMap::getMapPaths() const
 
 sf::Vector2f TileMap::tileIndexToIsoPoint(int x, int y, bool centered)
 {
-    float screenX = (x - y) * (tileWidth / 2);
-    float screenY = (x + y) * (surfaceHeight / 2);
+    float screenX = (x - y) * (tileWidth / 2.0f);
+    float screenY = (x + y) * (surfaceHeight / 2.0f);
 
     if (centered)
     {
@@ -155,11 +155,11 @@ sf::Vector2f TileMap::tileIndexToIsoPoint(int x, int y, bool centered)
 
 sf::Vector2i TileMap::isoPointToTileIndex(const sf::Vector2f &isoPoint)
 {
-    float tileWidthAdjusted = tileWidth / 2;
-    float tileHeightAdjusted = surfaceHeight / 2;
+    float tileWidthAdjusted = tileWidth / 2.0f;
+    float tileHeightAdjusted = surfaceHeight / 2.0f;
 
-    float worldX = ((isoPoint.x / tileWidthAdjusted) + (isoPoint.y / tileHeightAdjusted)) / 2;
-    float worldY = ((isoPoint.y / tileHeightAdjusted) - (isoPoint.x / tileWidthAdjusted)) / 2;
+    float worldX = ((isoPoint.x / tileWidthAdjusted) + (isoPoint.y / tileHeightAdjusted)) / 2.0f;
+    float worldY = ((isoPoint.y / tileHeightAdjusted) - (isoPoint.x / tileWidthAdjusted)) / 2.0f;
 
     return {static_cast<int>(worldX), static_cast<int>(worldY)};
 }
@@ -182,8 +182,8 @@ sf::IntRect TileMap::getTileRect(TileId tileId, int row,
 
 PathType TileMap::resolvePathType(int x, int y)
 {
-    int maxY = mapData.size() - 1;
-    int maxX = mapData[y].size() - 1;
+    int maxY = static_cast<int>(mapData.size()) - 1;
+    int maxX = static_cast<int>(mapData[y].size()) - 1;
 
     bool left = (y < maxY) && (mapData[y + 1][x] == TileId::PATH);
     bool right = (y > 0) && (mapData[y - 1][x] == TileId::PATH);
