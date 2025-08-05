@@ -17,17 +17,17 @@ private:
     GameData &gameData;
     StateManager &stateManager;
     sf::RenderWindow &window;
-    // sf::View settingsView;
+    sf::View settingsView;
 
-    // sf::Text gameTitle;
+    sf::Text gameTitle;
 
-    // float buttonSpacing;
-    // std::vector<Button> buttons;
-    // int selectedButtonIndex;
+    float buttonSpacing;
+    std::vector<Button> buttons;
+    int selectedButtonIndex;
 
-    // std::vector<EnvironmentOption> envOptions;
+    std::vector<EnvironmentOption> envOptions;
 
-    // bool shouldReturnToMenuState;
+    bool shouldReturnToMenuState;
 
 private:
     void updateMenuItemPositions();
@@ -38,8 +38,8 @@ public:
     ~SettingsState();
 
     void handleEvent(const sf::Event &event) override;
-    void update(sf::Time deltaTime, sf::RenderWindow &window) override;
-    void render(sf::RenderWindow &window) override;
+    void update(sf::Time deltaTime) override;
+    void render() override;
 };
 
 #endif // SETTINGSSTATE_H

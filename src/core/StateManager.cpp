@@ -1,5 +1,3 @@
-#include <iostream>
-
 #include "StateManager.h"
 
 StateManager::StateManager()
@@ -19,28 +17,25 @@ void StateManager::handleEvent(const sf::Event &event)
 {
     if (!states.empty())
     {
-        std::cerr << "[Loop] handleEvent" << std::endl;
         states.back()->handleEvent(event);
     }
 }
 
-void StateManager::update(sf::Time deltaTime, sf::RenderWindow &window)
+void StateManager::update(sf::Time deltaTime)
 {
     if (!states.empty())
     {
-        std::cerr << "[Loop] update" << std::endl;
-        states.back()->update(deltaTime, window);
+        states.back()->update(deltaTime);
     }
 
     applyPendingStateChange();
 }
 
-void StateManager::render(sf::RenderWindow &window)
+void StateManager::render()
 {
-    std::cerr << "[Loop] render" << std::endl;
     for (auto &state : states)
     {
-        state->render(window);
+        state->render();
     }
 }
 
@@ -77,8 +72,6 @@ void StateManager::applyPendingStateChange()
     {
         return;
     }
-
-    std::cerr << "[StateManager] Applying pending state change\n";
 
     switch (pendingChange)
     {

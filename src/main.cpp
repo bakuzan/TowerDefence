@@ -66,13 +66,13 @@ int main()
 
         while (accumulator >= fixedTimeStep)
         {
-            stateManager.update(sf::seconds(fixedTimeStep), window);
+            stateManager.update(sf::seconds(fixedTimeStep));
             accumulator -= fixedTimeStep;
         }
 
         // Draw and Display
         window.clear();
-        stateManager.render(window);
+        stateManager.render();
         window.display();
     }
 

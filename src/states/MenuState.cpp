@@ -1,5 +1,3 @@
-#include <iostream>
-
 #include "constants/Constants.h"
 #include "GameState.h"
 #include "utils/InputUtils.h"
@@ -27,8 +25,7 @@ MenuState::MenuState(GameData &data, StateManager &manager, sf::RenderWindow &wi
     buttons.emplace_back("Settings", gameData.gameFont, "Settings",
                          sf::Vector2f(center.x - 100.f, center.y + buttonSpacing),
                          [this]()
-                         { std::cerr << "[Button Callback] Settings clicked\n";
-                            stateManager.changeState(std::make_unique<SettingsState>(gameData, stateManager, window)); });
+                         { stateManager.changeState(std::make_unique<SettingsState>(gameData, stateManager, window)); });
     buttons.emplace_back("Exit", gameData.gameFont, "Exit",
                          sf::Vector2f(center.x - 100.f, center.y + (buttonSpacing * 2.0f)),
                          [this]()
@@ -41,7 +38,6 @@ MenuState::MenuState(GameData &data, StateManager &manager, sf::RenderWindow &wi
 MenuState::~MenuState()
 {
     // Destructor
-    std::cerr << "[MenuState] Destructor..." << std::endl;
 }
 
 // Publics
@@ -56,17 +52,15 @@ void MenuState::handleEvent(const sf::Event &event)
     }
 }
 
-void MenuState::update(sf::Time deltaTime, sf::RenderWindow &renderWindow)
+void MenuState::update(sf::Time deltaTime)
 {
     (void)deltaTime;
-    (void)renderWindow;
 
     // gameData.audioManager.cleanupSounds();
 }
 
-void MenuState::render(sf::RenderWindow &renderWindow)
+void MenuState::render()
 {
-    (void)renderWindow;
     window.setView(menuView);
     window.draw(gameTitle);
 

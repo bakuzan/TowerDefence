@@ -137,9 +137,8 @@ void GameState::handleEvent(const sf::Event &event)
     uiManager.handleEvent(event);
 }
 
-void GameState::update(sf::Time deltaTime, sf::RenderWindow &renderWindow)
+void GameState::update(sf::Time deltaTime)
 {
-    (void)renderWindow;
     float dt = deltaTime.asSeconds();
     auto &enemies = gameData.getEnemies();
 
@@ -375,9 +374,8 @@ void GameState::update(sf::Time deltaTime, sf::RenderWindow &renderWindow)
     uiManager.update();
 }
 
-void GameState::render(sf::RenderWindow &renderWindow)
+void GameState::render()
 {
-    (void)renderWindow;
     // Core gameplay rendering
     window.setView(view);
 

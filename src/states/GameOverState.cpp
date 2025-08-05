@@ -126,17 +126,15 @@ void GameOverState::handleEvent(const sf::Event &event)
     }
 }
 
-void GameOverState::update(sf::Time deltaTime, sf::RenderWindow &renderWindow)
+void GameOverState::update(sf::Time deltaTime)
 {
     (void)deltaTime;
-    (void)renderWindow;
 
     // gameData.audioManager.cleanupSounds();
 }
 
-void GameOverState::render(sf::RenderWindow &renderWindow)
+void GameOverState::render()
 {
-    (void)renderWindow;
     window.setView(gameOverView);
     window.draw(background);
     window.draw(gameOverText);

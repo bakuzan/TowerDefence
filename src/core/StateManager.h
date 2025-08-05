@@ -22,8 +22,8 @@ public:
     ~StateManager();
 
     void handleEvent(const sf::Event &event);
-    void update(sf::Time deltaTime, sf::RenderWindow &window);
-    void render(sf::RenderWindow &window);
+    void update(sf::Time deltaTime);
+    void render();
 
     void pushState(std::unique_ptr<State> state);
     void popState();

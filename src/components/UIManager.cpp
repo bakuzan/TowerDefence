@@ -97,7 +97,7 @@ void UIManager::render()
         }
     }
 
-    trayUI.render(*window);
+    trayUI.render();
 
     resultsPanel.render(*window);
 

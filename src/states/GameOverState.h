@@ -49,8 +49,8 @@ public:
     ~GameOverState();
 
     void handleEvent(const sf::Event &event) override;
-    void update(sf::Time deltaTime, sf::RenderWindow &window) override;
-    void render(sf::RenderWindow &window) override;
+    void update(sf::Time deltaTime) override;
+    void render() override;
 };
 
 #endif // GAMEOVERSTATE_H

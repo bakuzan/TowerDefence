@@ -86,9 +86,8 @@ void TrayUI::handleEvent(sf::Event event)
     }
 }
 
-void TrayUI::render(sf::RenderWindow &renderWindow)
+void TrayUI::render()
 {
-    (void)renderWindow;
     if (!isVisible)
     {
         return;

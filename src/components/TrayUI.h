@@ -34,7 +34,7 @@ public:
     ~TrayUI();
 
     void handleEvent(sf::Event event);
-    void render(sf::RenderWindow &window);
+    void render();
 
     void addOption(TrayOption option);
     void setOnOptionSelectedCallback(std::function<void(const TrayOption &option)> callback);
