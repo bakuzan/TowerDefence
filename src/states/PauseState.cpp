@@ -68,7 +68,7 @@ void PauseState::update(sf::Time deltaTime)
 {
     (void)deltaTime;
 
-    // gameData.audioManager.cleanupSounds();
+    gameData.audioManager.cleanupSounds();
 }
 
 void PauseState::render()

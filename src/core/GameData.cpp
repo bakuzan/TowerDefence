@@ -1,5 +1,6 @@
 #include "GameData.h"
 #include "constants/Constants.h"
+#include "constants/AudioId.h"
 
 GameData::GameData()
 {
@@ -12,7 +13,13 @@ GameData::GameData()
     textureManager.loadTexture(TextureId::SOLDIER, "resources/images/Soldiers.png");
 
     // Load audio
-    // TODO
+    audioManager.loadSound(AudioId::AMBIENT, "resources/audio/BackgroundMusic.wav");
+    audioManager.loadSound(AudioId::PLAYER_DAMAGED, "resources/audio/PlayerTakesDamage.wav");
+    audioManager.loadSound(AudioId::ARROW_FIRED, "resources/audio/ArrowFired.wav");
+    audioManager.loadSound(AudioId::ARROW_HIT, "resources/audio/ArrowHit.wav");
+    audioManager.loadSound(AudioId::MAGIC_FIRED, "resources/audio/MagicFired.wav");
+    audioManager.loadSound(AudioId::MAGIC_HIT, "resources/audio/MagicHit.wav");
+    audioManager.loadSound(AudioId::MELEE_BASH, "resources/audio/MeleeBash.wav");
 
     // Load maps
     levelMapPaths.push_back("resources/maps/level_00.txt");

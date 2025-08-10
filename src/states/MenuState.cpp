@@ -56,7 +56,12 @@ void MenuState::update(sf::Time deltaTime)
 {
     (void)deltaTime;
 
-    // gameData.audioManager.cleanupSounds();
+    gameData.audioManager.cleanupSounds();
+
+    if (gameData.audioManager.getSoundStatus(AudioId::AMBIENT) == sf::Sound::Status::Playing)
+    {
+        gameData.audioManager.stopSound(AudioId::AMBIENT);
+    }
 }
 
 void MenuState::render()
