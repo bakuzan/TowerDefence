@@ -20,6 +20,9 @@ GameData::GameData()
     audioManager.loadSound(AudioId::MAGIC_FIRED, "resources/audio/MagicFired.wav");
     audioManager.loadSound(AudioId::MAGIC_HIT, "resources/audio/MagicHit.wav");
     audioManager.loadSound(AudioId::MELEE_BASH, "resources/audio/MeleeBash.wav");
+    audioManager.loadSound(AudioId::ENEMY_DEATH, "resources/audio/EnemyDeath.wav");
+    audioManager.loadSound(AudioId::SOLDIER_DEATH, "resources/audio/SoldierDeath.wav");
+    audioManager.loadSound(AudioId::VICTORY, "resources/audio/Victory.wav");
 
     // Load maps
     levelMapPaths.push_back("resources/maps/level_00.txt");

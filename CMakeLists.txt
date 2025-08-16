@@ -15,8 +15,8 @@ add_executable(${PROJECT_NAME} ${SOURCES})
 
 # Enable maximum compiler warnings
 if (MSVC)
-    target_compile_options(${PROJECT_NAME} PRIVATE /W4 /WX /fsanitize=address /Zi /Od)
-    target_link_options(${PROJECT_NAME} PRIVATE /fsanitize=address)
+    target_compile_options(${PROJECT_NAME} PRIVATE /W4 /WX /Zi /Od)
+    # target_link_options(${PROJECT_NAME} PRIVATE /fsanitize=address)
 else()
     target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -Wpedantic -Werror -Wswitch-enum -fsanitize=address -g -O1)
     target_link_options(${PROJECT_NAME} PRIVATE -fsanitize=address)

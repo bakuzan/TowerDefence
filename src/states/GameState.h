@@ -16,6 +16,7 @@
 #include "components/UIManager.h"
 #include "components/WaveManager.h"
 #include "entities/Enemy.h"
+#include "entities/Soldier.h"
 
 class GameState : public State
 {
@@ -51,6 +52,7 @@ private:
                            int optionId);
     void onPlayerDeath();
     void onEnemyDeath(Enemy &enemy);
+    void onSoldierDeath(Soldier &soldier);
 
 public:
     GameState(GameData &data, StateManager &manager, sf::RenderWindow &window);

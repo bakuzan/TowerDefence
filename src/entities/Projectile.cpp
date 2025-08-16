@@ -26,6 +26,11 @@ int Projectile::getDamageInflicts() const
     return damage;
 }
 
+const ProjectileType Projectile::getType() const
+{
+    return type;
+}
+
 const sf::Sprite &Projectile::getSprite() const
 {
     return sprite;

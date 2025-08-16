@@ -32,6 +32,8 @@ public:
     void render(sf::RenderWindow &window) const;
 
     int getDamageInflicts() const;
+
+    const ProjectileType getType() const;
     const sf::Sprite &getSprite() const;
     bool canBeRemoved() const;
 };

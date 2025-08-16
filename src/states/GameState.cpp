@@ -4,6 +4,7 @@
 #include "utils/GameUtils.h"
 #include "utils/InputUtils.h"
 #include "utils/CollisionUtils.h"
+#include "constants/AudioId.h"
 #include "constants/Constants.h"
 #include "constants/SoldierType.h"
 #include "constants/TowerChange.h"
@@ -139,6 +140,11 @@ void GameState::handleEvent(const sf::Event &event)
 
 void GameState::update(sf::Time deltaTime)
 {
+    if (gameData.audioManager.getSoundStatus(AudioId::AMBIENT) != sf::Sound::Status::Playing)
+    {
+        gameData.audioManager.playSound(AudioId::AMBIENT, true);
+    }
+
     float dt = deltaTime.asSeconds();
     auto &enemies = gameData.getEnemies();
 
@@ -157,6 +163,9 @@ void GameState::update(sf::Time deltaTime)
             }
             else
             {
+                gameData.audioManager.cleanupSounds();
+                gameData.audioManager.playSound(AudioId::VICTORY);
+
                 if (gameData.hasLevelMap(level + 1))
                 {
                     // TODO Populate the results text.
@@ -199,6 +208,8 @@ void GameState::update(sf::Time deltaTime)
                 it = enemies.erase(it);
 
                 gameData.updatePlayerLives(-1);
+                gameData.audioManager.playPooledSound(AudioId::PLAYER_DAMAGED);
+
                 if (gameData.getPlayerLives() <= 0)
                 {
                     onPlayerDeath();
@@ -243,6 +254,9 @@ void GameState::update(sf::Time deltaTime)
                         gameData.textureManager.getTexture(TextureId::PROJECTILES),
                         projectiles,
                         *projectile);
+
+                    AudioId projectileAudioId = GameUtils::getFiredAudioIdForProjectileType(projectile->type);
+                    gameData.audioManager.playPooledSound(projectileAudioId);
                 }
             }
         }
@@ -256,6 +270,7 @@ void GameState::update(sf::Time deltaTime)
 
         if (soldier.isDead())
         {
+            onSoldierDeath(soldier);
             soldierIt = soldiers.erase(soldierIt);
             continue;
         }
@@ -286,6 +301,7 @@ void GameState::update(sf::Time deltaTime)
 
                     enemy.applyDamage(soldier.getDamageInflicts());
                     soldier.applyDamage(enemy.getDamageInflicts());
+                    gameData.audioManager.playPooledSound(AudioId::MELEE_BASH);
 
                     if (enemy.getHealth() <= 0)
                     {
@@ -315,6 +331,7 @@ void GameState::update(sf::Time deltaTime)
 
         if (removeSoldier)
         {
+            onSoldierDeath(soldier);
             soldierIt = soldiers.erase(soldierIt);
         }
         else
@@ -339,11 +356,12 @@ void GameState::update(sf::Time deltaTime)
                 CollisionUtils::checkSpritesIntersect(projectile.getSprite(), enemy.getSprite()))
             {
                 enemy.applyDamage(projectile.getDamageInflicts());
+                AudioId projectileAudioId = GameUtils::getHitAudioIdForProjectileType(projectile.getType());
+                gameData.audioManager.playPooledSound(projectileAudioId);
 
                 if (enemy.getHealth() <= 0)
                 {
                     onEnemyDeath(enemy);
-
                     enemyIt = enemies.erase(enemyIt);
                 }
 
@@ -499,4 +517,12 @@ void GameState::onEnemyDeath(Enemy &enemy)
 {
     gameData.updatePlayerScore(enemy.getPointsValue());
     gameData.updatePlayerGold(enemy.getPointsValue());
+    gameData.audioManager.playPooledSound(AudioId::ENEMY_DEATH);
+}
+
+void GameState::onSoldierDeath(Soldier &soldier)
+{
+    (void)soldier;
+
+    gameData.audioManager.playPooledSound(AudioId::SOLDIER_DEATH);
 }

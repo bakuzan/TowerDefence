@@ -9,4 +9,7 @@ enum class AudioId
     MAGIC_FIRED,
     MAGIC_HIT,
     MELEE_BASH,
+    ENEMY_DEATH,
+    SOLDIER_DEATH,
+    VICTORY,
 };

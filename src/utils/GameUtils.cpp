@@ -1,6 +1,7 @@
 #include <cmath>
 #include <iomanip>
 #include <sstream>
+#include <stdexcept>
 
 #include "GameUtils.h"
 
@@ -44,6 +45,32 @@ namespace GameUtils
     {
         sf::Vector2f d = b - a;
         return std::sqrt(d.x * d.x + d.y * d.y);
+    }
+
+    const AudioId getFiredAudioIdForProjectileType(ProjectileType projectileType)
+    {
+        switch (projectileType)
+        {
+        case ProjectileType::ARROW:
+            return AudioId::ARROW_FIRED;
+        case ProjectileType::MAGIC:
+            return AudioId::MAGIC_FIRED;
+        default:
+            throw std::logic_error("Unhandled ProjectileType in GameUtils::getFiredAudioIdForProjectileType()");
+        }
+    }
+
+    const AudioId getHitAudioIdForProjectileType(ProjectileType projectileType)
+    {
+        switch (projectileType)
+        {
+        case ProjectileType::ARROW:
+            return AudioId::ARROW_HIT;
+        case ProjectileType::MAGIC:
+            return AudioId::MAGIC_HIT;
+        default:
+            throw std::logic_error("Unhandled ProjectileType in GameUtils::getHitAudioIdForProjectileType()");
+        }
     }
 
 }
