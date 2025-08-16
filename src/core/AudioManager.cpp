@@ -105,17 +105,17 @@ void AudioManager::cleanupSounds()
 
 void AudioManager::initializeVolumeDefaults()
 {
-    volumeMap[AudioId::AMBIENT] = 50.0f;
+    volumeMap[AudioId::AMBIENT] = 40.0f;
 
-    volumeMap[AudioId::ARROW_FIRED] = 75.0f;
-    volumeMap[AudioId::ARROW_HIT] = 75.0f;
-    volumeMap[AudioId::MAGIC_FIRED] = 75.0f;
-    volumeMap[AudioId::MAGIC_HIT] = 75.0f;
-    volumeMap[AudioId::MELEE_BASH] = 75.0f;
+    volumeMap[AudioId::ARROW_FIRED] = 65.0f;
+    volumeMap[AudioId::ARROW_HIT] = 65.0f;
+    volumeMap[AudioId::MAGIC_FIRED] = 65.0f;
+    volumeMap[AudioId::MAGIC_HIT] = 65.0f;
+    volumeMap[AudioId::MELEE_BASH] = 65.0f;
 
-    volumeMap[AudioId::ENEMY_DEATH] = 80.0f;
-    volumeMap[AudioId::SOLDIER_DEATH] = 80.0f;
-    volumeMap[AudioId::PLAYER_DAMAGED] = 80.0f;
+    volumeMap[AudioId::ENEMY_DEATH] = 75.0f;
+    volumeMap[AudioId::SOLDIER_DEATH] = 100.0f;
+    volumeMap[AudioId::PLAYER_DAMAGED] = 90.0f;
 
     volumeMap[AudioId::VICTORY] = 100.0f;
 }
