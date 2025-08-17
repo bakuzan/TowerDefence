@@ -123,7 +123,7 @@ void GameData::reset()
 {
     resetLevel();
 
-    playerGold = 1000; // TODO 250
-    playerLives = 10;
+    playerGold = 250;
+    playerLives = 9; // TODO introduce difficulty setting 9, 6, 4
     playerScore = 0;
 }

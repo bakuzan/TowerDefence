@@ -51,8 +51,8 @@ std::optional<SoldierSpawnData> MeleeTower::getSoldierData(float dt)
     int levelIndex = level - 1;
     return SoldierSpawnData::create(static_cast<SoldierType>(levelIndex),
                                     spawnPos,
-                                    100 + (levelIndex * 10),
-                                    20 + (levelIndex * 5));
+                                    100 + (levelIndex * 15),
+                                    20 + (levelIndex * 3));
 }
 
 void MeleeTower::setDeployedSoldier(const std::shared_ptr<Soldier> &soldier)

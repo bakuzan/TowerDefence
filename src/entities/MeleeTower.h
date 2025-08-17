@@ -16,7 +16,7 @@ class MeleeTower : public Tower
 private:
     std::weak_ptr<Soldier> deployedSoldier;
     float spawnCooldownTimer = 0.0f;
-    float spawnCooldown = 2.0f;
+    float spawnCooldown = 2.5f;
 
 private:
     int calculateTextureIndex();

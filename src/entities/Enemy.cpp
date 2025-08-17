@@ -45,8 +45,10 @@ void Enemy::update(float dt)
     sf::Vector2f direction = target - currentPos;
     float distance = GameUtils::calculateEuclideanDistance(currentPos, target);
 
-    if (distance < 1.f)
+    float step = stats.speed * dt;
+    if (distance <= step)
     {
+        sprite.setPosition(target);
         currentPathIndex++;
         return;
     }

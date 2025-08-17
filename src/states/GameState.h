@@ -38,7 +38,7 @@ private:
 
     float zoomFactor;
     float moveSpeed;
-    int level;
+    int levelIndex;
 
 private:
     void loadMap(const std::string filename);

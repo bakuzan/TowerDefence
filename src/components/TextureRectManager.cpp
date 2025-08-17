@@ -67,6 +67,8 @@ void TextureRectManager::initTowerTextureRects()
 void TextureRectManager::initEnemyTextureRects()
 {
     enemyTextureRects[EnemyType::BASIC] = {0, 0, 64, 80};
+    enemyTextureRects[EnemyType::FAST] = {128, 0, 64, 80};
+    enemyTextureRects[EnemyType::TANK] = {384, 0, 64, 80};
 }
 
 void TextureRectManager::initProjectileTextureRects()

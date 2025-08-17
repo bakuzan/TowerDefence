@@ -31,9 +31,9 @@ GameState::GameState(GameData &data, StateManager &manager, sf::RenderWindow &wi
       soldierSpawnManager(data.rectManager),
       zoomFactor(2.5f),
       moveSpeed(60.0f),
-      level(0)
+      levelIndex(0)
 {
-    loadMap(gameData.getLevelMap(level));
+    loadMap(gameData.getLevelMap(levelIndex));
 
     // Set up ui elements...
     sf::Vector2f buttonSize(Constants::BUTTON_WIDTH, Constants::BUTTON_HEIGHT);
@@ -166,16 +166,16 @@ void GameState::update(sf::Time deltaTime)
                 gameData.audioManager.cleanupSounds();
                 gameData.audioManager.playSound(AudioId::VICTORY);
 
-                if (gameData.hasLevelMap(level + 1))
+                if (gameData.hasLevelMap(levelIndex + 1))
                 {
                     // TODO Populate the results text.
-                    std::string statsText = std::format("Cleared level {}!", level + 1);
+                    std::string statsText = std::format("Cleared level {}!", levelIndex + 1);
                     uiManager.hideTray();
                     phaseManager.setPhase(Phase::RESULTS);
                     uiManager.showResultsPanel(statsText, [this]()
-                                               { level++;
+                                               { levelIndex++;
                                             uiManager.hideResultsPanel(); 
-                                            loadMap(gameData.getLevelMap(level)); 
+                                            loadMap(gameData.getLevelMap(levelIndex)); 
                                             phaseManager.setPhase(Phase::PLACEMENT); 
                                             uiManager.setButtonVisible("StartCombat", true); });
                 }
@@ -444,7 +444,7 @@ void GameState::loadMap(const std::string filename)
         towerSpots.emplace(spot, TowerSpot{});
     }
 
-    waveManager.reset();
+    waveManager.reset(levelIndex + 1);
 }
 
 void GameState::adjustZoom(float newZoomFactor)
@@ -516,7 +516,7 @@ void GameState::onPlayerDeath()
 void GameState::onEnemyDeath(Enemy &enemy)
 {
     gameData.updatePlayerScore(enemy.getPointsValue());
-    gameData.updatePlayerGold(enemy.getPointsValue());
+    gameData.updatePlayerGold(static_cast<int>(enemy.getPointsValue() * 0.2f));
     gameData.audioManager.playPooledSound(AudioId::ENEMY_DEATH);
 }
 

@@ -9,8 +9,8 @@ struct Wave
     std::vector<SpawnGroup> spawnGroups;
     bool hasRun = false;
 
-    static Wave create(std::initializer_list<SpawnGroup> groups)
+    static Wave create(std::vector<SpawnGroup> groups)
     {
-        return Wave{std::vector<SpawnGroup>{groups}, false};
+        return Wave{groups, false};
     }
 };
