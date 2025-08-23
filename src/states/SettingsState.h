@@ -9,7 +9,9 @@
 #include "core/GameData.h"
 #include "core/State.h"
 #include "core/StateManager.h"
-#include "data/EnvironmentOption.h"
+#include "constants/Difficulty.h"
+#include "constants/EnvironmentType.h"
+#include "data/UIOption.h"
 
 class SettingsState : public State
 {
@@ -25,13 +27,15 @@ private:
     std::vector<Button> buttons;
     int selectedButtonIndex;
 
-    std::vector<EnvironmentOption> envOptions;
+    std::vector<UIOption<Difficulty>> diffOptions;
+    std::vector<UIOption<EnvironmentType>> envOptions;
 
     bool shouldReturnToMenuState;
 
 private:
     void updateMenuItemPositions();
     void initEnvironmentOptions();
+    void initDifficultyOptions();
 
 public:
     SettingsState(GameData &data, StateManager &manager, sf::RenderWindow &win);

@@ -2,11 +2,10 @@
 
 #include <SFML/Graphics.hpp>
 
-#include "constants/EnvironmentType.h"
-
-struct EnvironmentOption
+template <typename ValueType>
+struct UIOption
 {
-    EnvironmentType type;
+    ValueType value;
     sf::RectangleShape box;
     sf::Text label;
 };

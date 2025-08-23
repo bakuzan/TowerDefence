@@ -33,6 +33,7 @@ SettingsState::SettingsState(GameData &data, StateManager &manager, sf::RenderWi
                          { SettingsManager::getInstance().reset();
                             shouldReturnToMenuState=true; });
 
+    initDifficultyOptions();
     initEnvironmentOptions();
 
     // To ensure positioning is updated relative to window resizing
@@ -61,11 +62,19 @@ void SettingsState::handleEvent(const sf::Event &event)
         sf::Vector2i pixelPos(event.mouseButton.x, event.mouseButton.y);
         sf::Vector2f mouseWorldPos = window.mapPixelToCoords(pixelPos);
 
+        for (auto &opt : diffOptions)
+        {
+            if (opt.box.getGlobalBounds().contains(mouseWorldPos))
+            {
+                SettingsManager::getInstance().setDifficulty(opt.value);
+            }
+        }
+
         for (auto &opt : envOptions)
         {
             if (opt.box.getGlobalBounds().contains(mouseWorldPos))
             {
-                SettingsManager::getInstance().setEnvironmentType(opt.type);
+                SettingsManager::getInstance().setEnvironmentType(opt.value);
             }
         }
     }
@@ -86,11 +95,27 @@ void SettingsState::render()
     window.setView(settingsView);
     window.draw(gameTitle);
 
-    EnvironmentType selected = SettingsManager::getInstance().getEnvironmentType();
+    Difficulty diffSelected = SettingsManager::getInstance().getDifficulty();
+    EnvironmentType envSelected = SettingsManager::getInstance().getEnvironmentType();
+
+    for (auto &opt : diffOptions)
+    {
+        if (opt.value == diffSelected)
+        {
+            opt.box.setFillColor(sf::Color::Green);
+        }
+        else
+        {
+            opt.box.setFillColor(sf::Color::White);
+        }
+
+        window.draw(opt.box);
+        window.draw(opt.label);
+    }
 
     for (auto &opt : envOptions)
     {
-        if (opt.type == selected)
+        if (opt.value == envSelected)
         {
             opt.box.setFillColor(sf::Color::Green);
         }
@@ -132,12 +157,12 @@ void SettingsState::initEnvironmentOptions()
     const float spacing = 20.f;
     const float boxWidth = 150.f;
     const float boxHeight = 40.f;
-    const sf::Vector2f startPos(25.f, 200.f);
+    const sf::Vector2f startPos(25.f, 250.f);
 
     for (int i = 0; i < static_cast<int>(types.size()); ++i)
     {
-        EnvironmentOption opt;
-        opt.type = types[i];
+        UIOption<EnvironmentType> opt;
+        opt.value = types[i];
 
         opt.box.setSize({boxWidth, boxHeight});
         opt.box.setPosition({startPos.x + i * (boxWidth + spacing), startPos.y});
@@ -150,5 +175,35 @@ void SettingsState::initEnvironmentOptions()
         opt.label.setPosition(opt.box.getPosition() + sf::Vector2f(10.f, 5.f));
 
         envOptions.push_back(opt);
+    }
+}
+
+void SettingsState::initDifficultyOptions()
+{
+    const std::vector<std::string> names = {"Easy", "Normal", "Hard"};
+    const std::vector<Difficulty> types = {
+        Difficulty::EASY, Difficulty::NORMAL, Difficulty::HARD};
+
+    const float spacing = 20.f;
+    const float boxWidth = 150.f;
+    const float boxHeight = 40.f;
+    const sf::Vector2f startPos(25.f, 200.f);
+
+    for (int i = 0; i < static_cast<int>(types.size()); ++i)
+    {
+        UIOption<Difficulty> opt;
+        opt.value = types[i];
+
+        opt.box.setSize({boxWidth, boxHeight});
+        opt.box.setPosition({startPos.x + i * (boxWidth + spacing), startPos.y});
+        opt.box.setFillColor(sf::Color::White);
+
+        opt.label.setFont(gameData.gameFont);
+        opt.label.setString(names[i]);
+        opt.label.setCharacterSize(18);
+        opt.label.setFillColor(sf::Color::Black);
+        opt.label.setPosition(opt.box.getPosition() + sf::Vector2f(10.f, 5.f));
+
+        diffOptions.push_back(opt);
     }
 }

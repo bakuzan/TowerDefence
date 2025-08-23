@@ -24,7 +24,9 @@ void SettingsManager::save()
 
     // Serialize settings as key=value pairs
     file << "environmentType="
-         << std::to_string(static_cast<int>(environmentType)) << "\n";
+         << std::to_string(static_cast<int>(environmentType)) << "\n"
+         << "difficulty="
+         << std::to_string(static_cast<int>(difficulty)) << "\n";
 
     file.close();
 }
@@ -42,6 +44,16 @@ EnvironmentType SettingsManager::getEnvironmentType() const
 void SettingsManager::setEnvironmentType(EnvironmentType et)
 {
     environmentType = et;
+}
+
+Difficulty SettingsManager::getDifficulty() const
+{
+    return difficulty;
+}
+
+void SettingsManager::setDifficulty(Difficulty diff)
+{
+    difficulty = diff;
 }
 
 // Privates
@@ -76,5 +88,11 @@ void SettingsManager::load()
     {
         int environType = std::stoi(kvStore["environmentType"]);
         environmentType = static_cast<EnvironmentType>(environType);
+    }
+
+    if (kvStore.contains("difficulty"))
+    {
+        int diff = std::stoi(kvStore["difficulty"]);
+        difficulty = static_cast<Difficulty>(diff);
     }
 }

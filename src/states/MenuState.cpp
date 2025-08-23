@@ -21,7 +21,8 @@ MenuState::MenuState(GameData &data, StateManager &manager, sf::RenderWindow &wi
     buttons.emplace_back("New", gameData.gameFont, "New Game",
                          sf::Vector2f(center.x - 100.f, center.y - 60.f),
                          [this]()
-                         { stateManager.changeState(std::make_unique<GameState>(gameData, stateManager, window)); });
+                         { gameData.reset();
+                            stateManager.changeState(std::make_unique<GameState>(gameData, stateManager, window)); });
     buttons.emplace_back("Settings", gameData.gameFont, "Settings",
                          sf::Vector2f(center.x - 100.f, center.y + buttonSpacing),
                          [this]()

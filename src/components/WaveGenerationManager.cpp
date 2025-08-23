@@ -163,22 +163,22 @@ Wave WaveGenerationManager::makePatternedWave(int level, float &budget) const
 
     switch (p)
     {
-    case GenerationPattern::Trickle:
+    case GenerationPattern::TRICKLE:
         add(EnemyType::BASIC, randi(6, 12), 0.6f, 1.0f);
         localDelay += randf(1.0f, 2.0f);
         add(EnemyType::FAST, randi(3, 6), 0.3f, 0.5f);
         break;
-    case GenerationPattern::Burst:
+    case GenerationPattern::BURST:
         add(EnemyType::FAST, randi(6, 10), 0.25f, 0.45f);
         localDelay += randf(0.8f, 1.6f);
         add(EnemyType::BASIC, randi(4, 8), 0.5f, 0.8f);
         break;
-    case GenerationPattern::Pulse:
+    case GenerationPattern::PULSE:
         add(EnemyType::TANK, randi(1, 2), 1.2f, 1.6f);
         localDelay += randf(1.2f, 2.0f);
         add(EnemyType::FAST, randi(4, 7), 0.3f, 0.5f);
         break;
-    case GenerationPattern::Mixed:
+    case GenerationPattern::MIXED:
         for (int i = 0; i < 3; ++i)
         {
             EnemyType t = pickType(weights);

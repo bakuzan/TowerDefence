@@ -1,6 +1,7 @@
 #include "GameData.h"
 #include "constants/Constants.h"
 #include "constants/AudioId.h"
+#include "components/SettingsManager.h"
 
 GameData::GameData()
 {
@@ -123,7 +124,9 @@ void GameData::reset()
 {
     resetLevel();
 
+    int difficulty = static_cast<int>(SettingsManager::getInstance().getDifficulty());
+
     playerGold = 250;
-    playerLives = 9; // TODO introduce difficulty setting 9, 6, 4
+    playerLives = static_cast<int>(9 * std::pow(2.0 / 3.0, difficulty) + 0.5);
     playerScore = 0;
 }

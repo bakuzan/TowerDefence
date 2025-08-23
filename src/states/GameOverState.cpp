@@ -2,6 +2,7 @@
 #include <format>
 
 #include "constants/Constants.h"
+#include "components/SettingsManager.h"
 #include "utils/InputUtils.h"
 #include "utils/GameUtils.h"
 #include "utils/DataUtils.h"
@@ -268,7 +269,21 @@ bool GameOverState::checkIfHighScore()
 
 int GameOverState::calculateFinalScore()
 {
-    return gameData.getPlayerScore() +
-           gameData.getPlayerGold() +
-           (gameData.getPlayerLives() * 100);
+    Difficulty difficulty = SettingsManager::getInstance().getDifficulty();
+    int difficultyIndex = static_cast<int>(difficulty);
+
+    int displayedScore = gameData.getPlayerScore();
+    int playerGold = gameData.getPlayerGold();
+    int playerLives = gameData.getPlayerLives();
+
+    // Calculate for lives based on difficulty
+    float startingLives = 9.0f * static_cast<float>(std::pow(2.0 / 3.0, difficultyIndex));
+    float livesWeight = 100.0f * (9.0f / startingLives); // Easy=100, Normal=150, Hard=225
+    float livesScore = (static_cast<float>(playerLives) / startingLives) * livesWeight;
+
+    // Difficulty bump: Easy=1.0, Normal≈1.25, Hard≈1.56
+    float difficultyBonus = static_cast<float>(std::pow(1.25f, difficultyIndex));
+
+    float rawScore = static_cast<float>(displayedScore + playerGold) + livesScore;
+    return static_cast<int>(rawScore * difficultyBonus);
 }

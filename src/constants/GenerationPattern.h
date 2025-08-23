@@ -2,8 +2,8 @@
 
 enum class GenerationPattern
 {
-    Trickle = 0,
-    Burst,
-    Pulse,
-    Mixed
+    TRICKLE = 0,
+    BURST,
+    PULSE,
+    MIXED,
 };

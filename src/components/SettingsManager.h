@@ -3,6 +3,7 @@
 
 #include <string>
 
+#include "constants/Difficulty.h"
 #include "constants/EnvironmentType.h"
 
 class SettingsManager
@@ -11,6 +12,7 @@ private:
     std::string filename = "settings.txt";
 
     // Data
+    Difficulty difficulty = Difficulty::EASY;
     EnvironmentType environmentType = EnvironmentType::SPRING;
 
 private:
@@ -32,6 +34,9 @@ public:
     // Accessors and mutators
     EnvironmentType getEnvironmentType() const;
     void setEnvironmentType(EnvironmentType environmentType);
+
+    Difficulty getDifficulty() const;
+    void setDifficulty(Difficulty difficulty);
 };
 
 #endif // SETTINGSMANAGER_H

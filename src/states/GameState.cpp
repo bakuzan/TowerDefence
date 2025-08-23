@@ -4,6 +4,7 @@
 #include "utils/GameUtils.h"
 #include "utils/InputUtils.h"
 #include "utils/CollisionUtils.h"
+#include "components/SettingsManager.h"
 #include "constants/AudioId.h"
 #include "constants/Constants.h"
 #include "constants/SoldierType.h"
@@ -165,6 +166,8 @@ void GameState::update(sf::Time deltaTime)
             {
                 gameData.audioManager.cleanupSounds();
                 gameData.audioManager.playSound(AudioId::VICTORY);
+
+                refundCurrentlyPlacedTowers();
 
                 if (gameData.hasLevelMap(levelIndex + 1))
                 {
@@ -525,4 +528,21 @@ void GameState::onSoldierDeath(Soldier &soldier)
     (void)soldier;
 
     gameData.audioManager.playPooledSound(AudioId::SOLDIER_DEATH);
+}
+
+void GameState::refundCurrentlyPlacedTowers()
+{
+    auto &towerSpots = gameData.getTowerSpots();
+    int difficulty = static_cast<int>(SettingsManager::getInstance().getDifficulty());
+    float refundMultiplier = 1.0f - (0.5f * difficulty);
+
+    for (auto &[position, spot] : towerSpots)
+    {
+        if (spot.hasTower())
+        {
+            int towerRemoveValue = trayOptionManager.getRemoveValue(spot);
+            int scaledValue = static_cast<int>(towerRemoveValue * refundMultiplier);
+            gameData.updatePlayerGold(scaledValue);
+        }
+    }
 }

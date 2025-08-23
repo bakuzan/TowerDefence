@@ -53,6 +53,7 @@ private:
     void onPlayerDeath();
     void onEnemyDeath(Enemy &enemy);
     void onSoldierDeath(Soldier &soldier);
+    void refundCurrentlyPlacedTowers();
 
 public:
     GameState(GameData &data, StateManager &manager, sf::RenderWindow &window);
